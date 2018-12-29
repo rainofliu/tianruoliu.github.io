@@ -6,19 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="https://www.liutianruo.com">
-  <title>tags | 天霸的博客</title>
+  <title>Spring MVC基本原理 | 天霸的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Java学习记录博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="tags">
-<meta property="og:url" content="https://www.liutianruo.com/tags/index.html">
+  <meta name="description" content="##一.核心架构图 ！Spring MVC核心架构图 ##二.核心架构的处理流程  首先用户发送请求——&amp;gt;DispatcherServlet，前端控制器收到请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控制；  DispatcherServlet——&amp;gt;HandlerMapping， HandlerMapping 将会把请求映射为 HandlerEx">
+<meta name="keywords" content="Spring MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC基本原理">
+<meta property="og:url" content="https://www.liutianruo.com/2018/12/29/Spring-MVC基本原理/index.html">
 <meta property="og:site_name" content="天霸的博客">
-<meta property="og:description" content="Java学习记录博客">
+<meta property="og:description" content="##一.核心架构图 ！Spring MVC核心架构图 ##二.核心架构的处理流程  首先用户发送请求——&amp;gt;DispatcherServlet，前端控制器收到请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控制；  DispatcherServlet——&amp;gt;HandlerMapping， HandlerMapping 将会把请求映射为 HandlerEx">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2018-12-29T03:09:48.703Z">
+<meta property="og:updated_time" content="2018-12-29T05:35:13.404Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="tags">
-<meta name="twitter:description" content="Java学习记录博客">
+<meta name="twitter:title" content="Spring MVC基本原理">
+<meta name="twitter:description" content="##一.核心架构图 ！Spring MVC核心架构图 ##二.核心架构的处理流程  首先用户发送请求——&amp;gt;DispatcherServlet，前端控制器收到请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控制；  DispatcherServlet——&amp;gt;HandlerMapping， HandlerMapping 将会把请求映射为 HandlerEx">
   
     <link rel="alternative" href="/atom.xml" title="天霸的博客" type="application/atom+xml">
   
@@ -171,27 +172,39 @@ var _hmt = _hmt || [];
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="page-" class="article article-type-page " itemscope="" itemprop="blogPost">
+            <article id="post-Spring-MVC基本原理" class="article article-type-post " itemscope="" itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      tags
+      Spring MVC基本原理
     </h1>
   
 
         
-        <a href="/tags/index.html" class="archive-article-date">
-  	<time datetime="2018-12-29T03:09:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-29</time>
+        <a href="/2018/12/29/Spring-MVC基本原理/" class="archive-article-date">
+  	<time datetime="2018-12-29T05:16:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-12-29</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>##一.核心架构图</p>
+<p>！<a href="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image.png" target="_blank" rel="noopener">Spring MVC核心架构图</a></p>
+<p>##二.核心架构的处理流程</p>
+<ol>
+<li>首先用户发送请求——&gt;DispatcherServlet，前端控制器收到请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控制； </li>
+<li>DispatcherServlet——&gt;HandlerMapping， HandlerMapping 将会把请求映射为 HandlerExecutionChain 对象（包含一个 Handler 处理器（页面控制器）对象、多个 HandlerInterceptor 拦截器）对象，通过这种策略模式，很容易添加新的映射策略；</li>
+<li>DispatcherServlet——&gt;HandlerAdapter，HandlerAdapter 将会把处理器包装为适配器，从而支持多种类型的处理器，即适配器设计模式的应用，从而很容易支持很多类型的处理器；</li>
+<li>HandlerAdapter——&gt;处理器功能处理方法的调用，HandlerAdapter 将会根据适配的结果调用真正的处理器的功能处理方法，完成功能处理；并返回一个 ModelAndView 对象（包含模型数据、逻辑视图名）； </li>
+<li>ModelAndView 的逻辑视图名——&gt; ViewResolver， ViewResolver 将把逻辑视图名解析为具体的 View，通过这种策略模式，很容易更换其他视图技术；</li>
+<li>View——&gt;渲染，View 会根据传进来的 Model 模型数据进行渲染，此处的 Model 实际是一个 Map 数据结构，因此很容易支持其他视图技术； </li>
+<li>返回控制权给 DispatcherServlet，由 DispatcherServlet 返回响应给用户</li>
+</ol>
+
       
 
       
@@ -199,7 +212,29 @@ var _hmt = _hmt || [];
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Spring MVC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Spring-MVC//" class="article-tag-list-link color1">Spring MVC</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -210,6 +245,16 @@ var _hmt = _hmt || [];
 </article>
 
   
+<nav id="article-nav">
+  
+  
+    <a href="/2018/12/28/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Hello World</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -264,7 +309,7 @@ var _hmt = _hmt || [];
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
