@@ -162,8 +162,10 @@
       
       <div class="article-summary">
         
-          <h2 id="一-核心架构图"><a href="#一-核心架构图" class="headerlink" title="一.核心架构图"></a>一.核心架构图</h2><p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image.png" alt="Spring MVC核心架构图"></p>
-<h2 id="二-核心架构的处理流程"><a href="#二-核心架构的处理流程" class="headerlink" title="二.核心架构的处理流程"></a>二.核心架构的处理流程</h2>
+          一.核心架构图
+二.核心架构的处理流程
+首先用户发送请求——&gt;DispatcherServlet，前端控制器收到请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控制； 
+DispatcherServlet——&gt;HandlerMapping， H ...
         
       </div>
       <a class="more" href="/2018/12/29/Spring-MVC基本原理/">Read more</a>
