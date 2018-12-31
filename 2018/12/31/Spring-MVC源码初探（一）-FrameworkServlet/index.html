@@ -155,8 +155,8 @@
 <p>​    我们可以看到FrameworkServlet继承了HttpServletBean,实现了ApplicationContextAware接口。其中实现ApplicationContextAware接口是为了获取ApplicationContext对象，如下是ApplicationContextAware接口的源码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContextAware</span> <span class="keyword">extends</span> <span class="title">Aware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="2-1-service方法"><a href="#2-1-service方法" class="headerlink" title="2.1 service方法"></a>2.1 service方法</h4><p>在FrameworkServlet中重写了service、doGet、doPost、doPut、doDelete、doOptions、doTrace方法 ,如下：</p>
-<p>![service方法]（<a href="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png）" target="_blank" rel="noopener">http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png）</a></p>
-<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png" alt="doGet"></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png" alt="service方法"></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%202.jpg" alt="doGet方法"></p>
 </section>
     <!-- Tags START -->
     
