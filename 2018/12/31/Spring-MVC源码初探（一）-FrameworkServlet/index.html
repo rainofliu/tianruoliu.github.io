@@ -135,7 +135,28 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>发的试试看</p>
+    <section class="markdown-content"><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>​    Spring MVC有三个重要的Servlet，分别是HttpServletBean 、FrameworkServlet 和DispatcherServlet。</p>
+<p>​    其中HttpServletBean没有涉及请求处理的流程，所以我们学习的时候，主要看FrameworkServlet和DispatcherServlet。    </p>
+<ul>
+<li><p>FrameworkServlet：</p>
+<p>将不同类型的请求合并到了processRequest方法统一处理，processRequest方法中做了三件事：</p>
+<ul>
+<li>调用了doService模板方法具体处理请求。</li>
+<li>将当前请求的LocaleContext和ServletRequestAttributes在处理请求前设置到了LocaleContextHolder和    RequestContextHolder，并在请求处理完成后恢复，</li>
+<li>请求处理完后发布了ServletRequestHandledEvent消息。</li>
+</ul>
+</li>
+<li><p>DispatcherServlet:</p>
+<p>   doService方法给request设置了一些属性并将请求交给doDispatch方法具体处理。所以说核心代码都在doDispatch方法，我们分析DispatcherServlet的时候，应当重点研究doService方法中调用的doDispatch方法。</p>
+<p>   DispatcherServlet中的doDispatch方法完成Spring MVC中请求处理过程的顶层设计，它使用DispatcherServlet中的九大组件完成了具体的请求处理。 这些具体细节，等下一篇写到DispatcherServlet的时候会详述。</p>
+</li>
+</ul>
+<h3 id="2-走进FrameworkServlet的世界"><a href="#2-走进FrameworkServlet的世界" class="headerlink" title="2.走进FrameworkServlet的世界"></a>2.走进FrameworkServlet的世界</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FrameworkServlet</span> <span class="keyword">extends</span> <span class="title">HttpServletBean</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span></span></span><br></pre></td></tr></table></figure>
+<p>​    我们可以看到FrameworkServlet继承了HttpServletBean,实现了ApplicationContextAware接口。其中实现ApplicationContextAware接口是为了获取ApplicationContext对象，如下是ApplicationContextAware接口的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContextAware</span> <span class="keyword">extends</span> <span class="title">Aware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-service方法"><a href="#2-1-service方法" class="headerlink" title="2.1 service方法"></a>2.1 service方法</h4><p>在FrameworkServlet中重写了service、doGet、doPost、doPut、doDelete、doOptions、doTrace方法 ,如下：</p>
+<p>![service方法]（<a href="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png）" target="_blank" rel="noopener">http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png）</a></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png" alt="doGet"></p>
 </section>
     <!-- Tags START -->
     
@@ -208,7 +229,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-概述"><span class="toc-nav-text">1.概述</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-走进FrameworkServlet的世界"><span class="toc-nav-text">2.走进FrameworkServlet的世界</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-service方法"><span class="toc-nav-text">2.1 service方法</span></a></li></ol></li></ol>
     
   </div>
 </aside>
