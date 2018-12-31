@@ -213,10 +213,8 @@
 </ul>
 <p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2024.png" alt=""></p>
 <h5 id="2-1-5-publishRequestHandledEvent"><a href="#2-1-5-publishRequestHandledEvent" class="headerlink" title="2.1.5 publishRequestHandledEvent"></a>2.1.5 publishRequestHandledEvent</h5><p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2025.png" alt=""></p>
-<blockquote>
 <p>publishEvents可以在web.xml文件中配置Spring MVC的Servlet时配置，默认为true。 </p>
-</blockquote>
-<p>####2.2 总结</p>
+<p>#####2.2 总结</p>
 <p>首先是在service方法里添加了对PATCH的处理，并将所有需要自己处理的请求都集中到了processRequest方法进行统一处理，这和HttpServlet里面根据request的类型将请求分配到各个不同的方法进行处理的过程正好相反。</p>
 <p>然后就是processRequest方法，在processRequest里面主要的处理逻辑交给了doService，这是一个模板方法，在子类具体实现，另外就是对使用当前request获取到的LocaleContext和RequestAttributes进行了保存，以及处理完之后的恢复，在最后发布了ServletRequest-HandledEvent事件。</p>
 <h3 id="3-关于此部分业务容器的介绍，会在以后学习的过程中补充到这里"><a href="#3-关于此部分业务容器的介绍，会在以后学习的过程中补充到这里" class="headerlink" title="3.关于此部分业务容器的介绍，会在以后学习的过程中补充到这里"></a>3.关于此部分业务容器的介绍，会在以后学习的过程中补充到这里</h3><p>TODO:</p>
