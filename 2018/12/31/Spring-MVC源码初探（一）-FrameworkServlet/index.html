@@ -10,7 +10,7 @@
   
   <title>
     
-      Tags | 时间旅行者
+      Spring MVC源码初探（一） FrameworkServlet | 时间旅行者
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,95 +126,193 @@
 </header>
 
     <div id="article-banner">
-  <h2>Tags</h2>
-  <p class="post-date">标签检索</p>
+  <h2>Spring MVC源码初探（一） FrameworkServlet</h2>
+  <p class="post-date">2018-12-31</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
 </div>
-<main class="app-body">
-  <div id="tag-cloud">
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>发的试试看</p>
+</section>
+    <!-- Tags START -->
     
-      <a class="tag3" data-name="tag-教程">教程</a>
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#springmvc">
+    <span class="tag-code">springmvc</span>
+  </a>
+
+  <a href="/tags#源码初探">
+    <span class="tag-code">源码初探</span>
+  </a>
+
+      </div>
     
-      <a class="tag1" data-name="tag-学习计划">学习计划</a>
+    <!-- Tags END -->
+    <!-- NAV START -->
     
-      <a class="tag1" data-name="tag-springmvc">springmvc</a>
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="tag2" data-name="tag-源码初探">源码初探</a>
+      <a class="nav-left" href="/2018/12/31/Spring-Boot教程汇总/">
+        <span class="nav-arrow">← </span>
+        
+          Spring Boot教程汇总
+        
+      </a>
+    
     
   </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
   
-    <div class="tag-list">
-      <h3 class="tag-name" id="tag-教程">教程</h3>
-      
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/12/31/Spring-Boot教程汇总/">Spring Boot教程汇总</a>
-          </li>
-        </ul>
-        
-    </div>
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
     
-    <div class="tag-list">
-      <h3 class="tag-name" id="tag-学习计划">学习计划</h3>
-      
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/12/29/2018-12-29-学习计划/">Spring Boot、Spring Cloud微服务学习计划</a>
-          </li>
-        </ul>
-        
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/12/30/《Spring MVC》和唐亚峰的博客学习进度（持续更新）/">根据博客学习计划走的具体进程</a>
-          </li>
-        </ul>
-        
-    </div>
+      <ol class="nav">none</ol>
     
-    <div class="tag-list">
-      <h3 class="tag-name" id="tag-springmvc">springmvc</h3>
-      
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/12/31/Spring-MVC源码初探（一）-FrameworkServlet/">Spring MVC源码初探（一） FrameworkServlet</a>
-          </li>
-        </ul>
-        
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/12/29/Spring-MVC基本原理/">Spring MVC基本原理</a>
-          </li>
-        </ul>
-        
-    </div>
-    
-    <div class="tag-list">
-      <h3 class="tag-name" id="tag-源码初探">源码初探</h3>
-      
-        <ul class="tag-preview">
-          <li>
-            <a href="/2018/12/31/Spring-MVC源码初探（一）-FrameworkServlet/">Spring MVC源码初探（一） FrameworkServlet</a>
-          </li>
-        </ul>
-        
-    </div>
-    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
 </main>
 
 <script>
   (function () {
-    var url = 'https://www.liutianruo.com/tags/index.html'
-    $('#article-banner').geopattern(url)
+    var url = 'https://www.liutianruo.com/2018/12/31/Spring-MVC源码初探（一）-FrameworkServlet/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
     $('.header').removeClass('fixed-header')
 
-    var tag = location.hash.replace('#', '')
-    if (tag) {
-      var tagId = "#tag-" + tag;
-      $("html, body").animate({
-        scrollTop: $(tagId).offset().top 
-      }, 400)
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Spring MVC源码初探（一） FrameworkServlet",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
     }
   })();
 </script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2018/12/31/Spring-MVC源码初探（一）-FrameworkServlet/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
     <div class="scroll-top">
   <span class="arrow-icon"></span>
 </div>
