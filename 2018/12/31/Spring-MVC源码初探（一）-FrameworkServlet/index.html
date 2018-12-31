@@ -163,9 +163,7 @@
 <p>此处我豁然开朗，我们之前写一个Servlet类的时候，就是继承HttpServlet，但是不用重写service方法，只需要写doGet和doPost方法，因为service方法，直接就会根据我们请求的方式，直接路由到doGet或者doPost方法。也就是说我们写的Servlet类，其实继承了父类HttpServlet中的service方法，所以就会帮助我们路由到具体的doXXX()方法。</p>
 </blockquote>
 <p>而Spring MVC中，FrameworkServlet的service方法却是把PATCH请求和空请求单独拿出来，调用processRequest方法处理；而对于其他请求，就直接交给父类来处理（其实是给HttpServlet中的service方法处理）。但是doGet、doPost、doPut、doDelete都是自己处理请求，不用父类来处理。</p>
-<blockquote>
 <p>总结一下，就是所有需要自己处理请求的，不依靠父类帮助处理的，都调用了processRequest()方法</p>
-</blockquote>
 <p>#####2.1.1 processRequest方法</p>
 <p>processRequest方法是FrameworkServlet类在处理请求中最核心的方法。</p>
 <p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2010.png" alt="processRequest"></p>
