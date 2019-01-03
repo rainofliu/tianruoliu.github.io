@@ -137,8 +137,7 @@
   <article class="post-article">
     <section class="markdown-content"><h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h1><p>​    依照目前的情况，只能对Spring MVC的源码做初步探索，所以说不要强求每一个地方都理解，这是不现实的。我们至少要做到对核心代码以及核心代码所蕴含的逻辑过程清楚，这样本系列的学习就达到目的了。</p>
 <p>​    接下来会从doService方法，doPatch方法和processDispatchResult方法这三个方面接触下DispatcherServlet的核心代码逻辑，加深对Spring MVC基本原理的理解。</p>
-<p>#2.doService</p>
-<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%20123.png" alt=""></p>
+<h1 id="2-doService"><a href="#2-doService" class="headerlink" title="2.doService"></a>2.doService</h1><p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%20123.png" alt=""></p>
 <p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%202.png" alt=""></p>
 <p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%203.png" alt=""></p>
 <ul>
@@ -146,8 +145,7 @@
 <li>doDispatch(request,response)会在下一小节展开</li>
 <li>其他部分，按照代码注释理解应该没问题</li>
 </ul>
-<p>#3.doDispatch（真正处理请求的方法）</p>
-<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%204.png" alt=""></p>
+<h1 id="3-doDispatch（真正处理请求的方法）"><a href="#3-doDispatch（真正处理请求的方法）" class="headerlink" title="3.doDispatch（真正处理请求的方法）"></a>3.doDispatch（真正处理请求的方法）</h1><p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%204.png" alt=""></p>
 <p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2056878.png" alt=""></p>
 <p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%206.png" alt=""></p>
 <p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/sadhhsadhjsa.png" alt=""></p>
@@ -282,7 +280,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1-概述"><span class="toc-nav-text">1.概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4-processDispatchResult"><span class="toc-nav-text">4.processDispatchResult</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-异常处理"><span class="toc-nav-text">4.1 异常处理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-render"><span class="toc-nav-text">4.2 render</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5-总结"><span class="toc-nav-text">5. 总结</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-doDispatch的流程图"><span class="toc-nav-text">5.1 doDispatch的流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-形象理解"><span class="toc-nav-text">5.2 形象理解</span></a></li></ol></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1-概述"><span class="toc-nav-text">1.概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#2-doService"><span class="toc-nav-text">2.doService</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#3-doDispatch（真正处理请求的方法）"><span class="toc-nav-text">3.doDispatch（真正处理请求的方法）</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4-processDispatchResult"><span class="toc-nav-text">4.processDispatchResult</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-异常处理"><span class="toc-nav-text">4.1 异常处理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-render"><span class="toc-nav-text">4.2 render</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5-总结"><span class="toc-nav-text">5. 总结</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-doDispatch的流程图"><span class="toc-nav-text">5.1 doDispatch的流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-形象理解"><span class="toc-nav-text">5.2 形象理解</span></a></li></ol></li></ol>
     
   </div>
 </aside>
