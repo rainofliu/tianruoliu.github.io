@@ -10,7 +10,7 @@
   
   <title>
     
-      Spring Cloud教程汇总 | 时间旅行者
+      Spring MVC源码初探（二） DispatcherServlet | 时间旅行者
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,8 +126,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>Spring Cloud教程汇总</h2>
-  <p class="post-date">2019-01-01</p>
+  <h2>Spring MVC源码初探（二） DispatcherServlet</h2>
+  <p class="post-date">2019-01-03</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -135,27 +135,93 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><ul>
-<li><p>翟永超</p>
-<p>​  <a href="http://blog.didispace.com/Spring-Cloud%E5%9F%BA%E7%A1%80%E6%95%99%E7%A8%8B/" target="_blank" rel="noopener">教程</a>     <a href="https://gitee.com/didispace/SpringCloud-Learning" target="_blank" rel="noopener">demo</a></p>
+    <section class="markdown-content"><h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h1><p>​    依照目前的情况，只能对Spring MVC的源码做初步探索，所以说不要强求每一个地方都理解，这是不现实的。我们至少要做到对核心代码以及核心代码所蕴含的逻辑过程清楚，这样本系列的学习就达到目的了。</p>
+<p>​    接下来会从doService方法，doPatch方法和processDispatchResult方法这三个方面接触下DispatcherServlet的核心代码逻辑，加深对Spring MVC基本原理的理解。</p>
+<p>#2.doService</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%20123.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%202.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%203.png" alt=""></p>
+<ul>
+<li>FlashMapper等具体后面学习到组件的时候再展开</li>
+<li>doDispatch(request,response)会在下一小节展开</li>
+<li>其他部分，按照代码注释理解应该没问题</li>
+</ul>
+<p>#3.doDispatch（真正处理请求的方法）</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%204.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2056878.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%206.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/sadhhsadhjsa.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1232.png" alt=""></p>
+<ul>
+<li>doDispatch中首先检查是不是上传请求，如果是上传请求，则将request转换为Multi-partHttpServletRequest，并将multipartRequestParsed标志设置为true。其中使用到了Multipart-Resolver。 </li>
+<li>然后通过getHandler方法获取Handler处理器链，其中使用到了HandlerMapping，返回值为HandlerExecutionChain类型，其中包含着与当前request相匹配的Interceptor和Handler 。</li>
+<li>根据Handler找到相应的HandlerAdapter。</li>
+<li>接下来是处理GET、HEAD请求的Last-Modified。 </li>
+<li>接下来依次调用相应Interceptor的preHandle。 </li>
+<li>HandlerAdapter使用Handler处理请求。（具体怎么处理，以后的博客会展开描述）</li>
+<li>Handler处理完请求后，如果需要异步处理，则直接返回；如果不需要异步处理，当view为空时（如Handler返回值为void），设置默认view，</li>
+<li>然后执行相应Interceptor的postHandle。设置默认view的过程中使用到了ViewNameTranslator。 </li>
+<li>调用processDispatchResult方法处理上面处理之后的结果（包含找到View并渲染输出给用户）。</li>
+</ul>
+<p>PS:</p>
+<ol>
+<li>异常处理结构 : doDispatch有两层异常捕获，内层是捕获在对请求进行处理的过程中抛出的异常，外层主要是在处理渲染页面时抛出的。内层的异常，也就是执行请求处理时的异常会设置到dispatchException变量，然后在processDispatchResult方法中进行处理，外层则是处理processDispatchResult方法抛出的异常。</li>
+<li>还要补充的是：在最后的finally中判断是否请求启动了异步处理，如果启动了则调用相应异步处理的拦截器，否则如果是上传请求则删除上传请求过程中产生的临时资源。 </li>
+</ol>
+<h1 id="4-processDispatchResult"><a href="#4-processDispatchResult" class="headerlink" title="4.processDispatchResult"></a>4.processDispatchResult</h1><p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/23312312321.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/821387782194192.png" alt=""></p>
+<h2 id="4-1-异常处理"><a href="#4-1-异常处理" class="headerlink" title="4.1 异常处理"></a>4.1 异常处理</h2><p>processDispatchResult处理异常的方式其实就是将相应的错误页面设置到View，在其中的processHandlerException方法中用到了HandlerExceptionResolver。</p>
+<blockquote>
+<p>processHandlerException方法代码如下： </p>
+</blockquote>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/00034299.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%206321.png" alt=""></p>
+<blockquote>
+<p>这一部分未做深入分析，以后可以拿出来研究下</p>
+</blockquote>
+<p>我们接着往下看</p>
+<h2 id="4-2-render"><a href="#4-2-render" class="headerlink" title="4.2 render"></a>4.2 render</h2><ul>
+<li><p>render中首先对response设置了Local，过程中使用到了LocaleResolver，</p>
 </li>
-<li><p>方志朋</p>
-<p><a href="https://www.fangzhipeng.com/archive/?tag=SpringCloud" target="_blank" rel="noopener"> 教程</a>     <a href="https://www.fangzhipeng.com/springcloud/2018/08/30/sc-f-all/" target="_blank" rel="noopener">文章汇总</a> <a href="https://github.com/forezp/SpringCloudLearning" target="_blank" rel="noopener">demo源码</a></p>
+<li><p>然后判断View如果是String类型则调用resolveViewName方法使用ViewResolver得到实际的View，</p>
+</li>
+<li><p>最后调用View的render方法对页面进行具体渲染，渲染的过程中使用到了ThemeResolver。(ThemeResolver在后面的组件学习中会具体学习到)</p>
+</li>
+<li><p>最后通过mappedHandler的triggerAfterCompletion方法触发Interceptor的afterCompletion方法，这里的Interceptor也是按反方向执行的。</p>
 </li>
 </ul>
-<p><a href="https://github.com/ityouknow/awesome-spring-cloud" target="_blank" rel="noopener">Spring Cloud资源大全</a> 最齐全！！！</p>
+<p>  到这里processDispatchResult方法就执行完了。</p>
+<blockquote>
+<p>具体代码就先不分析了</p>
+</blockquote>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/swuhdwqhd.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/wqewqdwqwqd.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/zzzzz.png" alt=""></p>
+<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><h2 id="5-1-doDispatch的流程图"><a href="#5-1-doDispatch的流程图" class="headerlink" title="5.1 doDispatch的流程图"></a>5.1 doDispatch的流程图</h2><p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/NeatReader-1546523718958.jpg" alt=""></p>
+<h2 id="5-2-形象理解"><a href="#5-2-形象理解" class="headerlink" title="5.2 形象理解"></a>5.2 形象理解</h2><p>Handler：也就是处理器，它直接对应着MVC中的C也就是Controller层 </p>
+<p>HandlerMapping：是用来查找Handler的，在Spring MVC中会处理很多请求，每个请求都需要一个Handler来处理，具体接收到一个请求后使用哪个Handler来处理呢？这就是HandlerMapping要做的事情。 </p>
+<p>HandlerAdapter ：使用Handler处理请求</p>
+<blockquote>
+<p>通俗点的解释就是Handler是用来干活的工具，HandlerMapping用于根据需要干的活找到相应的工具，HandlerAdapter是使用工具干活的人。 </p>
+</blockquote>
+<p>View是用来展示数据的，而ViewResolver用来查找View </p>
+<blockquote>
+<p>使用HandlerMapping找到干活的Handler，找到使用Handler的HandlerAdapter，让HandlerAdapter使用Handler干活，干完活后将结果写个报告交上去（通过View展示给用户）。</p>
+</blockquote>
+<p>HandlerExecutionChain：处理请求的处理器链（包含处理器和对应的Interceptor） </p>
+<p>ModelAndView ：封装Model和View的容器，此变量在整个Spring MVC处理的过程中承担着非常重要角色 </p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#教程">
-    <span class="tag-code">教程</span>
+  <a href="/tags#Spring MVC">
+    <span class="tag-code">Spring MVC</span>
   </a>
 
-  <a href="/tags#Spring Cloud">
-    <span class="tag-code">Spring Cloud</span>
+  <a href="/tags#源码初探">
+    <span class="tag-code">源码初探</span>
   </a>
 
       </div>
@@ -166,20 +232,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2019/01/01/面试题/">
+      <a class="nav-left" href="/2019/01/01/Spring-Cloud教程汇总/">
         <span class="nav-arrow">← </span>
         
-          芋道源码面试题
+          Spring Cloud教程汇总
         
       </a>
     
-    
-      <a class="nav-right" href="/2019/01/03/Spring-MVC源码初探（二）-DispatcherServlet/">
-        
-          Spring MVC源码初探（二） DispatcherServlet
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -223,7 +282,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#1-概述"><span class="toc-nav-text">1.概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#4-processDispatchResult"><span class="toc-nav-text">4.processDispatchResult</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-1-异常处理"><span class="toc-nav-text">4.1 异常处理</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#4-2-render"><span class="toc-nav-text">4.2 render</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#5-总结"><span class="toc-nav-text">5. 总结</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-1-doDispatch的流程图"><span class="toc-nav-text">5.1 doDispatch的流程图</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#5-2-形象理解"><span class="toc-nav-text">5.2 形象理解</span></a></li></ol></li></ol>
     
   </div>
 </aside>
@@ -233,7 +292,7 @@
 
 <script>
   (function () {
-    var url = 'https://www.liutianruo.com/2019/01/01/Spring-Cloud教程汇总/';
+    var url = 'https://www.liutianruo.com/2019/01/03/Spring-MVC源码初探（二）-DispatcherServlet/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -289,7 +348,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "Spring Cloud教程汇总",
+        id: "Spring MVC源码初探（二） DispatcherServlet",
         owner: "",
         repo: "",
         oauth: {
@@ -317,7 +376,7 @@
 <script>
   var disqus_shortname = '';
   
-  var disqus_url = 'https://www.liutianruo.com/2019/01/01/Spring-Cloud教程汇总/';
+  var disqus_url = 'https://www.liutianruo.com/2019/01/03/Spring-MVC源码初探（二）-DispatcherServlet/';
   
   (function(){
     var dsq = document.createElement('script');
