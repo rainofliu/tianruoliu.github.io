@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Spring MVC源码初探（一） FrameworkServlet | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Spring MVC源码初探（一） FrameworkServlet</h2>
+  <p class="post-date">2018-12-31</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>​    Spring MVC有三个重要的Servlet，分别是HttpServletBean 、FrameworkServlet 和DispatcherServlet。</p>
+<p>​    其中HttpServletBean没有涉及请求处理的流程，所以我们学习的时候，主要看FrameworkServlet和DispatcherServlet。    </p>
+<ul>
+<li><p>FrameworkServlet：</p>
+<p>将不同类型的请求合并到了processRequest方法统一处理，processRequest方法中做了三件事：</p>
+<ul>
+<li>调用了doService模板方法具体处理请求。</li>
+<li>将当前请求的LocaleContext和ServletRequestAttributes在处理请求前设置到了LocaleContextHolder和    RequestContextHolder，并在请求处理完成后恢复，</li>
+<li>请求处理完后发布了ServletRequestHandledEvent消息。</li>
+</ul>
+</li>
+<li><p>DispatcherServlet:</p>
+<p>   doService方法给request设置了一些属性并将请求交给doDispatch方法具体处理。所以说核心代码都在doDispatch方法，我们分析DispatcherServlet的时候，应当重点研究doService方法中调用的doDispatch方法。</p>
+<p>   DispatcherServlet中的doDispatch方法完成Spring MVC中请求处理过程的顶层设计，它使用DispatcherServlet中的九大组件完成了具体的请求处理。 这些具体细节，等下一篇写到DispatcherServlet的时候会详述。</p>
+</li>
+</ul>
+<h3 id="2-走进FrameworkServlet的世界"><a href="#2-走进FrameworkServlet的世界" class="headerlink" title="2.走进FrameworkServlet的世界"></a>2.走进FrameworkServlet的世界</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FrameworkServlet</span> <span class="keyword">extends</span> <span class="title">HttpServletBean</span> <span class="keyword">implements</span> <span class="title">ApplicationContextAware</span></span></span><br></pre></td></tr></table></figure>
+<p>​    我们可以看到FrameworkServlet继承了HttpServletBean,实现了ApplicationContextAware接口。其中实现ApplicationContextAware接口是为了获取ApplicationContext对象，如下是ApplicationContextAware接口的源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContextAware</span> <span class="keyword">extends</span> <span class="title">Aware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-1-service方法"><a href="#2-1-service方法" class="headerlink" title="2.1 service方法"></a>2.1 service方法</h4><p>在FrameworkServlet中重写了service、doGet、doPost、doPut、doDelete、doOptions、doTrace方法 ,如下：</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/1546235038371.png" alt="service方法"></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%202.jpg" alt="doGet方法"></p>
+<p>  在这里，我们回顾下Servlet的处理过程，是在service方法中根据不同类型的请求路由到doGet、doPost、doPut、doDelete、doOptions、doTrace方法。我们看下HttpServlet中的service方法,如图：</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%205.png" alt="service方法"></p>
+<blockquote>
+<p>此处我豁然开朗，我们之前写一个Servlet类的时候，就是继承HttpServlet，但是不用重写service方法，只需要写doGet和doPost方法，因为service方法，直接就会根据我们请求的方式，直接路由到doGet或者doPost方法。也就是说我们写的Servlet类，其实继承了父类HttpServlet中的service方法，所以就会帮助我们路由到具体的doXXX()方法。</p>
+</blockquote>
+<p>而Spring MVC中，FrameworkServlet的service方法却是把PATCH请求和空请求单独拿出来，调用processRequest方法处理；而对于其他请求，就直接交给父类来处理（其实是给HttpServlet中的service方法处理）。但是doGet、doPost、doPut、doDelete都是自己处理请求，不用父类来处理。</p>
+<p>总结一下，就是所有需要自己处理请求的，不依靠父类帮助处理的，都调用了processRequest()方法</p>
+<h5 id="2-1-1-processRequest方法"><a href="#2-1-1-processRequest方法" class="headerlink" title="2.1.1 processRequest方法"></a>2.1.1 processRequest方法</h5><p>processRequest方法是FrameworkServlet类在处理请求中最核心的方法。</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2010.png" alt="processRequest"></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2012.png" alt="processRequest2"></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2013.png" alt="processRequest3"></p>
+<blockquote>
+<p>首先我们来走一下processRequest方法的主要流程(上图的TODO：异步请求，暂时不考虑)，之后再分析下里面各个更小的细节</p>
+</blockquote>
+<ul>
+<li>获取LocaleContextLoader中原先保存的LocalContext和当前请求的LocaleContext（详见2.1.2）</li>
+<li>获取RequestContextHolder原先保存的RequstAttributes和当前请求的ServletRequestAttributes（详见2.1.3)</li>
+<li>将当前请求的LocaleContext和ServletRequestAttributes设置到LocaleContextHolder和RequestContextHolder（详见2.1.4）</li>
+<li>调用doService实际处理请求</li>
+<li>恢复原来的LocaleContext和ServletRequestAttributes到LocaleContextLoader</li>
+<li>发布ServletRequestHandledEvent消息(详见2.1.5)</li>
+</ul>
+<h5 id="2-1-2-LocalContext"><a href="#2-1-2-LocalContext" class="headerlink" title="2.1.2 LocalContext"></a>2.1.2 LocalContext</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//保存Locale对象信息(本地化信息，如zh-cn)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">LocaleContext</span> </span>&#123;</span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="function">Locale <span class="title">getLocale</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>LocaleContext里面存放着Locale（也就是本地化信息，如zh-cn等）</p>
+<h5 id="2-1-3-RequestAttributes"><a href="#2-1-3-RequestAttributes" class="headerlink" title="2.1.3 RequestAttributes"></a>2.1.3 RequestAttributes</h5><p>RequestAttributes是spring的一个接口，通过它可以get/set/removeAttribute。根据scope参数判断操作request还是session。这里具体使用的是ServletRequestAttributes类，在ServletRequestAttributes里面还封装了request、response和session，而且都提供了get方法，可以直接获取。</p>
+<ol>
+<li>先看一下RequestAttributes接口中的方法</li>
+</ol>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2016.png" alt="RequestAttributes"></p>
+<ol start="2">
+<li>接着看一下ServletRequestAttributes：</li>
+</ol>
+<ul>
+<li>封装了request、response和session，而且都提供了get方法，可以直接获取</li>
+</ul>
+<p>  <img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%200.png" alt="e"></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2020.png" alt=""></p>
+<ul>
+<li>提供了getAttribute、setAttribute和removeAttribute方法</li>
+</ul>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2021.png" alt=""></p>
+<blockquote>
+<p>重点看一下setAttribute方法，其他的两个方法应该都差不多</p>
+</blockquote>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2022.png" alt=""></p>
+<p>简单分析一下，就是根据scope属性去判断是对request还是session进行设置</p>
+<h5 id="2-1-4-LocaleContextHolder和RequestContextHolder"><a href="#2-1-4-LocaleContextHolder和RequestContextHolder" class="headerlink" title="2.1.4 LocaleContextHolder和RequestContextHolder"></a>2.1.4 LocaleContextHolder和RequestContextHolder</h5><ul>
+<li>LocaleContextHolder 详细的暂时不理解，留着以后TODO</li>
+</ul>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2023.png" alt=""></p>
+<ul>
+<li>RequestContextHolder</li>
+</ul>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2024.png" alt=""></p>
+<h5 id="2-1-5-publishRequestHandledEvent"><a href="#2-1-5-publishRequestHandledEvent" class="headerlink" title="2.1.5 publishRequestHandledEvent"></a>2.1.5 publishRequestHandledEvent</h5><p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/Image%2025.png" alt=""></p>
+<p>publishEvents可以在web.xml文件中配置Spring MVC的Servlet时配置，默认为true。 </p>
+<h4 id="2-2-总结"><a href="#2-2-总结" class="headerlink" title="2.2 总结"></a>2.2 总结</h4><p>首先是在service方法里添加了对PATCH的处理，并将所有需要自己处理的请求都集中到了processRequest方法进行统一处理，这和HttpServlet里面根据request的类型将请求分配到各个不同的方法进行处理的过程正好相反。</p>
+<p>然后就是processRequest方法，在processRequest里面主要的处理逻辑交给了doService，这是一个模板方法，在子类具体实现，另外就是对使用当前request获取到的LocaleContext和RequestAttributes进行了保存，以及处理完之后的恢复，在最后发布了ServletRequest-HandledEvent事件。</p>
+<h3 id="3-关于此部分业务容器的介绍，会在以后学习的过程中补充到这里"><a href="#3-关于此部分业务容器的介绍，会在以后学习的过程中补充到这里" class="headerlink" title="3.关于此部分业务容器的介绍，会在以后学习的过程中补充到这里"></a>3.关于此部分业务容器的介绍，会在以后学习的过程中补充到这里</h3><p>TODO:</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Spring MVC">
+    <span class="tag-code">Spring MVC</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2018/12/31/Spring-Boot教程汇总/">
+        <span class="nav-arrow">← </span>
+        
+          Spring Boot教程汇总
+        
+      </a>
+    
+    
+      <a class="nav-right" href="/2019/01/01/Spring学习资料汇总/">
+        
+          Spring学习资料汇总
+        
+        <span class="nav-arrow"> →</span>
+      </a>
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#1-概述"><span class="toc-nav-text">1.概述</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#2-走进FrameworkServlet的世界"><span class="toc-nav-text">2.走进FrameworkServlet的世界</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-1-service方法"><span class="toc-nav-text">2.1 service方法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-1-processRequest方法"><span class="toc-nav-text">2.1.1 processRequest方法</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-2-LocalContext"><span class="toc-nav-text">2.1.2 LocalContext</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-3-RequestAttributes"><span class="toc-nav-text">2.1.3 RequestAttributes</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-4-LocaleContextHolder和RequestContextHolder"><span class="toc-nav-text">2.1.4 LocaleContextHolder和RequestContextHolder</span></a></li><li class="toc-nav-item toc-nav-level-5"><a class="toc-nav-link" href="#2-1-5-publishRequestHandledEvent"><span class="toc-nav-text">2.1.5 publishRequestHandledEvent</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#2-2-总结"><span class="toc-nav-text">2.2 总结</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#3-关于此部分业务容器的介绍，会在以后学习的过程中补充到这里"><span class="toc-nav-text">3.关于此部分业务容器的介绍，会在以后学习的过程中补充到这里</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2018/12/31/Spring-MVC 源码初探（一）-FrameworkServlet/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Spring MVC源码初探（一） FrameworkServlet",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2018/12/31/Spring-MVC 源码初探（一）-FrameworkServlet/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
