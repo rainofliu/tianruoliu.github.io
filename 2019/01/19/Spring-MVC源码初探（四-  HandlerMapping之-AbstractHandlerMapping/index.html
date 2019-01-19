@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Spring MVC源码初探（四)     HandlerMapping之  AbstractHandlerMapping | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Spring MVC源码初探（四)     HandlerMapping之  AbstractHandlerMapping</h2>
+  <p class="post-date">2019-01-19</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="一-HandlerMapping以及继承体系"><a href="#一-HandlerMapping以及继承体系" class="headerlink" title="一. HandlerMapping以及继承体系"></a>一. HandlerMapping以及继承体系</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">public</span> inteface HandlerMapping&#123;</span><br><span class="line">        <span class="comment">//省略一些变量</span></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">	<span class="function">HandlerExecutionChain <span class="title">getHandler</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    由上述代码可知,HandlerMapping是一个接口，其核心方法是getHandler方法，该方法会返回一个HandlerExecutionChain对象，该对象中包含一个处理器和一系列的拦截器。getHandler方法由实现它的子类具体完成。</p>
+<p>​    我们通过一张图看一下HandlerMapping的继承体系</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/HandlerMapping%E7%B1%BB%E5%9B%BE.png" alt=""></p>
+<p>​    </p>
+<p>​    由上图我们可以看到，HandlerMapping是一个接口，AbstractHandlerMapping是实现它的抽象类，而顺着AbstractHandlerMapping可以看到两个分支，分别是AbstractUrlHandlerMapping和AbstractHandlerMethodMapping。</p>
+<p>​    由此我们可以找到一个规律</p>
+<blockquote>
+<p>​    先设计一个接口，然后再设计一个抽象类去实现这个接口，实现一些方法，再由这个抽象类的子类去实现更多的方法和功能。接口是最大的父亲，而抽象类像一个“中间产物”，后续继承抽象类的子类去做真正的事情，参与框架中的操作。由接口（起点）&gt;抽象类（中间）&gt;… （成品），这样的设计方法，似乎是可以通用的。</p>
+<p>​    再想到Servlet也是一个接口，GenericServlet是实现它的抽象类，而HttpServlet这个抽象类继续继承GenericServlet；而我们新建一个Servlet是继承HttpServlet的产物，这个才是我们需要的，或者说，才是我们真正可以使用的Servlet。</p>
+</blockquote>
+<p>​    我们可以由此看到AbstractHandlerMapping这个抽象类的重要性，那么就来看一下它的核心方法吧</p>
+<h1 id="二-AbstractHandlerMapping核心方法"><a href="#二-AbstractHandlerMapping核心方法" class="headerlink" title="二. AbstractHandlerMapping核心方法"></a>二. AbstractHandlerMapping核心方法</h1><ol>
+<li><p>initApplicationContext</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2015%2022%2051.png" alt=""></p>
+<blockquote>
+<p>这个方法在初始化的时候调用，其实它主要是初始化三个拦截器。</p>
+</blockquote>
+<blockquote>
+<p>我们主要看一下其中的initInterceptors（）方法：</p>
+</blockquote>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2015%2027%2035.png" alt=""></p>
+<ol>
+<li><p>initInterceptors()方法就是把这个类中的定义的拦截器集合（interceptors)一个个取出来</p>
+</li>
+<li><p>再调用adaptInterceptor(interceptor)，根据拦截器的类型，给其转换成一定类型的拦截器</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2015%2037%2009.png" alt=""></p>
+</li>
+<li><p>再将转换类型后的拦截器添加到另一个集合adaptedInterceptors中</p>
+</li>
+</ol>
+<blockquote>
+<p>看一下这两个拦截器集合在AbstarctHandlerMapping中的定义</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> List&lt;Object&gt; interceptors = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> List&lt;HandlerInterceptor&gt; adaptedInterceptors = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li><p>getHandler</p>
+<p>AbstractHandlerMapping重写了getHandler方法:</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2015%2048%2051.png" alt=""></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2015%2050%2020.png" alt=""></p>
+</li>
+</ol>
+<p>概述一下，getHandler方法就是根据请求获取处理器，如果处理器是String类型，就特殊处理一下；然后拿到处理器后，去调用getHandlerExecutionChain对象，返回HandlerExecutionChain对象（包含处理器和拦截器）。现在回想一下，initApplicationContext中初始化拦截器，是不是就很有用了。</p>
+<p><strong><a></a></strong> getDefaultHandler     获取默认的处理器</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2015%2059%2005.png" alt=""></p>
+<p> <strong><b></b></strong>obtainApplicationContext         获取ApplicationContext对象</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2016%2001%2018.png" alt=""></p>
+<p><strong><c></c></strong>getHandlerExecutionChain</p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2016%2006%2052.png" alt=""></p>
+<ul>
+<li><p>判断处理器是否是HandlerExecutionChain类型，是的话，就将处理器转换成HandlerExecutionChain类型，如果不是，则新建一个HandlerExecutionChain对象</p>
+<blockquote>
+<p>我的理解是：处理器是HandlerExecutionChain类型，是因为根本没有设置拦截器，就是最简单的demo那种</p>
+</blockquote>
+</li>
+<li><p>然后调用UrlPathHelper类的getLookupPathForRequest方法获取lookupPath(给定请求的映射查找路径)</p>
+<p><code>private UrlPathHelper urlPathHelper = new UrlPathHelper();</code></p>
+<p><img src="http://pkh8npf4z.bkt.clouddn.com/qiniu_picGo/2019-01-19%2016%2012%2012.png" alt=""></p>
+</li>
+<li><p>然后遍历拦截器，符合条件，就将拦截器添加给HandlerExecutionChain对象</p>
+<blockquote>
+<p>这个过程，就是根据请求，去找拦截器，因为此时处理器已经得到了。</p>
+</blockquote>
+</li>
+</ul>
+<h1 id="三-总结"><a href="#三-总结" class="headerlink" title="三. 总结"></a>三. 总结</h1><p>​    我们很容易知道AbstractHandlerMapping在HandlerMapping体系中是一个很重要的抽象类,而这个抽象类做了两件事:</p>
+<pre><code>1. 初始化一系列的拦截器
+  2.  根据请求找到处理器
+    3.  将处理器和拦截器添加给HandlerExecutionChain对象
+</code></pre><blockquote>
+<p>这个时候是不是很期待AbstractUrlHandlerMapping（子体系）和AbstractHandlerMethodMapping（子体系）在AbstractHandlerMapping的基础上又做了哪些工作呢？留坑，以后的文章会陆续揭秘。</p>
+</blockquote>
+<blockquote>
+<p>在文章的最后，特别感谢艿艿大神提供的类图，自己在IDEA开发工具中找不到完整的类图，谢了！</p>
+</blockquote>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Spring MVC">
+    <span class="tag-code">Spring MVC</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/01/12/Spring-MVC-源码初探（三）容器的创建过程/">
+        <span class="nav-arrow">← </span>
+        
+          Spring MVC 源码初探（三）容器的创建过程
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#一-HandlerMapping以及继承体系"><span class="toc-nav-text">一. HandlerMapping以及继承体系</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#二-AbstractHandlerMapping核心方法"><span class="toc-nav-text">二. AbstractHandlerMapping核心方法</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#三-总结"><span class="toc-nav-text">三. 总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/01/19/Spring-MVC源码初探（四-  HandlerMapping之-AbstractHandlerMapping/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Spring MVC源码初探（四)     HandlerMapping之  AbstractHandlerMapping",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/01/19/Spring-MVC源码初探（四-  HandlerMapping之-AbstractHandlerMapping/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
