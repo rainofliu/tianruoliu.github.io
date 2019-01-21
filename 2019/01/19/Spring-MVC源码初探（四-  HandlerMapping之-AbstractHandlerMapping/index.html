@@ -138,7 +138,7 @@
     <section class="markdown-content"><h1 id="一-HandlerMapping以及继承体系"><a href="#一-HandlerMapping以及继承体系" class="headerlink" title="一. HandlerMapping以及继承体系"></a>一. HandlerMapping以及继承体系</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">public</span> inteface HandlerMapping&#123;</span><br><span class="line">        <span class="comment">//省略一些变量</span></span><br><span class="line">    <span class="meta">@Nullable</span></span><br><span class="line">	<span class="function">HandlerExecutionChain <span class="title">getHandler</span><span class="params">(HttpServletRequest request)</span> <span class="keyword">throws</span> Exception</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>​    由上述代码可知,HandlerMapping是一个接口，其核心方法是getHandler方法，该方法会返回一个HandlerExecutionChain对象，该对象中包含一个处理器和一系列的拦截器。getHandler方法由实现它的子类具体完成。</p>
 <p>​    我们通过一张图看一下HandlerMapping的继承体系</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/HandlerMapping%E7%B1%BB%E5%9B%BE.png?Expires=1548042901&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=pGy%2FNB%2BkyZvbV2G2rgkpU11mZEY%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/HandlerMapping%E7%B1%BB%E5%9B%BE.png" alt=""></p>
 <p>​    </p>
 <p>​    由上图我们可以看到，HandlerMapping是一个接口，AbstractHandlerMapping是实现它的抽象类，而顺着AbstractHandlerMapping可以看到两个分支，分别是AbstractUrlHandlerMapping和AbstractHandlerMethodMapping。</p>
 <p>​    由此我们可以找到一个规律</p>
@@ -149,19 +149,19 @@
 <p>​    我们可以由此看到AbstractHandlerMapping这个抽象类的重要性，那么就来看一下它的核心方法吧</p>
 <h1 id="二-AbstractHandlerMapping核心方法"><a href="#二-AbstractHandlerMapping核心方法" class="headerlink" title="二. AbstractHandlerMapping核心方法"></a>二. AbstractHandlerMapping核心方法</h1><ol>
 <li><p>initApplicationContext</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2022%2051.png?Expires=1548042948&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=H%2FGfV%2BY9MqBXjVpzQtqSNYIx5eE%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2022%2051.png" alt=""></p>
 <blockquote>
 <p>这个方法在初始化的时候调用，其实它主要是初始化三个拦截器。</p>
 </blockquote>
 <blockquote>
 <p>我们主要看一下其中的initInterceptors（）方法：</p>
 </blockquote>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2027%2035.png?Expires=1548042969&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=K%2FaXaPYugVPy1xHHCF8KNg1%2F32c%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2027%2035.png" alt=""></p>
 <ol>
 <li><p>initInterceptors()方法就是把这个类中的定义的拦截器集合（interceptors)一个个取出来</p>
 </li>
 <li><p>再调用adaptInterceptor(interceptor)，根据拦截器的类型，给其转换成一定类型的拦截器</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2037%2009.png?Expires=1548043013&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=FtwJAxlZRYzzEj%2Fb%2BwuKaxO3bw8%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2037%2009.png" alt=""></p>
 </li>
 <li><p>再将转换类型后的拦截器添加到另一个集合adaptedInterceptors中</p>
 </li>
@@ -175,17 +175,17 @@
 <ol start="2">
 <li><p>getHandler</p>
 <p>AbstractHandlerMapping重写了getHandler方法:</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2048%2051.png?Expires=1548043047&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=FFa0S6e8zRWhD8qX0BzgpYnG%2FNE%3D" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2050%2020.png?Expires=1548043073&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=762MgnYX87C1j5tDaV%2B29i2Wc%2B4%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2048%2051.png" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2050%2020.png" alt=""></p>
 </li>
 </ol>
 <p>概述一下，getHandler方法就是根据请求获取处理器，如果处理器是String类型，就特殊处理一下；然后拿到处理器后，去调用getHandlerExecutionChain对象，返回HandlerExecutionChain对象（包含处理器和拦截器）。现在回想一下，initApplicationContext中初始化拦截器，是不是就很有用了。</p>
 <p><strong><a></a></strong> getDefaultHandler     获取默认的处理器</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2059%2005.png?Expires=1548043099&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=0%2BhSNVQQlrsJs%2Bml%2F5upX5gO7w4%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2059%2005.png" alt=""></p>
 <p> <strong><b></b></strong>obtainApplicationContext         获取ApplicationContext对象</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2001%2018.png?Expires=1548043118&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=jzq3yTdn8PuEwp16ok52U%2BSkVpc%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2001%2018.png" alt=""></p>
 <p><strong><c></c></strong>getHandlerExecutionChain</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2006%2052.png?Expires=1548043142&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=6eTYcQT5NTW8Bc%2F%2BcHMlVAwJg0I%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2006%2052.png" alt=""></p>
 <ul>
 <li><p>判断处理器是否是HandlerExecutionChain类型，是的话，就将处理器转换成HandlerExecutionChain类型，如果不是，则新建一个HandlerExecutionChain对象</p>
 <blockquote>
@@ -194,7 +194,7 @@
 </li>
 <li><p>然后调用UrlPathHelper类的getLookupPathForRequest方法获取lookupPath(给定请求的映射查找路径)</p>
 <p><code>private UrlPathHelper urlPathHelper = new UrlPathHelper();</code></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2012%2012.png?Expires=1548043162&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=0RwpouWFZIJMSpQwZ0DAaVxy6Xw%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2012%2012.png" alt=""></p>
 </li>
 <li><p>然后遍历拦截器，符合条件，就将拦截器添加给HandlerExecutionChain对象</p>
 <blockquote>

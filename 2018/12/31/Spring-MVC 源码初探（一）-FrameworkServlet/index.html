@@ -155,19 +155,19 @@
 <p>​    我们可以看到FrameworkServlet继承了HttpServletBean,实现了ApplicationContextAware接口。其中实现ApplicationContextAware接口是为了获取ApplicationContext对象，如下是ApplicationContextAware接口的源码：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ApplicationContextAware</span> <span class="keyword">extends</span> <span class="title">Aware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">setApplicationContext</span><span class="params">(ApplicationContext applicationContext)</span> <span class="keyword">throws</span> BeansException</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h4 id="2-1-service方法"><a href="#2-1-service方法" class="headerlink" title="2.1 service方法"></a>2.1 service方法</h4><p>在FrameworkServlet中重写了service、doGet、doPost、doPut、doDelete、doOptions、doTrace方法 ,如下：</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/1546235038371.png?Expires=1548040324&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=4PMQmQcrBY4iVv%2FXOvMQmLEdjX8%3D" alt="service方法"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%202.jpg?Expires=1548040425&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=bh%2FwfLr1TJFu%2BAgg9HP6tje084k%3D" alt="doGet方法"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/1546235038371.png" alt="service方法"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%202.jpg" alt="doGet方法"></p>
 <p>  在这里，我们回顾下Servlet的处理过程，是在service方法中根据不同类型的请求路由到doGet、doPost、doPut、doDelete、doOptions、doTrace方法。我们看下HttpServlet中的service方法,如图：</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%205.png?Expires=1548040505&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=Amfxy%2F2pMuKA2ZbWkBE%2Fu5SXCdA%3D" alt="service方法"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%205.png" alt="service方法"></p>
 <blockquote>
 <p>此处我豁然开朗，我们之前写一个Servlet类的时候，就是继承HttpServlet，但是不用重写service方法，只需要写doGet和doPost方法，因为service方法，直接就会根据我们请求的方式，直接路由到doGet或者doPost方法。也就是说我们写的Servlet类，其实继承了父类HttpServlet中的service方法，所以就会帮助我们路由到具体的doXXX()方法。</p>
 </blockquote>
 <p>而Spring MVC中，FrameworkServlet的service方法却是把PATCH请求和空请求单独拿出来，调用processRequest方法处理；而对于其他请求，就直接交给父类来处理（其实是给HttpServlet中的service方法处理）。但是doGet、doPost、doPut、doDelete都是自己处理请求，不用父类来处理。</p>
 <p>总结一下，就是所有需要自己处理请求的，不依靠父类帮助处理的，都调用了processRequest()方法</p>
 <h5 id="2-1-1-processRequest方法"><a href="#2-1-1-processRequest方法" class="headerlink" title="2.1.1 processRequest方法"></a>2.1.1 processRequest方法</h5><p>processRequest方法是FrameworkServlet类在处理请求中最核心的方法。</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2010.png?Expires=1548040603&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=GiYN2eYTB84mKzU%2FbsIbDpTmyK0%3D" alt="processRequest"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2012.png?Expires=1548040773&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=ggGdaOpCDC4l9jF%2B0dRHp7Xokro%3D" alt="processRequest2"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2013.png?Expires=1548040801&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=rGmepVlEquXaXewJQlEDrCPhDEE%3D" alt="processRequest3"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2010.png" alt="processRequest"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2012.png" alt="processRequest2"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2013.png" alt="processRequest3"></p>
 <blockquote>
 <p>首先我们来走一下processRequest方法的主要流程(上图的TODO：异步请求，暂时不考虑)，之后再分析下里面各个更小的细节</p>
 </blockquote>
@@ -185,33 +185,33 @@
 <ol>
 <li>先看一下RequestAttributes接口中的方法</li>
 </ol>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2016.png?Expires=1548040960&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=%2FILBhoZG0HyKntgBnoM3%2F1h%2FM98%3D" alt="RequestAttributes"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2016.png" alt="RequestAttributes"></p>
 <ol start="2">
 <li>接着看一下ServletRequestAttributes：</li>
 </ol>
 <ul>
 <li>封装了request、response和session，而且都提供了get方法，可以直接获取</li>
 </ul>
-<p>  <img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%200.png?Expires=1548040994&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=CgVidr0BnYgbNrN%2F68ck9V6QI4c%3D" alt="e"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2020.png?Expires=1548041057&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=T5cQ2zDnXnoCqQ%2F8d2A%2BJ0PKtgc%3D" alt=""></p>
+<p>  <img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%200.png" alt="e"></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2020.png" alt=""></p>
 <ul>
 <li>提供了getAttribute、setAttribute和removeAttribute方法</li>
 </ul>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2021.png?Expires=1548041150&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=0CSxfG79RqXu1ulsioOwjHgMlDY%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2021.png" alt=""></p>
 <blockquote>
 <p>重点看一下setAttribute方法，其他的两个方法应该都差不多</p>
 </blockquote>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2022.png?Expires=1548041183&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=KmTgHXIOOqJgD1uOkAOY3YKmcGc%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2022.png" alt=""></p>
 <p>简单分析一下，就是根据scope属性去判断是对request还是session进行设置</p>
 <h5 id="2-1-4-LocaleContextHolder和RequestContextHolder"><a href="#2-1-4-LocaleContextHolder和RequestContextHolder" class="headerlink" title="2.1.4 LocaleContextHolder和RequestContextHolder"></a>2.1.4 LocaleContextHolder和RequestContextHolder</h5><ul>
 <li>LocaleContextHolder 详细的暂时不理解，留着以后TODO</li>
 </ul>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2023.png?Expires=1548041208&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=Ix3lY8dVswsRunPN9mv4H595qrQ%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2023.png" alt=""></p>
 <ul>
 <li>RequestContextHolder</li>
 </ul>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2024.png?Expires=1548041246&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=224WwciqD0yXZO5nXbJfTy4Z%2B1Y%3D" alt=""></p>
-<h5 id="2-1-5-publishRequestHandledEvent"><a href="#2-1-5-publishRequestHandledEvent" class="headerlink" title="2.1.5 publishRequestHandledEvent"></a>2.1.5 publishRequestHandledEvent</h5><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2025.png?Expires=1548041266&amp;OSSAccessKeyId=TMP.AQHjDcth939EwJBvv6WQ3zy4HZyjVkISmBcg2WGTIpONkQ_l5bLCTL9L-ygBADAtAhRbucL1S_w2kaRppE-l5K51MDk4FwIVAMHvH5S9iBHHfPepAJEopRX1OpMS&amp;Signature=3jIjRfkqk65uwJtzqln73%2BBVIvw%3D" alt=""></p>
+<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2024.png" alt=""></p>
+<h5 id="2-1-5-publishRequestHandledEvent"><a href="#2-1-5-publishRequestHandledEvent" class="headerlink" title="2.1.5 publishRequestHandledEvent"></a>2.1.5 publishRequestHandledEvent</h5><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2025.png" alt=""></p>
 <p>publishEvents可以在web.xml文件中配置Spring MVC的Servlet时配置，默认为true。 </p>
 <h4 id="2-2-总结"><a href="#2-2-总结" class="headerlink" title="2.2 总结"></a>2.2 总结</h4><p>首先是在service方法里添加了对PATCH的处理，并将所有需要自己处理的请求都集中到了processRequest方法进行统一处理，这和HttpServlet里面根据request的类型将请求分配到各个不同的方法进行处理的过程正好相反。</p>
 <p>然后就是processRequest方法，在processRequest里面主要的处理逻辑交给了doService，这是一个模板方法，在子类具体实现，另外就是对使用当前request获取到的LocaleContext和RequestAttributes进行了保存，以及处理完之后的恢复，在最后发布了ServletRequest-HandledEvent事件。</p>
