@@ -129,6 +129,36 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2019/02/01/《SQL必知必会》/">《SQL必知必会》笔记</a>
+      </h2>
+      <p class="article-date">2019年2月1日</p>
+      
+        
+  <a href="/tags#数据库">
+    <span class="tag-code">数据库</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          
+主键：
+
+主键不能为空
+任意两行都不具有相同的主键值
+主键列中的值不允许修改或更新
+主键值不能重用（如果某行从表中删除，它的主键不能赋给以后的新行）
+
+
+数据库是一个物理存储的概念，保存有组织的数据的容器（通常是一个文件或一组文件）；
+而MySQL，Oracle等数据库软件是数据库管理系统 ...
+        
+      </div>
+      <a class="more" href="/2019/02/01/《SQL必知必会》/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2019/01/19/Spring-MVC源码初探（四-  HandlerMapping之-AbstractHandlerMapping/">Spring MVC源码初探（四）   HandlerMapping之  AbstractHandlerMapping</a>
       </h2>
       <p class="article-date">2019年1月19日</p>
@@ -141,7 +171,7 @@
       
       <div class="article-summary">
         
-          一. HandlerMapping以及继承体系123456	public inteface HandlerMapping&#123;        //省略一些变量    @Nullable	HandlerExecutionChain getHandler(HttpServletReques ...
+          一. HandlerMapping以及继承体系123456public inteface HandlerMapping&#123;        //省略一些变量    @Nullable	HandlerExecutionChain getHandler(HttpServletRequest ...
         
       </div>
       <a class="more" href="/2019/01/19/Spring-MVC源码初探（四-  HandlerMapping之-AbstractHandlerMapping/">Read more</a>
@@ -331,60 +361,28 @@ timebusker demo的链接
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2018/12/30/Spring MVC和Spring Boot的学习进展/">Spring MVC和Spring Boot学习进展记录</a>
-      </h2>
-      <p class="article-date">2018年12月30日</p>
-      
-        
-  <a href="/tags#学习计划">
-    <span class="tag-code">学习计划</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.《看透Spring MVC》
-目前看完了HandlerMapping部分，果断时间继续看HandlerAdapter部分，最近几天就不要再看了
-
-博客部分写到第三篇《容器的创建过程》，自信一定要继续保持
-
-之后有时间再慢慢更新博客，就好了。要让博客跟上自己看的内容，而不是一味地追求进度， ...
-        
-      </div>
-      <a class="more" href="/2018/12/30/Spring MVC和Spring Boot的学习进展/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2018/12/29/Spring Boot和Spring Cloud学习进展/">Spring Boot、Spring Cloud微服务学习计划</a>
+        <a href="/2018/12/29/Spring-MVC基本原理/">Spring MVC基本原理</a>
       </h2>
       <p class="article-date">2018年12月29日</p>
       
         
-  <a href="/tags#学习计划">
-    <span class="tag-code">学习计划</span>
+  <a href="/tags#Spring MVC">
+    <span class="tag-code">Spring MVC</span>
   </a>
 
       
       <div class="article-summary">
         
-          1.Spring Boot和Spring Cloud​    Spring Boot和Spring Cloud的话，主要还是偏应用，本来这就是为了便于开发的产物，所以主要学习它们在开发中的具体应用即可。不用看到什么技术，就是深刻理解加源码, 要具体问题具体分析。
-1.1 Spring Boo ...
+          一.核心架构图
+二.核心架构的处理流程
+首先用户发送请求——&gt;DispatcherServlet，前端控制器收到请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控制； 
+DispatcherServlet——&gt;HandlerMapping， H ...
         
       </div>
-      <a class="more" href="/2018/12/29/Spring Boot和Spring Cloud学习进展/">Read more</a>
+      <a class="more" href="/2018/12/29/Spring-MVC基本原理/">Read more</a>
     </article>
   
 
-  
-    <div class="guide-pager">
-  
-    <a class="unvisible" href="/"><span class="page-arrow">←</span> Prev</a>
-  
-  
-    <a href="/page/2/">Next<span class="page-arrow"> →</span></a>
-  
-</div>
   
 </main>
 
