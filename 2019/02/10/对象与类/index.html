@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      对象与类 | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>对象与类</h2>
+  <p class="post-date">2019-02-10</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>​    封装的关键在于绝对不能让类中的方法直接访问其他类的实例域（属性），程序仅通过对象的方法与对象数据进行交互。</p>
+<p>​    关于这一点，最明显的事例：</p>
+<p>​        Java中实体类，只有通过get set方法才能访问其属性，不能直接通过对象的属性直接访问</p>
+<p>​    有了封装，我的get set 方法不变，但是对于属性，我可以做一些操作和变化，但是其他类的方法还是会通过get方法来访问属性。无论我对属性做了什么变化，它们都无需关心。</p>
+<p>​    1. 封装，外部只能通过方法来访问到属性，但是却不能对属性做任何修改，这个也是对类的一种保护；</p>
+<p>​    2. 而且封装可以对get set方法做一些处理，但是外界只管调用即可，不用关心内部get、get方法的细节</p>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>​    </p>
+<p>​    对象的三个主要特性：</p>
+<ul>
+<li>对象的行为——可以对对象施加哪些操作或方法</li>
+<li>对象的状态——当施加那些方法时，对象如何响应</li>
+<li>对象标识——如何辨别具有相同行为和状态的不同对象</li>
+</ul>
+<h2 id="类之间的关系"><a href="#类之间的关系" class="headerlink" title="类之间的关系"></a>类之间的关系</h2><ul>
+<li><p>依赖         “<code>uses-a</code>“</p>
+<p>​    如果一个类的方法操纵另一个类的对象，则说明一个类依赖于另一个类</p>
+<blockquote>
+<p>​    应该尽可能让相互依赖的类减少到最少，也就是说，让类之间的耦合减少到最小；</p>
+<p>​    因为如果A类依赖于B类，那么如果B类变化，产生了bug，那么对A类也会产生影响</p>
+</blockquote>
+</li>
+<li><p>聚合       “<code>has-a</code>“</p>
+<p>​    类A的对象包含类B的对象</p>
+</li>
+<li><p>继承      “<code>is-a</code>“</p>
+<p>​    VipOrder类继承自Order类，那么VipOrder类除了拥有Order类的特性，还拥有其他自身的特性</p>
+</li>
+</ul>
+<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>​    在Java中，我们通常用构造器创建新的对象实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 构造器与类名相同</span><br><span class="line">2. 每个类有一个以上的构造器</span><br><span class="line">3. 构造器可以没有参数，也可以有任意多个参数</span><br><span class="line">4. 构造器是没有返回值的</span><br><span class="line">5. 构造器总是随着new 一起调用的</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>千万不要再构造器中定义与实例域重名的局部变量</li>
+</ol>
+<h3 id="无参构造器"><a href="#无参构造器" class="headerlink" title="无参构造器"></a>无参构造器</h3><p>​    如果不显式声明无参构造器，那么系统会提供一个无参构造器。</p>
+<blockquote>
+<p>对于默认构造器的话，没有参数的初始化，那么数据类型就是0，对象类型就是null，布尔类型就是false</p>
+</blockquote>
+<p>​    1. 如果类中有一个有参构造器，但是没有无参构造器，则在构造对象时，如果没有提供参数，就会被视为不合法。</p>
+<p>​    如：</p>
+<p>​    Employee(String name,double salary){</p>
+<p>​        …}</p>
+<p>​    new Employee()会报错</p>
+<ol start="2">
+<li><p>我们发现构造器多个的时候，也会发生重载</p>
+</li>
+<li><p>构造器里面的操作，主要是初始化</p>
+</li>
+<li><p>一个构造器可以调用另一个构造器</p>
+<p><code>this(,.....);</code></p>
+</li>
+</ol>
+<h2 id="对象与对象变量"><a href="#对象与对象变量" class="headerlink" title="对象与对象变量"></a>对象与对象变量</h2><p>​    对象变量就是引用变量的意思，</p>
+<p>​    Date presentTime=new Date().toString();</p>
+<p>​    引用变量可以让对象被重复使用</p>
+<blockquote>
+<p>我们说引用变量不是对象，它就是一个变量，它可以引用一个某类型的对象</p>
+</blockquote>
+<h2 id="final修饰的变量"><a href="#final修饰的变量" class="headerlink" title="final修饰的变量"></a>final修饰的变量</h2><p>​        final修饰的实例域，在new 构造器创建一个对象实例后，必须给这个实例域进行设置值，</p>
+<p>​    并且在后面的操作过程中，对其不再修改。  这样的值，是不用给其设置set方法的，因为它本身就不能被修改.</p>
+<blockquote>
+<p>如果尝试对其进行修改，IDE会直接报错</p>
+</blockquote>
+<p>举例子：</p>
+<p>private static final String  ALL_USE_VAR=”……”;</p>
+<p>private static final Logger logger=LoggerFactory.getLogger(UserInfo.class);</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>  <span class="keyword">final</span> String A_VAR;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">(String a)</span> </span>&#123;</span><br><span class="line">        A_VAR=a;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>由我的实践得出结论：</p>
+<ol>
+<li><p>可以通过构造器中去给final修饰的变量进行赋值，完成初始化</p>
+</li>
+<li><p>也可以直接给其赋值</p>
+<p><code>private  final String A_VAR=&quot;1111&quot;;</code></p>
+</li>
+</ol>
+<h2 id="static关键字"><a href="#static关键字" class="headerlink" title="static关键字"></a>static关键字</h2><ol>
+<li><p>static修饰的变量属于整个类，所有该类的实例对象共享该变量。（静态变量）</p>
+</li>
+<li><p>静态方法（static修饰的方法）：静态方法也属于整个类，而不是属于哪个对象；然后静态方法只能访问静态变量，不能访问类中的非静态变量。</p>
+</li>
+</ol>
+<p>   可以使用类名来访问静态方法：</p>
+<p>   例如：</p>
+<p>   <code>Aclass.staticMethod()</code> </p>
+<p>   同样地，也可以通过类名来访问静态变量</p>
+<p>   <code>Aclass.staticVar</code></p>
+<p>   引申一下，如果是非静态变量或者是非静态方法，那么我们可以通过先new一个<strong>对象</strong>出来，然后用对象实例去访问非静态变量和非静态方法</p>
+<h2 id="方法参数"><a href="#方法参数" class="headerlink" title="方法参数"></a>方法参数</h2><p>   在Java当中，方法得到的参数，是所有参数值的一个拷贝，方法不会改变原参数的值，它只是将原参数的值拿过来用一下。</p>
+<p>   double percent=10;</p>
+<p>   harry.raiseSalary(percent);</p>
+<blockquote>
+<p>这个方法无论如何实现，内部逻辑是什么，percent参数的值始终不会发生改变</p>
+</blockquote>
+<p>​    方法参数有两种类型：</p>
+<ol>
+<li><p>基本数据类型</p>
+</li>
+<li><p>对象引用类型</p>
+</li>
+</ol>
+<p>   Java中方法参数的使用情况：</p>
+<ol>
+<li>一个方法不能修改一个基本数据类型的参数</li>
+<li><p>一个方法可以改变一个对象参数的状态</p>
+<blockquote>
+<p>Java采取的是值调用，对于对象引用来说，方法获取的参数，不是对象，而是对象对应的引用变量。</p>
+</blockquote>
+</li>
+<li><p>一个方法不可以让一个对象参数引用一个新的对象</p>
+</li>
+</ol>
+<h2 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h2><p>多个方法，方法名相同，参数不同（不考虑方法的返回值类型是否一致），这就产生了重载，overloading。</p>
+<blockquote>
+<p>注：此处的参数不同，是两个方面：</p>
+<ol>
+<li>参数个数不同</li>
+<li>参数类型不同</li>
+</ol>
+</blockquote>
+<p>重载解析：编译器根据参数个数和参数类型来判断，具体调用哪个方法；如果找不到方法，就会报编译错误。</p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><p>Java有自动的垃圾回收器，所以不需要人工回收内存</p>
+<h2 id="包"><a href="#包" class="headerlink" title="包"></a>包</h2><p>​    我们在Java项目中，会有多个不同的包，使用包的主要原因，就是确保类名的唯一性。</p>
+<p>​    例如：我们在两个包中新建名为Employee类，没有任何问题</p>
+<p>​    import导入包</p>
+<p>​    <code>import java.util.List;</code></p>
+<blockquote>
+<p>Java中private、protected、public和default的区别</p>
+</blockquote>
+<ol>
+<li><p>public：</p>
+<p>具有<code>最大的访问权限</code>，可以访问任何一个在classpath下的类、接口、异常等。它往往用于对外的情况，也就是对象或类对外的一种接口的形式。</p>
+</li>
+<li><p>protected：</p>
+<p>主要的作用就是用来保护<code>子类</code>的。它的含义在于子类可以用它修饰的成员，其他的不可以，它相当于传递给子类的一种继承的东西</p>
+</li>
+<li><p>default：</p>
+<p>有时候也称为friendly，它是针对本包访问而设计的，任何处于本包下的类、接口、异常等，都可以相互访问，即使是父类没有用protected修饰的成员也可以。</p>
+</li>
+<li><p>private：</p>
+<p>访问权限仅限于类的内部，是一种封装的体现，例如，大多数成员变量都是修饰符为private的，它们不希望被其他任何外部的类访问。</p>
+</li>
+</ol>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/690292-20160923095944481-1758567758.png" alt=""></p>
+<h2 id="类设计技巧"><a href="#类设计技巧" class="headerlink" title="类设计技巧"></a>类设计技巧</h2><ul>
+<li><p>一定要保证数据私有</p>
+<p>绝对不要破坏封装性！</p>
+<blockquote>
+<p>数据的表示形式可能会改变，但是数据的使用方式却不会经常发生变化。</p>
+</blockquote>
+<p>当数据保持私有的时候，它们的表示形式变化不会对类的使用者产生影响，即使产生bug也容易检测</p>
+</li>
+</ul>
+<ul>
+<li><p>一定要对数据进行初始化</p>
+<p>Java语言不会对局部变量进行初始化，但是会对实例域进行初始化。但是就算是这样，我们对Java中用到的变量，都要显示地初始化所有数据。</p>
+<p>初始化，可以通过提供默认值地方式，也可以在构造器中设置默认值。</p>
+</li>
+</ul>
+<ul>
+<li><p>不要在类中使用过多的基本类型</p>
+<p>我们可以用其他类来代替这些基本类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String street,city,province;</span><br></pre></td></tr></table></figure>
+<p>替换成Address类</p>
+</li>
+</ul>
+<ul>
+<li><p>不是所有的域都需要get和set方法</p>
+<p>在开发过程中，我们的实体类，get,set随便写，</p>
+<p>但是有些属性，我们不希望被修改，那么就可以不设置set方法；</p>
+<p>并且有的属性，不希望被获取，那么就可以不设置get方法。</p>
+</li>
+</ul>
+<ul>
+<li>将职责过多的类进行分解</li>
+</ul>
+<ul>
+<li><p>类名和方法名要体现出它们的职责</p>
+<p>变量名也要体现出它们的职责，不要乱命名</p>
+</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Java">
+    <span class="tag-code">Java</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/">
+        <span class="nav-arrow">← </span>
+        
+          Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#封装"><span class="toc-nav-text">封装</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#对象"><span class="toc-nav-text">对象</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#类之间的关系"><span class="toc-nav-text">类之间的关系</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#构造器"><span class="toc-nav-text">构造器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#无参构造器"><span class="toc-nav-text">无参构造器</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#对象与对象变量"><span class="toc-nav-text">对象与对象变量</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#final修饰的变量"><span class="toc-nav-text">final修饰的变量</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#static关键字"><span class="toc-nav-text">static关键字</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#方法参数"><span class="toc-nav-text">方法参数</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#重载"><span class="toc-nav-text">重载</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#垃圾回收器"><span class="toc-nav-text">垃圾回收器</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#包"><span class="toc-nav-text">包</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#类设计技巧"><span class="toc-nav-text">类设计技巧</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/02/10/对象与类/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "对象与类",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/02/10/对象与类/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
