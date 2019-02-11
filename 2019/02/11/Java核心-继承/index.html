@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      继承 | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>继承</h2>
+  <p class="post-date">2019-02-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="类、超类、子类"><a href="#类、超类、子类" class="headerlink" title="类、超类、子类"></a>类、超类、子类</h2><p>​    超类与子类是父与子的关系，甚至是更远的关系，我们在设计类的时候，可以把通用的东西放在超类中，然后子类中实现不同的功能。</p>
+<p>​    当然，如果子类不想继承父类的某些功能，可以重写父类的方法。</p>
+<h3 id="this和super关键字："><a href="#this和super关键字：" class="headerlink" title="this和super关键字："></a>this和super关键字：</h3><ol>
+<li><p>this可以引用隐式参数，调用本类中的其他构造器</p>
+<p><code>this.name=name;</code>     <code>this(name,age);</code></p>
+</li>
+<li><p>super可以调用父类的方法和父类的构造器</p>
+</li>
+</ol>
+<blockquote>
+<p>两者在调用构造器的时候，要写在本身构造器方法的第一行</p>
+</blockquote>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><ul>
+<li><p>一个对象变量可以指示多种实际类型的现象称为<strong>多态</strong>。</p>
+</li>
+<li><p>在运行时，能够自动地选择调用哪个方法的现象叫做<strong>动态绑定</strong>。</p>
+</li>
+</ul>
+<p><strong>注</strong>：Java正常是不支持多继承的，但是接口却可以继承多个接口。</p>
+<p>方法的签名：方法的名字和参数列表</p>
+<p>final类不能被继承，final修饰的方法不能被重写，final变量，一旦初始化，就不能修改它的值。</p>
+<h3 id="强制类型转换（对象）"><a href="#强制类型转换（对象）" class="headerlink" title="强制类型转换（对象）"></a>强制类型转换（对象）</h3><p>进行类型转换的唯一原因： 在暂时忽略对象的实际类型后，使用对象的全部功能。</p>
+<p><strong>注意</strong> ：在进行类型转换的时候，要先判断下该对象能不能转过来，否则，会报<code>ClassCastException</code>。</p>
+<p>​    </p>
+<p>​    写一个Spring源码中的实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(applicationContext instance of ConfigurableApplicationContext)&#123;</span><br><span class="line">    context=(ConfigurableApplicationContext)applicationContext;</span><br><span class="line">&#125;<span class="keyword">else</span>.....</span><br></pre></td></tr></table></figure>
+<p>​    上述代码判断了<code>applicationContext</code>是否引用了<code>ConfigurableApplicationContext</code>类型的对象，</p>
+<p>如果是，才可以进行类型转换</p>
+<blockquote>
+<p>综合一下：</p>
+<ol>
+<li>只能在继承层次内进行类型转换(子类转成父类)</li>
+<li>在进行类型转换时，应该使用<code>instance of</code> 进行检查</li>
+</ol>
+</blockquote>
+<p>不建议过多使用类型转换</p>
+<h3 id="抽象类（abstract-class"><a href="#抽象类（abstract-class" class="headerlink" title="抽象类（abstract class)"></a>抽象类（abstract class)</h3><p>只要包含一个以上抽象方法的类，就是抽象类。</p>
+<ul>
+<li><p>Person类有两个子类Student，Teacher。</p>
+</li>
+<li><p>Person类自身有name属性，和getName()方法</p>
+<blockquote>
+<p>我们说过这种通用的，就放在父类中</p>
+</blockquote>
+</li>
+<li><p>Person类中包含getDescritption()，但是Person类，不能实现这个方法，因为Person类中的属性太少，这个getDescription()方法实现了也没有意义，那么我们就将其设置成抽象方法，留给两个子类去重写</p>
+</li>
+</ul>
+<p>​    根据上面的描述，看下Person类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//这就是我在Spring MVC部分的源码中看到的模板方法，交给子类去实现的。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">getDescription</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们看源码的过程中，也是看到一个抽象类的子类，如果还是一个抽象类，那么就实现了父类的部分抽象方法；当然也可以全部实现，那自己就不是一个抽象类了。</p>
+</blockquote>
+<p>注意：</p>
+<ol>
+<li><p>抽象类是不能直接创建实例的，但是可以通过如下方式创建具体子类的对象</p>
+<p>Person person=new Student();</p>
+<p>这其实就是多态，多态必须得让子类重写父抽象类中的方法，person只能访问到子类中重写的方法；并且如果调用的方法，子类中没有重写的话，就会去父类中找，父类中找不到就会报错。</p>
+</li>
+<li><p>类就算没有抽象方法，也可以被声明为抽象类，这样别人就new不了了，好贱！</p>
+</li>
+</ol>
+<h3 id="受保护访问"><a href="#受保护访问" class="headerlink" title="受保护访问"></a>受保护访问</h3><p>​    </p>
+<p>​        <strong>对类中的域和方法：</strong> </p>
+<ol>
+<li>仅对本类可见——private</li>
+<li>对所有类可见——public</li>
+<li>对本包和所有子类可见——protected</li>
+<li>对本包可见——默认的，不要修饰符</li>
+</ol>
+<h2 id="Object类"><a href="#Object类" class="headerlink" title="Object类"></a>Object类</h2><p>Object类是所有类的超类，它是最大的。在Java中，每个类都是由Object类拓展而来。</p>
+<p>在Java中，除了基本数据类型外，其余都是对象，数组，集合。。。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object employee=new Employee();</span><br></pre></td></tr></table></figure>
+<p>如果需要进行具体操作，需要进行类型转换:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Employee e=(Employee) employee;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实这也是多态，因为employee引用变量只能访问到Employee这个Object子类中重写的方法。</p>
+</blockquote>
+<h3 id="equals"><a href="#equals" class="headerlink" title="equals()"></a>equals()</h3><p>比较的是两个对象是否相等，但是String等其他子类都对其进行了重写。</p>
+<p>两个引用变量指向同一个对象，返回true</p>
+<p>String中的equals()比较的是字符串的值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode"></a>hashCode</h3><p>两个引用变量指向同一变量时，hashcode一定相同。</p>
+<p><strong>其他内容查看API即可</strong></p>
+<h2 id="对象包装器与自动装箱"><a href="#对象包装器与自动装箱" class="headerlink" title="对象包装器与自动装箱"></a>对象包装器与自动装箱</h2><p>​    包装器指的是对基本数据类型的包装</p>
+<p>包装器类：Integer Byte Short Long   Double Float Boolean Character Void</p>
+<p>包装器类是由final修饰的</p>
+<ol>
+<li>自动装箱：int转成Integer</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer.valueOf(3)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>自动拆箱：反过来</p>
+<p><code>Integer.intValue()</code></p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      <span class="comment">//装箱</span></span><br><span class="line">    <span class="keyword">if</span>(Integer.valueOf(<span class="number">3</span>) <span class="keyword">instanceof</span> Integer)&#123;</span><br><span class="line">        System.out.println(<span class="number">111</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//拆箱</span></span><br><span class="line">    Integer initValue=<span class="number">3</span>;</span><br><span class="line">      <span class="keyword">int</span> a=initValue.intValue();</span><br><span class="line">      System.out.println(a);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="枚举类"><a href="#枚举类" class="headerlink" title="枚举类"></a>枚举类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一个四季的枚举类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> SeasonEmum &#123;</span><br><span class="line">    SPRING(<span class="number">1</span>), SUMMER(<span class="number">2</span>), FALL(<span class="number">3</span>), WINTER(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> value;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SeasonEmum</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>能够分析类能力的程序叫做<code>反射</code>。 </p>
+<blockquote>
+<p> 反射可以让程序员在运行阶段看到Filed，Method,Constructor等信息。</p>
+</blockquote>
+<h3 id="Class对象"><a href="#Class对象" class="headerlink" title="Class对象"></a>Class对象</h3><p>class.forName()会返回一个Class对象</p>
+<p>先获取Class对象，然后Class对象能够获取Filed，Method，Constructor对象，</p>
+<p><strong>具体使用查看API</strong></p>
+<h2 id="继承设计的技巧"><a href="#继承设计的技巧" class="headerlink" title="继承设计的技巧"></a>继承设计的技巧</h2><ol>
+<li><p>将公共操作和域放在超类</p>
+</li>
+<li><p>不要过多地使用反射</p>
+</li>
+<li><p>不要使用受保护的域</p>
+<blockquote>
+<p> 虽然protected修饰的变量，子类都能获取到，但是最好不要直接获取，这样会破坏封装性。</p>
+</blockquote>
+</li>
+</ol>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Java">
+    <span class="tag-code">Java</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/02/11/ArrayList分析/">
+        <span class="nav-arrow">← </span>
+        
+          ArrayList分析
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#类、超类、子类"><span class="toc-nav-text">类、超类、子类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#this和super关键字："><span class="toc-nav-text">this和super关键字：</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#多态"><span class="toc-nav-text">多态</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#强制类型转换（对象）"><span class="toc-nav-text">强制类型转换（对象）</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#抽象类（abstract-class"><span class="toc-nav-text">抽象类（abstract class)</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#受保护访问"><span class="toc-nav-text">受保护访问</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Object类"><span class="toc-nav-text">Object类</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#equals"><span class="toc-nav-text">equals()</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#hashCode"><span class="toc-nav-text">hashCode</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#对象包装器与自动装箱"><span class="toc-nav-text">对象包装器与自动装箱</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#枚举类"><span class="toc-nav-text">枚举类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#反射"><span class="toc-nav-text">反射</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Class对象"><span class="toc-nav-text">Class对象</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#继承设计的技巧"><span class="toc-nav-text">继承设计的技巧</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/02/11/Java核心-继承/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "继承",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/02/11/Java核心-继承/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
