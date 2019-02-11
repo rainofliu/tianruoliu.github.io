@@ -1,1669 +1,300 @@
 <!DOCTYPE html>
-<html lang="zh">
-<head><meta name="generator" content="Hexo 3.8.0">
-    <meta charset="utf-8">
-<title>标签: Spring MVC - 时间旅行者</title>
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-
-
-    <meta name="description" content="Java学习记录博客">
-<meta property="og:type" content="website">
-<meta property="og:title" content="时间旅行者">
-<meta property="og:url" content="https://www.liutianruo.com/tags/Spring-MVC/index.html">
-<meta property="og:site_name" content="时间旅行者">
-<meta property="og:description" content="Java学习记录博客">
-<meta property="og:locale" content="zh-CN">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="时间旅行者">
-<meta name="twitter:description" content="Java学习记录博客">
-
-
-
-
-
-<link rel="icon" href="/images/favicon.svg">
-
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css">
-
-
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
     
+      时间旅行者
     
-    
-    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
-    
-
-    
-    
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
-    
-
-    
-    
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
-
-
-    
-    
-    
-    
-
-<link rel="stylesheet" href="/css/back-to-top.css">
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-<link rel="stylesheet" href="/css/progressbar.css">
-<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
-
-    
-    
-    
-
-    
-    
-    
-
-
-<link rel="stylesheet" href="/css/style.css">
-</head>
-<body class="is-3-column">
-    <nav class="navbar navbar-main">
-    <div class="container">
-        <div class="navbar-brand is-flex-center">
-            <a class="navbar-item navbar-logo" href="/">
-            
-                <img src="/images/logo.svg" alt="时间旅行者" height="28">
-            
-            </a>
-        </div>
-        <div class="navbar-menu">
-            
-            <div class="navbar-start">
-                
-                <a class="navbar-item" href="/">Home</a>
-                
-                <a class="navbar-item" href="/archives">Archives</a>
-                
-                <a class="navbar-item" href="/categories">Categories</a>
-                
-                <a class="navbar-item" href="/tags">Tags</a>
-                
-                <a class="navbar-item" href="/about">About</a>
-                
-            </div>
-            
-            <div class="navbar-end">
-                
-                    
-                    
-                    <a class="navbar-item" target="_blank" title="Download on GitHub" href="http://github.com/ppoffice/hexo-theme-icarus">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                    
-                
-                
-                
-                <a class="navbar-item search" title="搜索" href="javascript:;">
-                    <i class="fas fa-search"></i>
-                </a>
-                
-            </div>
-        </div>
-    </div>
-</nav>
-    
-    <section class="section">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
-    <div class="card-content">
-        <nav class="breadcrumb" aria-label="breadcrumbs">
-        <ul>
-            <li><a href="/tags">标签</a></li>
-            <li class="is-active"><a href="#" aria-current="page">Spring MVC</a></li>
-        </ul>
-        </nav>
-    </div>
-</div>
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-02-09T05:14:24.000Z">2019-02-09</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    4 分钟 读完 (大约 544 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a>
-            
-        </h1>
-        <div class="content">
-            <h1 id="1-​概述"><a href="#1-​概述" class="headerlink" title="1.​概述"></a>1.​概述</h1><p>​    我们今天来看<code>AbstractHandlerMethodMapping</code>体系，这是<code>AbstractHandlerMapping</code>的第二个体系，又是用的最多的一个体系。该体系包括：<code>AbstractHandlerMethodMapping</code>、<code>RequestMap pingInfoHandlerMapping</code>和<code>RequestMappingHandlerMapping</code>。</p>
-<p>​    虽然该体系结构简单，一目了然，但是丝毫没有简单的感觉，这个体系理解下来还是比较吃力的。本系列目前遇到的最难啃的，就是这个体系。但是最难啃，不代表就回避这一体系的源码，这个体系啃下来就代表我们的<code>HandlerMapping</code>大的体系就完整地啃下来了。看完这一部分，就要开始进军<code>HandlerAdapter</code>了。</p>
-<p>​    <code>AbstractHandlerMethodMapping</code> 系列是将<code>Method</code>作为<code>Handler</code>来使用的，这其实是我们最熟悉的关于<code>Spring MVC</code>的内容，例如<code>@RequestMapping</code>所注释的方法就是这种<code>Handler</code>，它专门有一个类型<code>HandlerMethod</code>，也就是<code>Method</code>类型的<code>Handler</code>    。</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@RequestMapping</span>(<span class="hljs-string">"/phones"</span>)</span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">test</span><span class="hljs-params">()</span></span>&#123;</span><br><span class="line">   </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>如图，这是<code>AbstractHandlerMethodMapping</code>体系的类图：</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture27.png" alt=""></p>
-<h1 id="2-AbstractHandlerMethodMapping"><a href="#2-AbstractHandlerMethodMapping" class="headerlink" title="2. AbstractHandlerMethodMapping"></a>2. AbstractHandlerMethodMapping</h1><p>​        鉴于这个体系实在是有难度，当时看了一天，现在写也比较吃力，所以就会有所省略，也算是能力所限吧。</p>
-<h2 id="2-1-getHandlerInternal"><a href="#2-1-getHandlerInternal" class="headerlink" title="2.1  getHandlerInternal"></a>2.1  getHandlerInternal</h2><p>​        我们先从<code>getHandlerInternal</code>方法来开始看，前面<code>AbstractHandlerMapping</code> 中的<code>getHandlerInternal</code>方法是一个模板方法，交给两个子类分支实现，<code>AbstractUrlHandlerMapping</code>体系中实现了该方法，那么我们现在看一下<code>AbstractHandlerMethodMapping</code>体系中的<code>getHandlerInternal</code>方法。</p>
-<p>​        </p>
-<p>​        <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture28.png" alt=""></p>
-<h3 id="2-1-1-lookupHandlerMethod"><a href="#2-1-1-lookupHandlerMethod" class="headerlink" title="2.1.1 lookupHandlerMethod"></a>2.1.1 lookupHandlerMethod</h3><p>​    我们再看一下第三步的<code>lookupHandlerMethod</code>的详细代码。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture29.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture30.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture31.png" alt=""></p>
-<p>看一下<code>addMatchingMappings</code>方法。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture32.png" alt=""></p>
-<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h1><p>​        这篇实在写不下去了，就一个<code>AbstractHandlerMethodMapping</code>类中的各种内部类和Map已经很复杂了，留着坑，目前先凑一篇吧，或者有可能以后再补充吧。</p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-02-09T01:22:19.000Z">2019-02-09</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    9 分钟 读完 (大约 1422 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/">Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping</a>
-            
-        </h1>
-        <div class="content">
-            <h1 id="1-​简介"><a href="#1-​简介" class="headerlink" title="1. ​简介"></a>1. ​简介</h1><p>​    今天这篇博客，我们来看一下<code>AbstractHandlerMapping</code>的一个分支：<code>AbstarctUrlHandlerMapping</code>。我们发现其实<code>HandlerMapping</code>的接口，就是定义了一个获取<code>HandlerExecutionChain</code>对象的方法，该对象可以获取Handler处理器和一系列的拦截器<code>Inteceptors</code>。而这个方法就是交给抽象类<code>AbstractHandlerMapping</code>来具体实现的，但是该方中使用的<code>getHandlerInternal</code>方法是交给子类去实现的。</p>
-<p>​    如图是<code>AbstractHandlerMapping</code>的<code>getHandlerInternal</code>方法，是留给子类实现的。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture155.png" alt=""></p>
-<p>​    <code>AbstractUrlHandlerMapping</code>有两个子类：<code>SimpleUrlHandlerMapping</code>、<code>AbstractDetectingUrlHandlerMapping</code>；<code>AbstractDetectingUrlHandlerMapping</code>有一个子类：<code>BeanNameUrlHandlerMapping</code>。</p>
-<p>​    接下来，我们先看一下<code>AbstractUrlHandlerMapping</code>本身，再去看几个子类。</p>
-<h1 id="2-AbstractUrlHandlerMapping"><a href="#2-AbstractUrlHandlerMapping" class="headerlink" title="2. AbstractUrlHandlerMapping"></a>2. AbstractUrlHandlerMapping</h1><h2 id="2-1-getHandlerInternal"><a href="#2-1-getHandlerInternal" class="headerlink" title="2.1 getHandlerInternal"></a>2.1 getHandlerInternal</h2><p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture9.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture10.png" alt=""></p>
-<p>​    该方法是对<code>AbstractUrlHandlerMapping</code>的重写，是通过<code>request</code>请求获取<code>Handler</code>对象。</p>
-<ul>
-<li><p>首先从<code>Map</code>中查找<code>Handler</code></p>
-</li>
-<li><p>如果<code>Map</code>中没有<code>Handler</code>，说明<code>Map</code>中没存<code>Handler</code>，则分为如下三种情况去获取<code>Handler</code></p>
-</li>
-</ul>
-<ol>
-<li><p>如果lookupPath为/，就去获取原始的处理器</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">if</span> (<span class="hljs-string">"/"</span>.equals(lookupPath)) &#123;</span><br><span class="line">   rawHandler = getRootHandler();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Nullable</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">getRootHandler</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">	<span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.rootHandler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//处理"/"请求的处理器</span></span><br><span class="line">	<span class="hljs-meta">@Nullable</span></span><br><span class="line">	<span class="hljs-keyword">private</span> Object rootHandler;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这样就很清楚了</p>
-</blockquote>
-</li>
-</ol>
-<p>​        2. 如果不是第1种情况，就去获得默认的处理器</p>
-<p>​        <code>rawHandler = getDefaultHandler();</code>    </p>
-<p>​            </p>
-<p>​            </p>
-<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Nullable</span><br><span class="line">public Object getDefaultHandler() &#123;</span><br><span class="line">	return this.defaultHandler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​    下面的<code>defalutHandler</code>是在父类<code>AbstractHandlerMapping</code>中定义的</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Nullable</span></span><br><span class="line"><span class="hljs-keyword">private</span> Object defaultHandler;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>经过上面的步骤，应该获取到处理器<code>Handler</code>了，如果处理器是String类型，就根据字符串获取真正的处理器</p>
-</li>
-<li><p>接着就是校验请求和处理器是否匹配，这里调用了一个模板方法来完成校验，但是这个模板方法子类也没有给它实现，所以这是个空操作</p>
-</li>
-<li><p>然后就是给<code>rawHandler</code>注册两个拦截器，返回一个<code>HandlerExecution</code>对象</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//给查询到Handler注册两个拦截器(<span class="hljs-doctag">TODO:</span>拦截器的作用暂时不明白）</span></span><br><span class="line">handler = buildPathExposingHandler(rawHandler, lookupPath, lookupPath,</span><br><span class="line">      <span class="hljs-keyword">null</span>);</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>​    详细看一下<code>buildPathExposingHandler</code>方法：</p>
-<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture11.png" alt=""></p>
-<blockquote>
-<p>​    这是添加两个内部拦截器的具体过程：</p>
-<p>​    这俩内部拦截器的主要作用是将与当前url实际匹配的Pattern、匹配条件（后面介绍）和url模板参数等设置到request的属性里，这样在后面的处理过程中就可以直接从request属性中获取，而不需要再重新查找一遍了</p>
-</blockquote>
-<h3 id="2-1-1-lookupHandler"><a href="#2-1-1-lookupHandler" class="headerlink" title="2.1.1 lookupHandler"></a>2.1.1 lookupHandler</h3><p>​    我们重点看下<code>getHandlerInternal</code>方法中的<code>lookupHandler</code>方法，该方法是从map中获取处理器的过程</p>
-<p>​    首先map的定义如下：</p>
-<p>​        </p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//保存url与handler</span></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> Map&lt;String, Object&gt; handlerMap = <span class="hljs-keyword">new</span> LinkedHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
-<p>​    <code>lookupHandler</code>：</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture13.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture14.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture15.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture16.png" alt=""></p>
-<blockquote>
-<p>如果是精确的url，就直接从map中获取处理器，并且给其添加拦截器；</p>
-<p>如果是book/*/u这类url，比较模糊的，也要进行处理</p>
-</blockquote>
-<h2 id="2-2-registerHandler-1"><a href="#2-2-registerHandler-1" class="headerlink" title="2.2   registerHandler 1"></a>2.2   registerHandler 1</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture17.png" alt=""></p>
-<h2 id="2-3-registerHandler-2"><a href="#2-3-registerHandler-2" class="headerlink" title="2.3  registerHandler 2"></a>2.3  registerHandler 2</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture18.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture19.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture20.png" alt=""></p>
-<blockquote>
-<p>注册处理器的目的，就是将urlPath交给处理器处理，一个url交给一个处理器去处理，就是这么一个过程。</p>
-</blockquote>
-<ul>
-<li><p>先获取处理器</p>
-</li>
-<li><p>判断处理器是否为空</p>
-<ol>
-<li><p>处理器不为空的时候：</p>
-<p>​    如果处理器和根据url查找到的处理器不一致，说明异常，因为一个url只能给一个处理器处理，出现多个就是不正常，出异常了</p>
-</li>
-<li><p>处理为空，需要分情况处理，看<code>else</code>部分的代码就理解了</p>
-</li>
-</ol>
-</li>
-</ul>
-<h1 id="3-SimpleUrlHandlerMapping"><a href="#3-SimpleUrlHandlerMapping" class="headerlink" title="3. SimpleUrlHandlerMapping"></a>3. SimpleUrlHandlerMapping</h1><p>接着我们来看下<code>AbstractUrlHandlerMapping</code>的子类<code>SimpleUrlHandlerMapping</code> </p>
-<h2 id="3-1-initApplicationContext"><a href="#3-1-initApplicationContext" class="headerlink" title="3.1  initApplicationContext"></a>3.1  initApplicationContext</h2><p>​    <code>SimpleUrlHandlerMapping</code> 在<code>AbstractHandlerMapping</code>的基础上进行了重写，原有方法只是初始化了一些拦截器，但是没有初始化处理器，重写后的<code>initApplicationContext</code>开始注册了一系列的处理器。</p>
-<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture21.png" alt=""></p>
-<p>​    注册多个<code>Hanlder</code>方法我们在3.2看下</p>
-<h2 id="3-2-registerHandlers"><a href="#3-2-registerHandlers" class="headerlink" title="3.2  registerHandlers"></a>3.2  registerHandlers</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture22.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture23.png" alt=""></p>
-<blockquote>
-<p>注册<code>Handler</code>方法，核心是调用的<code>AbstractUrlHandlerMapping</code>的<code>registerHandler2</code>方法。</p>
-</blockquote>
-<h1 id="4-AbstractDetectingUrlHandlerMapping"><a href="#4-AbstractDetectingUrlHandlerMapping" class="headerlink" title="4.  AbstractDetectingUrlHandlerMapping"></a>4.  AbstractDetectingUrlHandlerMapping</h1><p>​        该类也是AbstractUrlHandlerMapping的子类，我们主要看一下它的<code>detectHandlers</code>方法</p>
-<p>​        <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture24.png" alt=""></p>
-<blockquote>
-<p>​    其中的2.3步，是调用的父类AbstractUrlHandlerMapping的registerHandler方法来注册处理器，</p>
-<p>​    我认为，注册处理器就是让一个处理器处理一个url</p>
-</blockquote>
-<ul>
-<li>获取整个容器中所有的<code>beanName</code></li>
-<li>遍历<code>beanName</code>，对每个<code>beanName</code>，解析出它的<code>url</code>，将<code>url</code>和<code>beanName</code>进行处理器的注册</li>
-</ul>
-<blockquote>
-<p>​    其中<code>determineUrlsForHandler</code>方法，是模板方法，交给子类去操作的。</p>
-</blockquote>
-<h3 id="4-1-BeanNameUrlHandlerMapping"><a href="#4-1-BeanNameUrlHandlerMapping" class="headerlink" title="4.1 BeanNameUrlHandlerMapping"></a>4.1 BeanNameUrlHandlerMapping</h3><p>​    <code>BeanNameUrlHandlerMapping</code>重写了<code>determineUrlsForHandler</code>方法，我们来看一下代码：</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture26.png" alt=""></p>
-<blockquote>
-<p>  这边我不太明白，beanName为什么会以”/“开头，先留个疑问吧。</p>
-</blockquote>
-<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture25.png" alt=""></p>
-<p>类图一看，宏观体系一目了然，下一篇我们接着看<code>AbstractHandlerMapping</code>的第二个体系：<code>AbstractHandlerMethodMapping</code></p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-01-19T07:00:03.000Z">2019-01-19</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    8 分钟 读完 (大约 1162 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/01/19/Spring-MVC源码初探（四）-  HandlerMapping之-AbstractHandlerMapping/">Spring MVC源码初探（四）   HandlerMapping之  AbstractHandlerMapping</a>
-            
-        </h1>
-        <div class="content">
-            <h1 id="一-HandlerMapping以及继承体系"><a href="#一-HandlerMapping以及继承体系" class="headerlink" title="一. HandlerMapping以及继承体系"></a>一. HandlerMapping以及继承体系</h1><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> inteface HandlerMapping&#123;</span><br><span class="line">        <span class="hljs-comment">//省略一些变量</span></span><br><span class="line">    <span class="hljs-meta">@Nullable</span></span><br><span class="line">	<span class="hljs-function">HandlerExecutionChain <span class="hljs-title">getHandler</span><span class="hljs-params">(HttpServletRequest request)</span> <span class="hljs-keyword">throws</span> Exception</span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​    由上述代码可知,HandlerMapping是一个接口，其核心方法是getHandler方法，该方法会返回一个HandlerExecutionChain对象，该对象中包含一个处理器和一系列的拦截器。getHandler方法由实现它的子类具体完成。</p>
-<p>​    我们通过一张图看一下HandlerMapping的继承体系</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/HandlerMapping%E7%B1%BB%E5%9B%BE.png" alt=""></p>
-<p>​    </p>
-<p>​    由上图我们可以看到，HandlerMapping是一个接口，AbstractHandlerMapping是实现它的抽象类，而顺着AbstractHandlerMapping可以看到两个分支，分别是AbstractUrlHandlerMapping和AbstractHandlerMethodMapping。</p>
-<p>​    由此我们可以找到一个规律</p>
-<blockquote>
-<p>​    先设计一个接口，然后再设计一个抽象类去实现这个接口，实现一些方法，再由这个抽象类的子类去实现更多的方法和功能。接口是最大的父亲，而抽象类像一个“中间产物”，后续继承抽象类的子类去做真正的事情，参与框架中的操作。由接口（起点）&gt;抽象类（中间）&gt;… （成品），这样的设计方法，似乎是可以通用的。</p>
-<p>​    再想到Servlet也是一个接口，GenericServlet是实现它的抽象类，而HttpServlet这个抽象类继续继承GenericServlet；而我们新建一个Servlet是继承HttpServlet的产物，这个才是我们需要的，或者说，才是我们真正可以使用的Servlet。</p>
-</blockquote>
-<p>​    我们可以由此看到AbstractHandlerMapping这个抽象类的重要性，那么就来看一下它的核心方法吧</p>
-<h1 id="二-AbstractHandlerMapping核心方法"><a href="#二-AbstractHandlerMapping核心方法" class="headerlink" title="二. AbstractHandlerMapping核心方法"></a>二. AbstractHandlerMapping核心方法</h1><ol>
-<li><p>initApplicationContext</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2022%2051.png" alt=""></p>
-<blockquote>
-<p>这个方法在初始化的时候调用，其实它主要是初始化三个拦截器。</p>
-</blockquote>
-<blockquote>
-<p>我们主要看一下其中的initInterceptors（）方法：</p>
-</blockquote>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2027%2035.png" alt=""></p>
-<ol>
-<li><p>initInterceptors()方法就是把这个类中的定义的拦截器集合（interceptors)一个个取出来</p>
-</li>
-<li><p>再调用adaptInterceptor(interceptor)，根据拦截器的类型，给其转换成一定类型的拦截器</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2037%2009.png" alt=""></p>
-</li>
-<li><p>再将转换类型后的拦截器添加到另一个集合adaptedInterceptors中</p>
-</li>
-</ol>
-<blockquote>
-<p>看一下这两个拦截器集合在AbstarctHandlerMapping中的定义</p>
-</blockquote>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;Object&gt; interceptors = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">private</span> <span class="hljs-keyword">final</span> List&lt;HandlerInterceptor&gt; adaptedInterceptors = <span class="hljs-keyword">new</span> ArrayList&lt;&gt;();</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol start="2">
-<li><p>getHandler</p>
-<p>AbstractHandlerMapping重写了getHandler方法:</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2048%2051.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2050%2020.png" alt=""></p>
-</li>
-</ol>
-<p>概述一下，getHandler方法就是根据请求获取处理器，如果处理器是String类型，就特殊处理一下；然后拿到处理器后，去调用getHandlerExecutionChain对象，返回HandlerExecutionChain对象（包含处理器和拦截器）。现在回想一下，initApplicationContext中初始化拦截器，是不是就很有用了。</p>
-<p><strong><a></a></strong> getDefaultHandler     获取默认的处理器</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2015%2059%2005.png" alt=""></p>
-<p> <strong><b></b></strong>obtainApplicationContext         获取ApplicationContext对象</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2001%2018.png" alt=""></p>
-<p><strong><c></c></strong>getHandlerExecutionChain</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2006%2052.png" alt=""></p>
-<ul>
-<li><p>判断处理器是否是HandlerExecutionChain类型，是的话，就将处理器转换成HandlerExecutionChain类型，如果不是，则新建一个HandlerExecutionChain对象</p>
-<blockquote>
-<p>我的理解是：处理器是HandlerExecutionChain类型，是因为根本没有设置拦截器，就是最简单的demo那种</p>
-</blockquote>
-</li>
-<li><p>然后调用UrlPathHelper类的getLookupPathForRequest方法获取lookupPath(给定请求的映射查找路径)</p>
-<p><code>private UrlPathHelper urlPathHelper = new UrlPathHelper();</code></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-19%2016%2012%2012.png" alt=""></p>
-</li>
-<li><p>然后遍历拦截器，符合条件，就将拦截器添加给HandlerExecutionChain对象</p>
-<blockquote>
-<p>这个过程，就是根据请求，去找拦截器，因为此时处理器已经得到了。</p>
-</blockquote>
-</li>
-</ul>
-<h1 id="三-总结"><a href="#三-总结" class="headerlink" title="三. 总结"></a>三. 总结</h1><p>​    我们很容易知道AbstractHandlerMapping在HandlerMapping体系中是一个很重要的抽象类,而这个抽象类做了两件事:</p>
-<pre><code>1. 初始化一系列的拦截器
-              2.  根据请求找到处理器
-          3.  将处理器和拦截器添加给HandlerExecutionChain对象
-</code></pre><blockquote>
-<p>这个时候是不是很期待AbstractUrlHandlerMapping（子体系）和AbstractHandlerMethodMapping（子体系）在AbstractHandlerMapping的基础上又做了哪些工作呢？留坑，以后的文章会陆续揭秘。</p>
-</blockquote>
-<blockquote>
-<p>在文章的最后，特别感谢艿艿大神提供的类图，自己在IDEA开发工具中找不到完整的类图，谢了！</p>
-</blockquote>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-01-12T10:57:27.000Z">2019-01-12</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    22 分钟 读完 (大约 3304 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/01/12/Spring-MVC-源码初探（三）容器的创建过程/">Spring MVC 源码初探（三）容器的创建过程</a>
-            
-        </h1>
-        <div class="content">
-            <h1 id="1-容器的概述"><a href="#1-容器的概述" class="headerlink" title="1. 容器的概述"></a>1. 容器的概述</h1><p>​    一般情况下，我们会在一个 Web 应用中配置两个容器。一个容器用于加载 Web 层的类，比如我们的接口 Controller、HandlerMapping、ViewResolver 等。我们把这个容器叫做 web 容器。另一个容器用于加载业务逻辑相关的类，比如 service、dao 层的一些类。我们就把这个容器称为业务容器。</p>
-<p>​    在容器初始化的过程中，业务容器会先于web容器进行初始化。实际上，我们把业务容器作为web容器的父容器。这么说，是因为web容器中的bean会依赖业务容器的bean。很常见的，web层处理请求的时候，常常会调用service层的代码。</p>
-<p>​    <img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/15301816604204.jpg" alt=""></p>
-<p>​    在具体分析容器的创建之前，我们可以先忘记Spring Boot“约定优于配置”的理念，看下Spring MVC的配置文件：</p>
-<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">&lt;!-- 省略非关键的配置 --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">&lt;!-- [1] Spring配置 --&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">listener</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="hljs-tag">&lt;/<span class="hljs-name">listener-class</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">listener</span>&gt;</span></span><br><span class="line"><span class="hljs-comment">&lt;!-- 指定Spring Bean的配置文件所在目录。可以通过ServletContext对象获取。默认配置在WEB-INF目录下 --&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">context-param</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>contextConfigLocation<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>classpath:config/applicationContext.xml<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">context-param</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">&lt;!-- ====================================== --&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">&lt;!-- [2] Spring MVC配置 --&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">servlet</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>spring<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-class</span>&gt;</span>org.springframework.web.servlet.DispatcherServlet<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="hljs-comment">&lt;!-- 可以自定义servlet.xml配置文件的位置和名称，默认为WEB-INF目录下，名称为[&lt;servlet-name&gt;]-servlet.xml，如spring-servlet.xml</span></span><br><span class="line"><span class="hljs-comment">    &lt;init-param&gt;</span></span><br><span class="line"><span class="hljs-comment">        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</span></span><br><span class="line"><span class="hljs-comment">        &lt;param-value&gt;/WEB-INF/spring-servlet.xml&lt;/param-value&gt; // 默认</span></span><br><span class="line"><span class="hljs-comment">    &lt;/init-param&gt;</span></span><br><span class="line"><span class="hljs-comment">    --&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">load-on-startup</span>&gt;</span>1<span class="hljs-tag">&lt;/<span class="hljs-name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">servlet</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">servlet-name</span>&gt;</span>spring<span class="hljs-tag">&lt;/<span class="hljs-name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">url-pattern</span>&gt;</span>*.do<span class="hljs-tag">&lt;/<span class="hljs-name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">servlet-mapping</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h1 id="2-业务容器的创建过程"><a href="#2-业务容器的创建过程" class="headerlink" title="2. 业务容器的创建过程"></a>2. 业务容器的创建过程</h1><h2 id="2-1-ContextLoaderListener"><a href="#2-1-ContextLoaderListener" class="headerlink" title="2.1 ContextLoaderListener"></a>2.1 ContextLoaderListener</h2><p>​     在Servlet容器（Tomcat,Jetty)启动的时候，会被ContextLoaderListener监听到，从而调用contextInitialized(ServletContextEvent event)方法，实现对Root WebApplicationContext容器的初始化。</p>
-<p>​      ContextLoaderListener的配置如下：</p>
-<figure class="highlight xml hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">web-app</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">listener</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">listener-class</span>&gt;</span>org.springframework.web.context.ContextLoaderListener<span class="hljs-tag">&lt;/<span class="hljs-name">listener-class</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">listener</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="hljs-tag">&lt;<span class="hljs-name">context-param</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">param-name</span>&gt;</span>contextConfigLocation<span class="hljs-tag">&lt;/<span class="hljs-name">param-name</span>&gt;</span></span><br><span class="line">        <span class="hljs-tag">&lt;<span class="hljs-name">param-value</span>&gt;</span>classpath:application.xml<span class="hljs-tag">&lt;/<span class="hljs-name">param-value</span>&gt;</span></span><br><span class="line">    <span class="hljs-tag">&lt;/<span class="hljs-name">context-param</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="hljs-comment">&lt;!-- 省略其他配置 --&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">web-app</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<pre><code>如上所示，&lt;context-param&gt;中的内容可以通过ServletContext获取到，则业务容器可以通过ServletContext对象获取到application.xml配置文件中的内容了。
-</code></pre><p>​    我们从源码来看一下业务容器的创建过程：</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">ContextLoaderListener</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ContextLoader</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ServletContextListener</span> </span>&#123;</span><br><span class="line">   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ContextLoaderListener</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">ContextLoaderListener</span><span class="hljs-params">(WebApplicationContext context)</span> </span>&#123;</span><br><span class="line">      <span class="hljs-keyword">super</span>(context);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">    * 在Servlet容器（Tomcat,Jetty)启动的时候，会被ContextLoaderListener监听到，</span></span><br><span class="line"><span class="hljs-comment">    * 从而调用contextInitialized(ServletContextEvent event)方法，</span></span><br><span class="line"><span class="hljs-comment">    * 实现对Root WebApplicationContext容器的初始化</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-meta">@Override</span></span><br><span class="line">   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">contextInitialized</span><span class="hljs-params">(ServletContextEvent event)</span> </span>&#123;</span><br><span class="line">      <span class="hljs-comment">//初始化WebApplicationContext容器</span></span><br><span class="line">      initWebApplicationContext(event.getServletContext());</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">    * 在Servlet 容器关闭时，销毁 WebApplicationContext 容器。</span></span><br><span class="line"><span class="hljs-comment">    * Close the root web application context.</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-meta">@Override</span></span><br><span class="line">   <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">contextDestroyed</span><span class="hljs-params">(ServletContextEvent event)</span> </span>&#123;</span><br><span class="line">      <span class="hljs-comment">//销毁WebApplicationContext容器，销毁逻辑暂时先留着</span></span><br><span class="line">      closeWebApplicationContext(event.getServletContext());</span><br><span class="line">      ContextCleanupListener.cleanupAttributes(event.getServletContext());</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​     根据注释，不难理解，业务容器创建的时候，调用了父类ContextLoader的 initWebApplicationContext(event.getServletContext())方法，传入的是通过ServletEvent对象获取的ServletContext对象。我们继续看一下Contextloader中的调用方法</p>
-<h2 id="2-2-ContextLoader"><a href="#2-2-ContextLoader" class="headerlink" title="2.2 ContextLoader"></a>2.2 ContextLoader</h2><h3 id="2-2-1-initWebApplicationContext"><a href="#2-2-1-initWebApplicationContext" class="headerlink" title="2.2.1  initWebApplicationContext"></a>2.2.1  initWebApplicationContext</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> WebApplicationContext <span class="hljs-title">initWebApplicationContext</span><span class="hljs-params">(ServletContext servletContext)</span> </span>&#123;</span><br><span class="line">   <span class="hljs-comment">// &lt;1&gt; 如果 ServletContext 中 ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE 属性值</span></span><br><span class="line">   <span class="hljs-comment">//  不为空时，表明有其他监听器设置了这个属性。Spring 认为不能替换掉别的监听器设置</span></span><br><span class="line">   <span class="hljs-comment">//   的属性值，所以这里抛出异常。</span></span><br><span class="line">   <span class="hljs-keyword">if</span>(servletContext.getAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE) != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> IllegalStateException(</span><br><span class="line">            <span class="hljs-string">"Cannot initialize context because there is already a root application context present - "</span> +</span><br><span class="line">                  <span class="hljs-string">"check whether you have multiple ContextLoader* definitions in your web.xml!"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">//&lt;2&gt;打印日志</span></span><br><span class="line">   servletContext.log(<span class="hljs-string">"Initializing Spring root WebApplicationContext"</span>);</span><br><span class="line">   Log logger = LogFactory.getLog(ContextLoader.class);</span><br><span class="line">   <span class="hljs-keyword">if</span> (logger.isInfoEnabled()) &#123;</span><br><span class="line">      logger.info(<span class="hljs-string">"Root WebApplicationContext: initialization started"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">//记录开始时间</span></span><br><span class="line">   <span class="hljs-keyword">long</span> startTime = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">   <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">      <span class="hljs-comment">// Store context in local instance variable, to guarantee that</span></span><br><span class="line">      <span class="hljs-comment">// it is available on ServletContext shutdown.</span></span><br><span class="line">      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.context == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">         <span class="hljs-comment">//初始化context，也就是创建context</span></span><br><span class="line">         <span class="hljs-keyword">this</span>.context = createWebApplicationContext(servletContext);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-comment">// &lt;4&gt; 如果是 ConfigurableWebApplicationContext 的子类，如果未刷新，则进行配置和刷新</span></span><br><span class="line">      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.context <span class="hljs-keyword">instanceof</span> ConfigurableWebApplicationContext) &#123;</span><br><span class="line">         ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) <span class="hljs-keyword">this</span>.context;</span><br><span class="line">         <span class="hljs-keyword">if</span> (!cwac.isActive()) &#123; <span class="hljs-comment">// &lt;4.1&gt; 未刷新( 激活 )</span></span><br><span class="line">            <span class="hljs-comment">// The context has not yet been refreshed -&gt; provide services such as</span></span><br><span class="line">            <span class="hljs-comment">// setting the parent context, setting the application context id, etc</span></span><br><span class="line">            <span class="hljs-keyword">if</span> (cwac.getParent() == <span class="hljs-keyword">null</span>) &#123;<span class="hljs-comment">//这个if语句，一般走不进来的</span></span><br><span class="line">               <span class="hljs-comment">/**</span></span><br><span class="line"><span class="hljs-comment">                * &lt;4.2&gt; 无父容器，则进行加载和设置</span></span><br><span class="line"><span class="hljs-comment">                * 加载父 ApplicationContext，一般情况下，业务容器不会有父容器，</span></span><br><span class="line"><span class="hljs-comment">                * 除非进行配置</span></span><br><span class="line"><span class="hljs-comment">                * **/</span></span><br><span class="line"></span><br><span class="line">               <span class="hljs-comment">// The context instance was injected without an explicit parent -&gt;</span></span><br><span class="line">               <span class="hljs-comment">// determine parent for root web application context, if any.</span></span><br><span class="line">               ApplicationContext parent = loadParentContext(servletContext);</span><br><span class="line">               cwac.setParent(parent);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="hljs-comment">// &lt;4.3&gt; 配置 context 对象，并进行刷新</span></span><br><span class="line">            configureAndRefreshWebApplicationContext(cwac, servletContext);</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-comment">// &lt;5&gt; 记录在 servletContext 中</span></span><br><span class="line">      servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, <span class="hljs-keyword">this</span>.context);</span><br><span class="line">      <span class="hljs-comment">// &lt;6&gt; 记录到 currentContext 或 currentContextPerThread 中</span></span><br><span class="line">      ClassLoader ccl = Thread.currentThread().getContextClassLoader();</span><br><span class="line">      <span class="hljs-keyword">if</span> (ccl == ContextLoader.class.getClassLoader()) &#123;</span><br><span class="line">         currentContext = <span class="hljs-keyword">this</span>.context;</span><br><span class="line">      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ccl != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">         currentContextPerThread.put(ccl, <span class="hljs-keyword">this</span>.context);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-comment">// &lt;7&gt; 打印日志</span></span><br><span class="line">      <span class="hljs-keyword">if</span> (logger.isInfoEnabled()) &#123;</span><br><span class="line">         <span class="hljs-keyword">long</span> elapsedTime = System.currentTimeMillis() - startTime;</span><br><span class="line">         logger.info(<span class="hljs-string">"Root WebApplicationContext initialized in "</span> + elapsedTime + <span class="hljs-string">" ms"</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-comment">// &lt;8&gt; 返回 context</span></span><br><span class="line">      <span class="hljs-keyword">return</span> <span class="hljs-keyword">this</span>.context;</span><br><span class="line">   &#125; <span class="hljs-keyword">catch</span> (RuntimeException | Error ex) &#123;</span><br><span class="line">      <span class="hljs-comment">// &lt;9&gt; 当发生异常，记录异常到 WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE 中，</span></span><br><span class="line">      <span class="hljs-comment">// 不再重新初始化。</span></span><br><span class="line">      logger.error(<span class="hljs-string">"Context initialization failed"</span>, ex);</span><br><span class="line">      servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, ex);</span><br><span class="line">      <span class="hljs-keyword">throw</span> ex;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>该方法为给定的servlet上下文（Servlet Context）初始化Spring的Web应用程序上下文 WebApplicationContext</p>
-<ol>
-<li><p>首先 Spring 会检测 ServletContext 中 ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE 属性有没有被设置，若被设置过，则抛出异常。若未设置，则调用 createWebApplicationContext 方法创建容器。</p>
-</li>
-<li><p>创建好后，再调用 configureAndRefreshWebApplicationContext 方法配置并刷新容器。</p>
-</li>
-<li><p>最后，调用 setAttribute 方法将容器设置到 ServletContext 中。经过以上几步，整个创建流程就结束了。</p>
-<blockquote>
-<p>流程并不复杂，可简单总结为创建容器 → 配置并刷新容器 → 设置容器到 ServletContext 中</p>
-</blockquote>
-</li>
-</ol>
-<h3 id="2-2-2-createWebApplicationContext"><a href="#2-2-2-createWebApplicationContext" class="headerlink" title="2.2.2 createWebApplicationContext"></a>2.2.2 createWebApplicationContext</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//创建WebApplicationContext对象（业务容器 dao service...）</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> WebApplicationContext <span class="hljs-title">createWebApplicationContext</span><span class="hljs-params">(ServletContext sc)</span> </span>&#123;</span><br><span class="line">   <span class="hljs-comment">// 判断创建什么类型的容器，默认类型为 XmlWebApplicationContext</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// &lt;1&gt; 获得 context 的类</span></span><br><span class="line">   Class&lt;?&gt; contextClass = determineContextClass(sc);</span><br><span class="line">   <span class="hljs-comment">// &lt;2&gt; 判断 context 的类，是否符合 ConfigurableWebApplicationContext 的类型</span></span><br><span class="line">   <span class="hljs-keyword">if</span> (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) &#123;</span><br><span class="line">      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ApplicationContextException(<span class="hljs-string">"Custom context class ["</span> + contextClass.getName() +</span><br><span class="line">            <span class="hljs-string">"] is not of type ["</span> + ConfigurableWebApplicationContext.class.getName() + <span class="hljs-string">"]"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">// &lt;3&gt; 创建 context 的类的对象( 通过反射创建容器 )</span></span><br><span class="line">   <span class="hljs-keyword">return</span> (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>该方法首先会调用 determineContextClass 判断创建什么类型的容器，默认为 XmlWebApplicationContext。</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-keyword">final</span> String CONTEXT_CLASS_PARAM = <span class="hljs-string">"contextClass"</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">protected</span> Class&lt;?&gt; determineContextClass(ServletContext servletContext) &#123;</span><br><span class="line">   </span><br><span class="line">   <span class="hljs-comment">// 获得参数 contextClass 的值</span></span><br><span class="line">    <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">    * 读取用户自定义配置，比如：</span></span><br><span class="line"><span class="hljs-comment">    * &lt;context-param&gt;</span></span><br><span class="line"><span class="hljs-comment">    *     &lt;param-name&gt;contextClass&lt;/param-name&gt;</span></span><br><span class="line"><span class="hljs-comment">    *     &lt;param-value&gt;XXXConfigWebApplicationContext&lt;/param-value&gt;</span></span><br><span class="line"><span class="hljs-comment">    * &lt;/context-param&gt;</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   String contextClassName = servletContext.getInitParameter(CONTEXT_CLASS_PARAM);</span><br><span class="line">   <span class="hljs-comment">// 情况一，如果值非空，则获得该类</span></span><br><span class="line">   <span class="hljs-keyword">if</span> (contextClassName != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">      <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">         <span class="hljs-keyword">return</span> ClassUtils.forName(contextClassName, ClassUtils.getDefaultClassLoader());</span><br><span class="line">      &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">         <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ApplicationContextException(</span><br><span class="line">               <span class="hljs-string">"Failed to load custom context class ["</span> + contextClassName + <span class="hljs-string">"]"</span>, ex);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-comment">// 情况二，从 defaultStrategies 获得该类</span></span><br><span class="line">   &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">      <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">       * 若无自定义配置，则获取默认的容器类型，默认类型为 XmlWebApplicationContext。</span></span><br><span class="line"><span class="hljs-comment">       * defaultStrategies 读取的配置文件为 ContextLoader.properties，</span></span><br><span class="line"><span class="hljs-comment">       * 该配置文件内容如下：</span></span><br><span class="line"><span class="hljs-comment">       * org.springframework.web.context.WebApplicationContext =</span></span><br><span class="line"><span class="hljs-comment">       *     org.springframework.web.context.support.XmlWebApplicationContext</span></span><br><span class="line"><span class="hljs-comment">       */</span></span><br><span class="line">      contextClassName = defaultStrategies.getProperty(WebApplicationContext.class.getName());</span><br><span class="line">      <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">         <span class="hljs-keyword">return</span> ClassUtils.forName(contextClassName, ContextLoader.class.getClassLoader());</span><br><span class="line">      &#125; <span class="hljs-keyword">catch</span> (ClassNotFoundException ex) &#123;</span><br><span class="line">         <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ApplicationContextException(</span><br><span class="line">               <span class="hljs-string">"Failed to load default context class ["</span> + contextClassName + <span class="hljs-string">"]"</span>, ex);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>然后调用 instantiateClass 方法通过反射的方式创建容器实例</p>
-</li>
-</ul>
-<h3 id="2-2-3-configureAndRefreshWebApplicationContext"><a href="#2-2-3-configureAndRefreshWebApplicationContext" class="headerlink" title="2.2.3 configureAndRefreshWebApplicationContext"></a>2.2.3 configureAndRefreshWebApplicationContext</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configureAndRefreshWebApplicationContext</span><span class="hljs-params">(ConfigurableWebApplicationContext wac, ServletContext sc)</span> </span>&#123;</span><br><span class="line">   <span class="hljs-comment">// &lt;1&gt; 如果 wac 使用了默认编号，则重新设置 id 属性</span></span><br><span class="line">   <span class="hljs-keyword">if</span> (ObjectUtils.identityToString(wac).equals(wac.getId())) &#123;</span><br><span class="line">      <span class="hljs-comment">// The application context id is still set to its original default value</span></span><br><span class="line">      <span class="hljs-comment">// -&gt; assign a more useful id based on available information</span></span><br><span class="line"></span><br><span class="line">      <span class="hljs-comment">// 情况一，使用 contextId 属性 ; 从 ServletContext 中获取用户配置的 contextId 属性</span></span><br><span class="line">       <span class="hljs-comment">//	public static final String CONTEXT_ID_PARAM = "contextId";</span></span><br><span class="line">      String idParam = sc.getInitParameter(CONTEXT_ID_PARAM);</span><br><span class="line">      <span class="hljs-keyword">if</span> (idParam != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">         <span class="hljs-comment">// 设置容器 id</span></span><br><span class="line">         wac.setId(idParam);</span><br><span class="line">      &#125; <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">         <span class="hljs-comment">// 情况二，自动生成</span></span><br><span class="line">         <span class="hljs-comment">// 用户未配置 contextId，则设置一个默认的容器 id</span></span><br><span class="line"></span><br><span class="line">         <span class="hljs-comment">// Generate default id...</span></span><br><span class="line">         wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX +</span><br><span class="line">               ObjectUtils.getDisplayString(sc.getContextPath()));</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">// &lt;2&gt;设置 context 的 ServletContext 属性</span></span><br><span class="line">   wac.setServletContext(sc);</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// &lt;3&gt; 设置 context 的配置文件地址</span></span><br><span class="line">   <span class="hljs-comment">// 获取 contextConfigLocation 配置</span></span><br><span class="line">   <span class="hljs-comment">/** &lt;context-param&gt;</span></span><br><span class="line"><span class="hljs-comment">    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</span></span><br><span class="line"><span class="hljs-comment">    &lt;param-value&gt;classpath:config/applicationContext.xml&lt;/param-value&gt;</span></span><br><span class="line"><span class="hljs-comment">	  &lt;/context-param&gt;</span></span><br><span class="line"><span class="hljs-comment">	  */</span></span><br><span class="line">    <span class="hljs-comment">//public static final String CONFIG_LOCATION_PARAM = "contextConfigLocation";</span></span><br><span class="line">   String configLocationParam = sc.getInitParameter(CONFIG_LOCATION_PARAM);</span><br><span class="line">   <span class="hljs-keyword">if</span> (configLocationParam != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">      <span class="hljs-comment">//并将contextConfigLocation 配置设置到业务容器</span></span><br><span class="line">       <span class="hljs-comment">//相当于获取业务容器的bean配置信息</span></span><br><span class="line">      wac.setConfigLocation(configLocationParam);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// The wac environment's #initPropertySources will be called in any case when the context</span></span><br><span class="line">   <span class="hljs-comment">// is refreshed; do it eagerly here to ensure servlet property sources are in place for</span></span><br><span class="line">   <span class="hljs-comment">// use in any post-processing or initialization that occurs below prior to #refresh</span></span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// &lt;4&gt; TODO 芋艿的解析暂时没写</span></span><br><span class="line">   ConfigurableEnvironment env = wac.getEnvironment();</span><br><span class="line">   <span class="hljs-keyword">if</span> (env <span class="hljs-keyword">instanceof</span> ConfigurableWebEnvironment) &#123;</span><br><span class="line">      ((ConfigurableWebEnvironment) env).initPropertySources(sc, <span class="hljs-keyword">null</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">// &lt;5&gt; 执行自定义初始化 context TODO 芋艿，暂时忽略</span></span><br><span class="line">   customizeContext(sc, wac);</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// 刷新 context 容器，执行初始化</span></span><br><span class="line">   wac.refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>设置容器 id</li>
-<li>获取 contextConfigLocation 配置，并设置到容器中</li>
-<li>刷新容器</li>
-</ul>
-<h3 id="2-2-4-closeWebApplicationContext"><a href="#2-2-4-closeWebApplicationContext" class="headerlink" title="2.2.4 closeWebApplicationContext"></a>2.2.4 closeWebApplicationContext</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">closeWebApplicationContext</span><span class="hljs-params">(ServletContext servletContext)</span> </span>&#123;</span><br><span class="line">   servletContext.log(<span class="hljs-string">"Closing Spring root WebApplicationContext"</span>);</span><br><span class="line">   <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">      <span class="hljs-comment">// 关闭 context</span></span><br><span class="line">      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.context <span class="hljs-keyword">instanceof</span> ConfigurableWebApplicationContext) &#123;</span><br><span class="line">         ((ConfigurableWebApplicationContext) <span class="hljs-keyword">this</span>.context).close();</span><br><span class="line">      &#125;</span><br><span class="line">   &#125; <span class="hljs-keyword">finally</span> &#123;</span><br><span class="line">      <span class="hljs-comment">// 移除 currentContext 或 currentContextPerThread</span></span><br><span class="line">      ClassLoader ccl = Thread.currentThread().getContextClassLoader();</span><br><span class="line">      <span class="hljs-keyword">if</span> (ccl == ContextLoader.class.getClassLoader()) &#123;</span><br><span class="line">         currentContext = <span class="hljs-keyword">null</span>;</span><br><span class="line">      &#125; <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (ccl != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">         currentContextPerThread.remove(ccl);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-comment">// 从 ServletContext 中移除</span></span><br><span class="line">      servletContext.removeAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h1 id="3-Web容器的创建过程"><a href="#3-Web容器的创建过程" class="headerlink" title="3. Web容器的创建过程"></a>3. Web容器的创建过程</h1><h2 id="3-1-HttpServletBean"><a href="#3-1-HttpServletBean" class="headerlink" title="3.1 HttpServletBean"></a>3.1 HttpServletBean</h2><h3 id="3-1-1-init"><a href="#3-1-1-init" class="headerlink" title="3.1.1 init"></a>3.1.1 init</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Override</span></span><br><span class="line"><span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">init</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">   <span class="hljs-comment">// 获取 ServletConfig 中的配置信息</span></span><br><span class="line">   <span class="hljs-comment">// Set bean properties from init parameters.</span></span><br><span class="line">   PropertyValues pvs = <span class="hljs-keyword">new</span> ServletConfigPropertyValues(getServletConfig(), <span class="hljs-keyword">this</span>.requiredProperties);</span><br><span class="line">   <span class="hljs-keyword">if</span> (!pvs.isEmpty()) &#123;</span><br><span class="line">      <span class="hljs-keyword">try</span> &#123;</span><br><span class="line">         <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">          * 为当前对象（比如 DispatcherServlet 对象）创建一个 BeanWrapper，</span></span><br><span class="line"><span class="hljs-comment">          * 方便读/写对象属性。</span></span><br><span class="line"><span class="hljs-comment">          */</span></span><br><span class="line">         BeanWrapper bw = PropertyAccessorFactory.forBeanPropertyAccess(<span class="hljs-keyword">this</span>);</span><br><span class="line">         ResourceLoader resourceLoader = <span class="hljs-keyword">new</span> ServletContextResourceLoader(getServletContext());</span><br><span class="line">         bw.registerCustomEditor(Resource.class, <span class="hljs-keyword">new</span> ResourceEditor(resourceLoader, getEnvironment()));</span><br><span class="line">         <span class="hljs-comment">//为HttpServletBean初始化BeanWrapper,给具体的子类去重写，因为在该类中，initBeanWrapper是空方法</span></span><br><span class="line">         initBeanWrapper(bw);</span><br><span class="line">         <span class="hljs-comment">// 设置配置信息到目标对象中</span></span><br><span class="line">         bw.setPropertyValues(pvs, <span class="hljs-keyword">true</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-keyword">catch</span> (BeansException ex) &#123;</span><br><span class="line">         <span class="hljs-keyword">if</span> (logger.isErrorEnabled()) &#123;</span><br><span class="line">            logger.error(<span class="hljs-string">"Failed to set bean properties on servlet '"</span> + getServletName() + <span class="hljs-string">"'"</span>, ex);</span><br><span class="line">         &#125;</span><br><span class="line">         <span class="hljs-keyword">throw</span> ex;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">// 进行后续的初始化</span></span><br><span class="line">   <span class="hljs-comment">// 让子类做他们喜欢的任何初始化，在该类中initServletBean()为空，留给子类重写</span></span><br><span class="line">   <span class="hljs-comment">// Let subclasses do whatever initialization they like.</span></span><br><span class="line">   initServletBean();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>该方法是创建 Web 容器的入口,将 ServletConfig 中的配置信息设置到 HttpServletBean 的子类对象中（比如 DispatcherServlet)</p>
-<p>我们并未从上面的源码中发现创建容器的痕迹。 initServletBean 这个方法稍显奇怪，是个空方法。这个方法的访问级别为 protected，子类可进行覆盖。HttpServletBean 的子类 FrameworkServlet 覆写了这个方法。</p>
-<h2 id="3-2-FrameworkServlet"><a href="#3-2-FrameworkServlet" class="headerlink" title="3.2  FrameworkServlet"></a>3.2  FrameworkServlet</h2><h3 id="3-2-1-initServletBean"><a href="#3-2-1-initServletBean" class="headerlink" title="3.2.1 initServletBean"></a>3.2.1 initServletBean</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-meta">@Override</span></span><br><span class="line">	<span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">final</span> <span class="hljs-keyword">void</span> <span class="hljs-title">initServletBean</span><span class="hljs-params">()</span> <span class="hljs-keyword">throws</span> ServletException </span>&#123;</span><br><span class="line">		getServletContext().log(<span class="hljs-string">"Initializing Spring "</span> + getClass().getSimpleName() + <span class="hljs-string">" '"</span> + getServletName() + <span class="hljs-string">"'"</span>);</span><br><span class="line">		<span class="hljs-keyword">if</span> (logger.isInfoEnabled()) &#123;</span><br><span class="line">			logger.info(<span class="hljs-string">"Initializing Servlet '"</span> + getServletName() + <span class="hljs-string">"'"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="hljs-keyword">long</span> startTime = System.currentTimeMillis();</span><br><span class="line"></span><br><span class="line">		<span class="hljs-keyword">try</span> &#123;</span><br><span class="line">			<span class="hljs-comment">// 初始化容器</span></span><br><span class="line">			<span class="hljs-keyword">this</span>.webApplicationContext = initWebApplicationContext();</span><br><span class="line">			initFrameworkServlet();</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="hljs-keyword">catch</span> (ServletException | RuntimeException ex) &#123;</span><br><span class="line">			logger.error(<span class="hljs-string">"Context initialization failed"</span>, ex);</span><br><span class="line">			<span class="hljs-keyword">throw</span> ex;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="hljs-keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">			String value = <span class="hljs-keyword">this</span>.enableLoggingRequestDetails ?</span><br><span class="line">					<span class="hljs-string">"shown which may lead to unsafe logging of potentially sensitive data"</span> :</span><br><span class="line">					<span class="hljs-string">"masked to prevent unsafe logging of potentially sensitive data"</span>;</span><br><span class="line">			logger.debug(<span class="hljs-string">"enableLoggingRequestDetails='"</span> + <span class="hljs-keyword">this</span>.enableLoggingRequestDetails +</span><br><span class="line">					<span class="hljs-string">"': request parameters and headers will be "</span> + value);</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="hljs-keyword">if</span> (logger.isInfoEnabled()) &#123;</span><br><span class="line">			logger.info(<span class="hljs-string">"Completed initialization in "</span> + (System.currentTimeMillis() - startTime) + <span class="hljs-string">" ms"</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-2-initWebApplicationContext"><a href="#3-2-2-initWebApplicationContext" class="headerlink" title="3.2.2 initWebApplicationContext"></a>3.2.2 initWebApplicationContext</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> WebApplicationContext <span class="hljs-title">initWebApplicationContext</span><span class="hljs-params">()</span> </span>&#123;</span><br><span class="line">   <span class="hljs-comment">// 从 ServletContext 中获取容器，也就是 ContextLoaderListener 创建的容器</span></span><br><span class="line">   WebApplicationContext rootContext =<span class="hljs-comment">//父容器，也就是业务容器</span></span><br><span class="line">         WebApplicationContextUtils.getWebApplicationContext(getServletContext());</span><br><span class="line">   WebApplicationContext wac = <span class="hljs-keyword">null</span>;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">/*</span></span><br><span class="line"><span class="hljs-comment">    * 若下面的条件成立，则需要从外部设置 WebApplicationContext。</span></span><br><span class="line"><span class="hljs-comment">    *</span></span><br><span class="line"><span class="hljs-comment">    * 有两个途径可以设置</span></span><br><span class="line"><span class="hljs-comment">    *</span></span><br><span class="line"><span class="hljs-comment">    * WebApplicationContext，以 DispatcherServlet 为例：</span></span><br><span class="line"><span class="hljs-comment">    *    1. 通过 DispatcherServlet 有参构造方法传入 WebApplicationContext 对象</span></span><br><span class="line"><span class="hljs-comment">    *    2. 将 DispatcherServlet 配置到其他容器中，由其他容器通过</span></span><br><span class="line"><span class="hljs-comment">    *       setApplicationContext 方法进行设置</span></span><br><span class="line"><span class="hljs-comment">    *</span></span><br><span class="line"><span class="hljs-comment">    * 途径1 可参考 AbstractDispatcherServletInitializer 中的</span></span><br><span class="line"><span class="hljs-comment">    * registerDispatcherServlet 方法源码。一般情况下，代码执行到此处，</span></span><br><span class="line"><span class="hljs-comment">    * this.webApplicationContext 为 null，大家可自行调试进行验证。</span></span><br><span class="line"><span class="hljs-comment">    */</span></span><br><span class="line">   <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.webApplicationContext != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">      <span class="hljs-comment">// A context instance was injected at construction time -&gt; use it</span></span><br><span class="line">      wac = <span class="hljs-keyword">this</span>.webApplicationContext;</span><br><span class="line">      <span class="hljs-keyword">if</span> (wac <span class="hljs-keyword">instanceof</span> ConfigurableWebApplicationContext) &#123;</span><br><span class="line">         ConfigurableWebApplicationContext cwac = (ConfigurableWebApplicationContext) wac;</span><br><span class="line">         <span class="hljs-keyword">if</span> (!cwac.isActive()) &#123;</span><br><span class="line">            <span class="hljs-comment">// The context has not yet been refreshed -&gt; provide services such as</span></span><br><span class="line">            <span class="hljs-comment">// setting the parent context, setting the application context id, etc</span></span><br><span class="line">            <span class="hljs-keyword">if</span> (cwac.getParent() == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">               <span class="hljs-comment">// The context instance was injected without an explicit parent -&gt; set</span></span><br><span class="line">               <span class="hljs-comment">// the root application context (if any; may be null) as the parent</span></span><br><span class="line">               <span class="hljs-comment">// 设置 rootContext 为父容器</span></span><br><span class="line">               cwac.setParent(rootContext);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="hljs-comment">// 配置并刷新容器</span></span><br><span class="line">            configureAndRefreshWebApplicationContext(cwac);</span><br><span class="line">         &#125;</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-keyword">if</span> (wac == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">      <span class="hljs-comment">// No context instance was injected at construction time -&gt; see if one</span></span><br><span class="line">      <span class="hljs-comment">// has been registered in the servlet context. If one exists, it is assumed</span></span><br><span class="line">      <span class="hljs-comment">// that the parent context (if any) has already been set and that the</span></span><br><span class="line">      <span class="hljs-comment">// user has performed any initialization such as setting the context id</span></span><br><span class="line">      <span class="hljs-comment">// 尝试从 ServletContext 中获取容器</span></span><br><span class="line">      wac = findWebApplicationContext();</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-keyword">if</span> (wac == <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">      <span class="hljs-comment">// No context instance is defined for this servlet -&gt; create a local one</span></span><br><span class="line">      <span class="hljs-comment">// 创建容器，并将 rootContext 作为父容器</span></span><br><span class="line">      wac = createWebApplicationContext(rootContext);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">this</span>.refreshEventReceived) &#123;</span><br><span class="line">      <span class="hljs-comment">// Either the context is not a ConfigurableApplicationContext with refresh</span></span><br><span class="line">      <span class="hljs-comment">// support or the context injected at construction time had already been</span></span><br><span class="line">      <span class="hljs-comment">// refreshed -&gt; trigger initial onRefresh manually here.</span></span><br><span class="line">      <span class="hljs-keyword">synchronized</span> (<span class="hljs-keyword">this</span>.onRefreshMonitor) &#123;</span><br><span class="line">         onRefresh(wac);</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.publishContext) &#123;</span><br><span class="line">      <span class="hljs-comment">// Publish the context as a servlet context attribute.</span></span><br><span class="line">      <span class="hljs-comment">// 将创建好的容器设置到 ServletContext 中</span></span><br><span class="line">      String attrName = getServletContextAttributeName();</span><br><span class="line">      getServletContext().setAttribute(attrName, wac);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="hljs-keyword">return</span> wac;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>​    可以总结下Web容器的创建过程:</p>
-<ol>
-<li>从 ServletContext 中获取 ContextLoaderListener 创建的容器(业务容器)</li>
-<li>若 this.webApplicationContext != null 条件成立，仅设置父容器和刷新容器即可</li>
-<li>尝试从 ServletContext 中获取容器，若容器不为空，则无需执行步骤4</li>
-<li>创建容器，并将 rootContext 作为父容器</li>
-<li>设置容器到 ServletContext 中</li>
-</ol>
-<h3 id="3-2-3-configureAndRefreshWebApplicationContext"><a href="#3-2-3-configureAndRefreshWebApplicationContext" class="headerlink" title="3.2.3 configureAndRefreshWebApplicationContext"></a>3.2.3 configureAndRefreshWebApplicationContext</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> <span class="hljs-keyword">void</span> <span class="hljs-title">configureAndRefreshWebApplicationContext</span><span class="hljs-params">(ConfigurableWebApplicationContext wac)</span> </span>&#123;</span><br><span class="line">   <span class="hljs-keyword">if</span> (ObjectUtils.identityToString(wac).equals(wac.getId())) &#123;</span><br><span class="line">      <span class="hljs-comment">// The application context id is still set to its original default value</span></span><br><span class="line">      <span class="hljs-comment">// -&gt; assign a more useful id based on available information</span></span><br><span class="line">      <span class="hljs-keyword">if</span> (<span class="hljs-keyword">this</span>.contextId != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">         <span class="hljs-comment">// 设置容器 id</span></span><br><span class="line">         wac.setId(<span class="hljs-keyword">this</span>.contextId);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-keyword">else</span> &#123;</span><br><span class="line">         <span class="hljs-comment">// 生成默认 id</span></span><br><span class="line">         <span class="hljs-comment">// Generate default id...</span></span><br><span class="line">         wac.setId(ConfigurableWebApplicationContext.APPLICATION_CONTEXT_ID_PREFIX +</span><br><span class="line">               ObjectUtils.getDisplayString(getServletContext().getContextPath()) + <span class="hljs-string">'/'</span> + getServletName());</span><br><span class="line">      &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   wac.setServletContext(getServletContext());</span><br><span class="line">   wac.setServletConfig(getServletConfig());</span><br><span class="line">   wac.setNamespace(getNamespace());</span><br><span class="line">   wac.addApplicationListener(<span class="hljs-keyword">new</span> SourceFilteringListener(wac, <span class="hljs-keyword">new</span> ContextRefreshListener()));</span><br><span class="line"></span><br><span class="line">   <span class="hljs-comment">// The wac environment's #initPropertySources will be called in any case when the context</span></span><br><span class="line">   <span class="hljs-comment">// is refreshed; do it eagerly here to ensure servlet property sources are in place for</span></span><br><span class="line">   <span class="hljs-comment">// use in any post-processing or initialization that occurs below prior to #refresh</span></span><br><span class="line">   ConfigurableEnvironment env = wac.getEnvironment();</span><br><span class="line">   <span class="hljs-keyword">if</span> (env <span class="hljs-keyword">instanceof</span> ConfigurableWebEnvironment) &#123;</span><br><span class="line">      ((ConfigurableWebEnvironment) env).initPropertySources(getServletContext(), getServletConfig());</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">// 后置处理，子类可以覆盖进行一些自定义操作。在 Spring MVC 未使用到，是个空方法。</span></span><br><span class="line">   postProcessWebApplicationContext(wac);</span><br><span class="line">   applyInitializers(wac);</span><br><span class="line">   <span class="hljs-comment">// 刷新容器</span></span><br><span class="line">   wac.refresh();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="3-2-4-createWebApplicationContext"><a href="#3-2-4-createWebApplicationContext" class="headerlink" title="3.2.4 createWebApplicationContext"></a>3.2.4 createWebApplicationContext</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-function"><span class="hljs-keyword">protected</span> WebApplicationContext <span class="hljs-title">createWebApplicationContext</span><span class="hljs-params">(@Nullable ApplicationContext parent)</span> </span>&#123;</span><br><span class="line">   <span class="hljs-comment">// 获取容器类型，默认为 XmlWebApplicationContext.class</span></span><br><span class="line">   Class&lt;?&gt; contextClass = getContextClass();</span><br><span class="line">   <span class="hljs-keyword">if</span> (!ConfigurableWebApplicationContext.class.isAssignableFrom(contextClass)) &#123;</span><br><span class="line">      <span class="hljs-keyword">throw</span> <span class="hljs-keyword">new</span> ApplicationContextException(</span><br><span class="line">            <span class="hljs-string">"Fatal initialization error in servlet with name '"</span> + getServletName() +</span><br><span class="line">            <span class="hljs-string">"': custom WebApplicationContext class ["</span> + contextClass.getName() +</span><br><span class="line">            <span class="hljs-string">"] is not of type ConfigurableWebApplicationContext"</span>);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">// 通过反射实例化容器</span></span><br><span class="line">   ConfigurableWebApplicationContext wac =</span><br><span class="line">         (ConfigurableWebApplicationContext) BeanUtils.instantiateClass(contextClass);</span><br><span class="line"></span><br><span class="line">   wac.setEnvironment(getEnvironment());</span><br><span class="line">   wac.setParent(parent);</span><br><span class="line">   String configLocation = getContextConfigLocation();</span><br><span class="line">   <span class="hljs-keyword">if</span> (configLocation != <span class="hljs-keyword">null</span>) &#123;</span><br><span class="line">      wac.setConfigLocation(configLocation);</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="hljs-comment">// 配置并刷新容器</span></span><br><span class="line">   configureAndRefreshWebApplicationContext(wac);</span><br><span class="line"></span><br><span class="line">   <span class="hljs-keyword">return</span> wac;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<hr>
-<p>​    参考资料：<a href="https://www.tianxiaobo.com/2018/06/30/Spring-MVC-%E5%8E%9F%E7%90%86%E6%8E%A2%E7%A7%98-%E5%AE%B9%E5%99%A8%E7%9A%84%E5%88%9B%E5%BB%BA%E8%BF%87%E7%A8%8B/" target="_blank" rel="noopener">田小波：Spring MVC 原理探秘 - 容器的创建过程</a></p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2019-01-03T12:21:03.000Z">2019-01-03</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    9 分钟 读完 (大约 1368 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2019/01/03/Spring-MVC 源码初探（二）-DispatcherServlet/">Spring MVC源码初探（二） DispatcherServlet</a>
-            
-        </h1>
-        <div class="content">
-            <h1 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h1><p>​    依照目前的情况，只能对Spring MVC的源码做初步探索，所以说不要强求每一个地方都理解，这是不现实的。我们至少要做到对核心代码以及核心代码所蕴含的逻辑过程清楚，这样本系列的学习就达到目的了。</p>
-<p>​    接下来会从doService方法，doPatch方法和processDispatchResult方法这三个方面接触下DispatcherServlet的核心代码逻辑，加深对Spring MVC基本原理的理解。</p>
-<h1 id="2-doService"><a href="#2-doService" class="headerlink" title="2.doService"></a>2.doService</h1><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%20123.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/2019-01-21%2010%2045%2037.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%203.png" alt=""></p>
-<ul>
-<li>FlashMapper等具体后面学习到组件的时候再展开</li>
-<li>doDispatch(request,response)会在下一小节展开</li>
-<li>其他部分，按照代码注释理解应该没问题</li>
-</ul>
-<h1 id="3-doDispatch（真正处理请求的方法）"><a href="#3-doDispatch（真正处理请求的方法）" class="headerlink" title="3.doDispatch（真正处理请求的方法）"></a>3.doDispatch（真正处理请求的方法）</h1><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%204.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2056878.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%206.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/sadhhsadhjsa.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/1232.png" alt=""></p>
-<ul>
-<li>doDispatch中首先检查是不是上传请求，如果是上传请求，则将request转换为Multi-partHttpServletRequest，并将multipartRequestParsed标志设置为true。其中使用到了Multipart-Resolver。 </li>
-<li>然后通过getHandler方法获取Handler处理器链，其中使用到了HandlerMapping，返回值为HandlerExecutionChain类型，其中包含着与当前request相匹配的Interceptor和Handler 。</li>
-<li>根据Handler找到相应的HandlerAdapter。</li>
-<li>接下来是处理GET、HEAD请求的Last-Modified。 </li>
-<li>接下来依次调用相应Interceptor的preHandle。 </li>
-<li>HandlerAdapter使用Handler处理请求。（具体怎么处理，以后的博客会展开描述）</li>
-<li>Handler处理完请求后，如果需要异步处理，则直接返回；如果不需要异步处理，当view为空时（如Handler返回值为void），设置默认view，</li>
-<li>然后执行相应Interceptor的postHandle。设置默认view的过程中使用到了ViewNameTranslator。 </li>
-<li>调用processDispatchResult方法处理上面处理之后的结果（包含找到View并渲染输出给用户）。</li>
-</ul>
-<p>PS:</p>
-<ol>
-<li>异常处理结构 : doDispatch有两层异常捕获，内层是捕获在对请求进行处理的过程中抛出的异常，外层主要是在处理渲染页面时抛出的。内层的异常，也就是执行请求处理时的异常会设置到dispatchException变量，然后在processDispatchResult方法中进行处理，外层则是处理processDispatchResult方法抛出的异常。</li>
-<li>还要补充的是：在最后的finally中判断是否请求启动了异步处理，如果启动了则调用相应异步处理的拦截器，否则如果是上传请求则删除上传请求过程中产生的临时资源。 </li>
-</ol>
-<h1 id="4-processDispatchResult"><a href="#4-processDispatchResult" class="headerlink" title="4.processDispatchResult"></a>4.processDispatchResult</h1><h1 id=""><a href="#" class="headerlink" title=" "></a> </h1><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/23312312321.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/821387782194192.png" alt=""></p>
-<h2 id="4-1-异常处理"><a href="#4-1-异常处理" class="headerlink" title="4.1 异常处理"></a>4.1 异常处理</h2><p>processDispatchResult处理异常的方式其实就是将相应的错误页面设置到View，在其中的processHandlerException方法中用到了HandlerExceptionResolver。</p>
-<blockquote>
-<p>processHandlerException方法代码如下： </p>
-</blockquote>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/00034299.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%206321.png" alt=""></p>
-<blockquote>
-<p>这一部分未做深入分析，以后可以拿出来研究下</p>
-</blockquote>
-<p>我们接着往下看</p>
-<h2 id="4-2-render"><a href="#4-2-render" class="headerlink" title="4.2 render"></a>4.2 render</h2><ul>
-<li><p>render中首先对response设置了Local，过程中使用到了LocaleResolver，</p>
-</li>
-<li><p>然后判断View如果是String类型则调用resolveViewName方法使用ViewResolver得到实际的View，</p>
-</li>
-<li><p>最后调用View的render方法对页面进行具体渲染，渲染的过程中使用到了ThemeResolver。(ThemeResolver在后面的组件学习中会具体学习到)</p>
-</li>
-<li><p>最后通过mappedHandler的triggerAfterCompletion方法触发Interceptor的afterCompletion方法，这里的Interceptor也是按反方向执行的。</p>
-</li>
-</ul>
-<p>  到这里processDispatchResult方法就执行完了。</p>
-<blockquote>
-<p>具体代码就先不分析了</p>
-</blockquote>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/swuhdwqhd.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/wqewqdwqwqd.png" alt=""></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/zzzzz.png" alt=""></p>
-<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><h2 id="5-1-doDispatch的流程图"><a href="#5-1-doDispatch的流程图" class="headerlink" title="5.1 doDispatch的流程图"></a>5.1 doDispatch的流程图</h2><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/NeatReader-1546523718958.jpg" alt=""></p>
-<h2 id="5-2-形象理解"><a href="#5-2-形象理解" class="headerlink" title="5.2 形象理解"></a>5.2 形象理解</h2><p>Handler：也就是处理器，它直接对应着MVC中的C也就是Controller层 </p>
-<p>HandlerMapping：是用来查找Handler的，在Spring MVC中会处理很多请求，每个请求都需要一个Handler来处理，具体接收到一个请求后使用哪个Handler来处理呢？这就是HandlerMapping要做的事情。 </p>
-<p>HandlerAdapter ：使用Handler处理请求</p>
-<blockquote>
-<p>通俗点的解释就是Handler是用来干活的工具，HandlerMapping用于根据需要干的活找到相应的工具，HandlerAdapter是使用工具干活的人。 </p>
-</blockquote>
-<p>View是用来展示数据的，而ViewResolver用来查找View </p>
-<blockquote>
-<p>使用HandlerMapping找到干活的Handler，找到使用Handler的HandlerAdapter，让HandlerAdapter使用Handler干活，干完活后将结果写个报告交上去（通过View展示给用户）。</p>
-</blockquote>
-<p>HandlerExecutionChain：处理请求的处理器链（包含处理器和对应的Interceptor） </p>
-<p>ModelAndView ：封装Model和View的容器，此变量在整个Spring MVC处理的过程中承担着非常重要角色 </p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-12-31T04:08:43.000Z">2018-12-31</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    10 分钟 读完 (大约 1507 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/12/31/Spring-MVC 源码初探（一）-FrameworkServlet/">Spring MVC源码初探（一） FrameworkServlet</a>
-            
-        </h1>
-        <div class="content">
-            <h3 id="1-概述"><a href="#1-概述" class="headerlink" title="1.概述"></a>1.概述</h3><p>​    Spring MVC有三个重要的Servlet，分别是HttpServletBean 、FrameworkServlet 和DispatcherServlet。</p>
-<p>​    其中HttpServletBean没有涉及请求处理的流程，所以我们学习的时候，主要看FrameworkServlet和DispatcherServlet。    </p>
-<ul>
-<li><p>FrameworkServlet：</p>
-<p>将不同类型的请求合并到了processRequest方法统一处理，processRequest方法中做了三件事：</p>
-<ul>
-<li>调用了doService模板方法具体处理请求。</li>
-<li>将当前请求的LocaleContext和ServletRequestAttributes在处理请求前设置到了LocaleContextHolder和    RequestContextHolder，并在请求处理完成后恢复，</li>
-<li>请求处理完后发布了ServletRequestHandledEvent消息。</li>
-</ul>
-</li>
-<li><p>DispatcherServlet:</p>
-<p>   doService方法给request设置了一些属性并将请求交给doDispatch方法具体处理。所以说核心代码都在doDispatch方法，我们分析DispatcherServlet的时候，应当重点研究doService方法中调用的doDispatch方法。</p>
-<p>   DispatcherServlet中的doDispatch方法完成Spring MVC中请求处理过程的顶层设计，它使用DispatcherServlet中的九大组件完成了具体的请求处理。 这些具体细节，等下一篇写到DispatcherServlet的时候会详述。</p>
-</li>
-</ul>
-<h3 id="2-走进FrameworkServlet的世界"><a href="#2-走进FrameworkServlet的世界" class="headerlink" title="2.走进FrameworkServlet的世界"></a>2.走进FrameworkServlet的世界</h3><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-keyword">abstract</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">FrameworkServlet</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">HttpServletBean</span> <span class="hljs-keyword">implements</span> <span class="hljs-title">ApplicationContextAware</span></span></span><br></pre></td></tr></table></figure>
-<p>​    我们可以看到FrameworkServlet继承了HttpServletBean,实现了ApplicationContextAware接口。其中实现ApplicationContextAware接口是为了获取ApplicationContext对象，如下是ApplicationContextAware接口的源码：</p>
-<figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">ApplicationContextAware</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Aware</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">setApplicationContext</span><span class="hljs-params">(ApplicationContext applicationContext)</span> <span class="hljs-keyword">throws</span> BeansException</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2-1-service方法"><a href="#2-1-service方法" class="headerlink" title="2.1 service方法"></a>2.1 service方法</h4><p>在FrameworkServlet中重写了service、doGet、doPost、doPut、doDelete、doOptions、doTrace方法 ,如下：</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/1546235038371.png" alt="service方法"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%202.jpg" alt="doGet方法"></p>
-<p>  在这里，我们回顾下Servlet的处理过程，是在service方法中根据不同类型的请求路由到doGet、doPost、doPut、doDelete、doOptions、doTrace方法。我们看下HttpServlet中的service方法,如图：</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%205.png" alt="service方法"></p>
-<blockquote>
-<p>此处我豁然开朗，我们之前写一个Servlet类的时候，就是继承HttpServlet，但是不用重写service方法，只需要写doGet和doPost方法，因为service方法，直接就会根据我们请求的方式，直接路由到doGet或者doPost方法。也就是说我们写的Servlet类，其实继承了父类HttpServlet中的service方法，所以就会帮助我们路由到具体的doXXX()方法。</p>
-</blockquote>
-<p>而Spring MVC中，FrameworkServlet的service方法却是把PATCH请求和空请求单独拿出来，调用processRequest方法处理；而对于其他请求，就直接交给父类来处理（其实是给HttpServlet中的service方法处理）。但是doGet、doPost、doPut、doDelete都是自己处理请求，不用父类来处理。</p>
-<p>总结一下，就是所有需要自己处理请求的，不依靠父类帮助处理的，都调用了processRequest()方法</p>
-<h5 id="2-1-1-processRequest方法"><a href="#2-1-1-processRequest方法" class="headerlink" title="2.1.1 processRequest方法"></a>2.1.1 processRequest方法</h5><p>processRequest方法是FrameworkServlet类在处理请求中最核心的方法。</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2010.png" alt="processRequest"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2012.png" alt="processRequest2"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2013.png" alt="processRequest3"></p>
-<blockquote>
-<p>首先我们来走一下processRequest方法的主要流程(上图的TODO：异步请求，暂时不考虑)，之后再分析下里面各个更小的细节</p>
-</blockquote>
-<ul>
-<li>获取LocaleContextLoader中原先保存的LocalContext和当前请求的LocaleContext（详见2.1.2）</li>
-<li>获取RequestContextHolder原先保存的RequstAttributes和当前请求的ServletRequestAttributes（详见2.1.3)</li>
-<li>将当前请求的LocaleContext和ServletRequestAttributes设置到LocaleContextHolder和RequestContextHolder（详见2.1.4）</li>
-<li>调用doService实际处理请求</li>
-<li>恢复原来的LocaleContext和ServletRequestAttributes到LocaleContextLoader</li>
-<li>发布ServletRequestHandledEvent消息(详见2.1.5)</li>
-</ul>
-<h5 id="2-1-2-LocalContext"><a href="#2-1-2-LocalContext" class="headerlink" title="2.1.2 LocalContext"></a>2.1.2 LocalContext</h5><figure class="highlight java hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//保存Locale对象信息(本地化信息，如zh-cn)</span></span><br><span class="line"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">LocaleContext</span> </span>&#123;</span><br><span class="line">	<span class="hljs-meta">@Nullable</span></span><br><span class="line">	<span class="hljs-function">Locale <span class="hljs-title">getLocale</span><span class="hljs-params">()</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>LocaleContext里面存放着Locale（也就是本地化信息，如zh-cn等）</p>
-<h5 id="2-1-3-RequestAttributes"><a href="#2-1-3-RequestAttributes" class="headerlink" title="2.1.3 RequestAttributes"></a>2.1.3 RequestAttributes</h5><p>RequestAttributes是spring的一个接口，通过它可以get/set/removeAttribute。根据scope参数判断操作request还是session。这里具体使用的是ServletRequestAttributes类，在ServletRequestAttributes里面还封装了request、response和session，而且都提供了get方法，可以直接获取。</p>
-<ol>
-<li>先看一下RequestAttributes接口中的方法</li>
-</ol>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2016.png" alt="RequestAttributes"></p>
-<ol start="2">
-<li>接着看一下ServletRequestAttributes：</li>
-</ol>
-<ul>
-<li>封装了request、response和session，而且都提供了get方法，可以直接获取</li>
-</ul>
-<p>  <img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%200.png" alt="e"></p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2020.png" alt=""></p>
-<ul>
-<li>提供了getAttribute、setAttribute和removeAttribute方法</li>
-</ul>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2021.png" alt=""></p>
-<blockquote>
-<p>重点看一下setAttribute方法，其他的两个方法应该都差不多</p>
-</blockquote>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2022.png" alt=""></p>
-<p>简单分析一下，就是根据scope属性去判断是对request还是session进行设置</p>
-<h5 id="2-1-4-LocaleContextHolder和RequestContextHolder"><a href="#2-1-4-LocaleContextHolder和RequestContextHolder" class="headerlink" title="2.1.4 LocaleContextHolder和RequestContextHolder"></a>2.1.4 LocaleContextHolder和RequestContextHolder</h5><ul>
-<li>LocaleContextHolder 详细的暂时不理解，留着以后TODO</li>
-</ul>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2023.png" alt=""></p>
-<ul>
-<li>RequestContextHolder</li>
-</ul>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2024.png" alt=""></p>
-<h5 id="2-1-5-publishRequestHandledEvent"><a href="#2-1-5-publishRequestHandledEvent" class="headerlink" title="2.1.5 publishRequestHandledEvent"></a>2.1.5 publishRequestHandledEvent</h5><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image%2025.png" alt=""></p>
-<p>publishEvents可以在web.xml文件中配置Spring MVC的Servlet时配置，默认为true。 </p>
-<h4 id="2-2-总结"><a href="#2-2-总结" class="headerlink" title="2.2 总结"></a>2.2 总结</h4><p>首先是在service方法里添加了对PATCH的处理，并将所有需要自己处理的请求都集中到了processRequest方法进行统一处理，这和HttpServlet里面根据request的类型将请求分配到各个不同的方法进行处理的过程正好相反。</p>
-<p>然后就是processRequest方法，在processRequest里面主要的处理逻辑交给了doService，这是一个模板方法，在子类具体实现，另外就是对使用当前request获取到的LocaleContext和RequestAttributes进行了保存，以及处理完之后的恢复，在最后发布了ServletRequest-HandledEvent事件。</p>
-<h3 id="3-关于此部分业务容器的介绍，会在以后学习的过程中补充到这里"><a href="#3-关于此部分业务容器的介绍，会在以后学习的过程中补充到这里" class="headerlink" title="3.关于此部分业务容器的介绍，会在以后学习的过程中补充到这里"></a>3.关于此部分业务容器的介绍，会在以后学习的过程中补充到这里</h3><p>TODO:</p>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-    <div class="card">
-    
-    <div class="card-content article ">
-        
-        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
-            <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-12-29T05:16:54.000Z">2018-12-29</time>
-                
-                
-                <span class="level-item has-text-grey">
-                    
-                    
-                    3 分钟 读完 (大约 417 个字)
-                </span>
-                
-                
-            </div>
-        </div>
-        
-        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
-            
-                <a class="has-link-black-ter" href="/2018/12/29/Spring-MVC基本原理/">Spring MVC基本原理</a>
-            
-        </h1>
-        <div class="content">
-            <h2 id="一-核心架构图"><a href="#一-核心架构图" class="headerlink" title="一.核心架构图"></a>一.核心架构图</h2><p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/Image.png" alt="Spring MVC核心架构图"></p>
-<h2 id="二-核心架构的处理流程"><a href="#二-核心架构的处理流程" class="headerlink" title="二.核心架构的处理流程"></a>二.核心架构的处理流程</h2><ol>
-<li>首先用户发送请求——&gt;DispatcherServlet，前端控制器收到请求后自己不进行处理，而是委托给其他的解析器进行处理，作为统一访问点，进行全局的流程控制； </li>
-<li>DispatcherServlet——&gt;HandlerMapping， HandlerMapping 将会把请求映射为 HandlerExecutionChain 对象（包含一个 Handler 处理器（页面控制器）对象、多个 HandlerInterceptor 拦截器）对象，通过这种策略模式，很容易添加新的映射策略；</li>
-<li>DispatcherServlet——&gt;HandlerAdapter，HandlerAdapter 将会把处理器包装为适配器，从而支持多种类型的处理器，即适配器设计模式的应用，从而很容易支持很多类型的处理器；</li>
-<li>HandlerAdapter——&gt;处理器功能处理方法的调用，HandlerAdapter 将会根据适配的结果调用真正的处理器的功能处理方法，完成功能处理；并返回一个 ModelAndView 对象（包含模型数据、逻辑视图名）； </li>
-<li>ModelAndView 的逻辑视图名——&gt; ViewResolver， ViewResolver 将把逻辑视图名解析为具体的 View，通过这种策略模式，很容易更换其他视图技术；</li>
-<li>View——&gt;渲染，View 会根据传进来的 Model 模型数据进行渲染，此处的 Model 实际是一个 Map 数据结构，因此很容易支持其他视图技术； </li>
-<li>返回控制权给 DispatcherServlet，由 DispatcherServlet 返回响应给用户</li>
-</ol>
-
-        </div>
-        
-        
-        
-    </div>
-</div>
-
-
-
-
-
-
-
-
-</div>
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left ">
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <nav class="level">
-            <div class="level-item has-text-centered">
-                <div>
-                    
-                        <img class="image is-128x128 has-mb-6" src="/images/avatar.png" alt="Your name">
-                    
-                    
-                    <p class="is-size-4 is-block">
-                        Your name
-                    </p>
-                    
-                    
-                    <p class="is-size-6 is-block">
-                        Your title
-                    </p>
-                    
-                    
-                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
-                        <i class="fas fa-map-marker-alt has-mr-7"></i>
-                        <span>Your location</span>
-                    </p>
-                    
-                </div>
-            </div>
-        </nav>
-        <nav class="level is-mobile">
-            <div class="level-item has-text-centered is-marginless">
-                <div>
-                    <p class="heading">
-                        文章
-                    </p>
-                    <p class="title has-text-weight-normal">
-                        17
-                    </p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered is-marginless">
-                <div>
-                    <p class="heading">
-                        分类
-                    </p>
-                    <p class="title has-text-weight-normal">
-                        0
-                    </p>
-                </div>
-            </div>
-            <div class="level-item has-text-centered is-marginless">
-                <div>
-                    <p class="heading">
-                        标签
-                    </p>
-                    <p class="title has-text-weight-normal">
-                        8
-                    </p>
-                </div>
-            </div>
-        </nav>
-        <div class="level">
-            <a class="level-item button is-link is-rounded" href="http://github.com/ppoffice">
-                关注我</a>
-        </div>
-        
-        
-        <div class="level is-mobile">
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Github" href="http://github.com/ppoffice">
-                
-                <i class="fab fa-github"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Facebook" href="http://facebook.com">
-                
-                <i class="fab fa-facebook"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Twitter" href="http://twitter.com">
-                
-                <i class="fab fa-twitter"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="Dribbble" href="http://dribbble.com">
-                
-                <i class="fab fa-dribbble"></i>
-                
-            </a>
-            
-            <a class="level-item button is-white is-marginless" target="_blank" title="RSS" href="/">
-                
-                <i class="fas fa-rss"></i>
-                
-            </a>
-            
-        </div>
-        
-    </div>
-</div>
-    
-        
-    
-        
-
-<div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-        <h3 class="menu-label">
-            链接
-        </h3>
-        <ul class="menu-list">
-        
-            <li>
-                <a class="level is-mobile" href="https://hexo.io" target="_blank">
-                    <span class="level-left">
-                        <span class="level-item">Hexo</span>
-                    </span>
-                    <span class="level-right">
-                        <span class="level-item tag">hexo.io</span>
-                    </span>
-                </a>
-            </li>
-        
-            <li>
-                <a class="level is-mobile" href="https://github.com/ppoffice" target="_blank">
-                    <span class="level-left">
-                        <span class="level-item">PPOffice</span>
-                    </span>
-                    <span class="level-right">
-                        <span class="level-item tag">github.com</span>
-                    </span>
-                </a>
-            </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-
-
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                分类
-            </h3>
-            <ul class="menu-list">
-            
-            </ul>
-        </div>
-    </div>
-</div>
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            标签云
-        </h3>
-        <a href="/tags/Java/" style="font-size: 13.33px;">Java</a> <a href="/tags/MyBatis/" style="font-size: 13.33px;">MyBatis</a> <a href="/tags/Spring-Boot/" style="font-size: 10px;">Spring Boot</a> <a href="/tags/Spring-Cloud/" style="font-size: 10px;">Spring Cloud</a> <a href="/tags/Spring-MVC/" style="font-size: 20px;">Spring MVC</a> <a href="/tags/学习指南/" style="font-size: 16.67px;">学习指南</a> <a href="/tags/数据库/" style="font-size: 10px;">数据库</a> <a href="/tags/面试题/" style="font-size: 10px;">面试题</a>
-    </div>
-</div>
-
-    
-    
-        <div class="column-right-shadow is-hidden-widescreen ">
-        
-            
-<div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <a href="/2019/02/11/ArrayList分析/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="ArrayList分析">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-11T01:18:08.000Z">2019-02-11</time></div>
-                    <a href="/2019/02/11/ArrayList分析/" class="has-link-black-ter is-size-6">ArrayList分析</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/10/对象与类/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="对象与类">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-10T10:48:58.000Z">2019-02-10</time></div>
-                    <a href="/2019/02/10/对象与类/" class="has-link-black-ter is-size-6">对象与类</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-09T05:14:24.000Z">2019-02-09</time></div>
-                    <a href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" class="has-link-black-ter is-size-6">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-09T01:22:19.000Z">2019-02-09</time></div>
-                    <a href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/" class="has-link-black-ter is-size-6">Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/07/《MyBatis从入门到精通》笔记/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="《MyBatis从入门到精通》笔记">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-07T13:39:12.000Z">2019-02-07</time></div>
-                    <a href="/2019/02/07/《MyBatis从入门到精通》笔记/" class="has-link-black-ter is-size-6">《MyBatis从入门到精通》笔记</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-
-        
-            <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-        <h3 class="menu-label">
-            归档
-        </h3>
-        <ul class="menu-list">
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/02/">
-                <span class="level-start">
-                    <span class="level-item">二月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">8</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/01/">
-                <span class="level-start">
-                    <span class="level-item">一月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">6</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2018/12/">
-                <span class="level-start">
-                    <span class="level-item">十二月 2018</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-        
-            <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                标签
-            </h3>
-            <div class="field is-grouped is-grouped-multiline">
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Java/">
-                        <span class="tag">Java</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/MyBatis/">
-                        <span class="tag">MyBatis</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-Boot/">
-                        <span class="tag">Spring Boot</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-Cloud/">
-                        <span class="tag">Spring Cloud</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-MVC/">
-                        <span class="tag">Spring MVC</span>
-                        <span class="tag is-grey">7</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/学习指南/">
-                        <span class="tag">学习指南</span>
-                        <span class="tag is-grey">5</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/数据库/">
-                        <span class="tag">数据库</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/面试题/">
-                        <span class="tag">面试题</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-        
-        </div>
-    
-</div>
-
-                
-
-
-
-
-<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right ">
-    
-        
-<div class="card widget">
-    <div class="card-content">
-        <h3 class="menu-label">
-            最新文章
-        </h3>
-        
-        <article class="media">
-            
-            <a href="/2019/02/11/ArrayList分析/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="ArrayList分析">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-11T01:18:08.000Z">2019-02-11</time></div>
-                    <a href="/2019/02/11/ArrayList分析/" class="has-link-black-ter is-size-6">ArrayList分析</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/10/对象与类/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="对象与类">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-10T10:48:58.000Z">2019-02-10</time></div>
-                    <a href="/2019/02/10/对象与类/" class="has-link-black-ter is-size-6">对象与类</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-09T05:14:24.000Z">2019-02-09</time></div>
-                    <a href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" class="has-link-black-ter is-size-6">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-09T01:22:19.000Z">2019-02-09</time></div>
-                    <a href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/" class="has-link-black-ter is-size-6">Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-        <article class="media">
-            
-            <a href="/2019/02/07/《MyBatis从入门到精通》笔记/" class="media-left">
-                <p class="image is-64x64">
-                    <img class="thumbnail" src="/images/thumbnail.svg" alt="《MyBatis从入门到精通》笔记">
-                </p>
-            </a>
-            
-            <div class="media-content">
-                <div class="content">
-                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2019-02-07T13:39:12.000Z">2019-02-07</time></div>
-                    <a href="/2019/02/07/《MyBatis从入门到精通》笔记/" class="has-link-black-ter is-size-6">《MyBatis从入门到精通》笔记</a>
-                    <p class="is-size-7 is-uppercase">
-                        
-                    </p>
-                </div>
-            </div>
-        </article>
-        
-    </div>
-</div>
-
-    
-        <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-        <h3 class="menu-label">
-            归档
-        </h3>
-        <ul class="menu-list">
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/02/">
-                <span class="level-start">
-                    <span class="level-item">二月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">8</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2019/01/">
-                <span class="level-start">
-                    <span class="level-item">一月 2019</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">6</span>
-                </span>
-            </a>
-        </li>
-        
-        <li>
-            <a class="level is-marginless" href="/archives/2018/12/">
-                <span class="level-start">
-                    <span class="level-item">十二月 2018</span>
-                </span>
-                <span class="level-end">
-                    <span class="level-item tag">3</span>
-                </span>
-            </a>
-        </li>
-        
-        </ul>
-        </div>
-    </div>
-</div>
-    
-        <div class="card widget">
-    <div class="card-content">
-        <div class="menu">
-            <h3 class="menu-label">
-                标签
-            </h3>
-            <div class="field is-grouped is-grouped-multiline">
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Java/">
-                        <span class="tag">Java</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/MyBatis/">
-                        <span class="tag">MyBatis</span>
-                        <span class="tag is-grey">2</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-Boot/">
-                        <span class="tag">Spring Boot</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-Cloud/">
-                        <span class="tag">Spring Cloud</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/Spring-MVC/">
-                        <span class="tag">Spring MVC</span>
-                        <span class="tag is-grey">7</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/学习指南/">
-                        <span class="tag">学习指南</span>
-                        <span class="tag is-grey">5</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/数据库/">
-                        <span class="tag">数据库</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-                <div class="control">
-                    <a class="tags has-addons" href="/tags/面试题/">
-                        <span class="tag">面试题</span>
-                        <span class="tag is-grey">1</span>
-                    </a>
-                </div>
-                
-            </div>
-        </div>
-    </div>
-</div>
-    
-    
-</div>
-
-            </div>
-        </div>
-    </section>
-    <footer class="footer">
-    <div class="container">
-        <div class="level">
-            <div class="level-start has-text-centered-mobile">
-                <a class="footer-logo is-block has-mb-6" href="/">
-                
-                    <img src="/images/logo.svg" alt="时间旅行者" height="28">
-                
-                </a>
-                <p class="is-size-7">
-                &copy; 2019 刘天霸&nbsp;
-                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="http://github.com/ppoffice/hexo-theme-icarus" target="_blank">Icarus</a>
-                
-                </p>
-            </div>
-            <div class="level-end">
-            
-                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
-                
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Creative Commons" href="https://creativecommons.org/">
-                        
-                        <i class="fab fa-creative-commons"></i>
-                        
-                    </a>
-                </p>
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/">
-                        
-                        <i class="fab fa-creative-commons-by"></i>
-                        
-                    </a>
-                </p>
-                
-                <p class="control">
-                    <a class="button is-white is-large" target="_blank" title="Download on GitHub" href="http://github.com/ppoffice/hexo-theme-icarus">
-                        
-                        <i class="fab fa-github"></i>
-                        
-                    </a>
-                </p>
-                
-                </div>
-            
-            </div>
-        </div>
-    </div>
-</footer>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
-<script>moment.locale("zh-CN");</script>
-
-
-    
-    
-    
-    <script src="/js/animation.js"></script>
-    
-
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
-    <script src="/js/gallery.js" defer></script>
-    
-
-    
-    
-
-<div id="outdated">
-    <h6>Your browser is out-of-date!</h6>
-    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
-            my browser now </a></p>
-    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        outdatedBrowser({
-            bgColor: '#f25648',
-            color: '#ffffff',
-            lowerThan: 'flex'
-        });
-    });
-</script>
-
-
-    
-    
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    MathJax.Hub.Config({
-        'HTML-CSS': {
-            matchFontHeight: false
-        },
-        SVG: {
-            matchFontHeight: false
-        },
-        CommonHTML: {
-            matchFontHeight: false
-        },
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
         tex2jax: {
-            inlineMath: [
-                ['$','$'],
-                ['\\(','\\)']
-            ]
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
         }
-    });
-});
-</script>
+      });
+    </script>
 
-    
-    
-
-<a id="back-to-top" title="回到顶端" href="javascript:;">
-    <i class="fas fa-chevron-up"></i>
-</a>
-<script src="/js/back-to-top.js" defer></script>
-
-
-    
-    
-
-    
-    
-    
-    
-
-    
-    
-    
-    
-    
-    <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script>
-    <script src="/js/clipboard.js" defer></script>
-    
-
-    
-    
-    
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
 
 
-<script src="/js/main.js" defer></script>
-
-    
-    <div class="searchbox ins-search">
-    <div class="searchbox-container ins-search-container">
-        <div class="searchbox-input-wrapper">
-            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么...">
-            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="searchbox-result-wrapper ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
 </div>
-<script>
-    (function (window) {
-        var INSIGHT_CONFIG = {
-            TRANSLATION: {
-                POSTS: '文章',
-                PAGES: '页面',
-                CATEGORIES: '分类',
-                TAGS: '标签',
-                UNTITLED: '(无标题)',
-            },
-            CONTENT_URL: '/content.json',
-        };
-        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-    })(window);
-</script>
-<script src="/js/insight.js" defer></script>
-<link rel="stylesheet" href="/css/search.css">
-<link rel="stylesheet" href="/css/insight.css">
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Archives</h2>
+  <p class="post-date">文章归档</p>
+</div>
+<main class="app-body" id="archives">
+  
+  
+  
+    <section class="time-section">
+  <h1 class="section-year">
+    2019
+  </h1>
+  <div class="section-list">
     
-</body>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/11/ArrayList分析/" class="archive-title">ArrayList分析</a>
+        <p class="archive-date">02-11</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/10/对象与类/" class="archive-title">对象与类</a>
+        <p class="archive-date">02-10</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" class="archive-title">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a>
+        <p class="archive-date">02-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/" class="archive-title">Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping</a>
+        <p class="archive-date">02-09</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/07/《MyBatis从入门到精通》笔记/" class="archive-title">《MyBatis从入门到精通》笔记</a>
+        <p class="archive-date">02-07</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/05/官方文档记录/" class="archive-title">官方文档记录</a>
+        <p class="archive-date">02-05</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/04/MyBatis学习指南/" class="archive-title">MyBatis学习指南</a>
+        <p class="archive-date">02-04</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/02/01/《SQL必知必会》/" class="archive-title">《SQL必知必会》笔记</a>
+        <p class="archive-date">02-01</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/01/19/Spring-MVC源码初探（四）-  HandlerMapping之-AbstractHandlerMapping/" class="archive-title">Spring MVC源码初探（四）   HandlerMapping之  AbstractHandlerMapping</a>
+        <p class="archive-date">01-19</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/01/12/Spring-MVC-源码初探（三）容器的创建过程/" class="archive-title">Spring MVC 源码初探（三）容器的创建过程</a>
+        <p class="archive-date">01-12</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/01/03/Spring-MVC 源码初探（二）-DispatcherServlet/" class="archive-title">Spring MVC源码初探（二） DispatcherServlet</a>
+        <p class="archive-date">01-03</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/01/01/Spring-Cloud教程汇总/" class="archive-title">Spring Cloud教程汇总</a>
+        <p class="archive-date">01-01</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/01/01/面试题/" class="archive-title">芋道源码面试题</a>
+        <p class="archive-date">01-01</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2019/01/01/Spring学习资料汇总/" class="archive-title">Spring学习资料汇总</a>
+        <p class="archive-date">01-01</p>
+      </div>
+    
+  </div>
+</section>
+  
+    <section class="time-section">
+  <h1 class="section-year">
+    2018
+  </h1>
+  <div class="section-list">
+    
+    
+      <div class="section-list-item">
+        <a href="/2018/12/31/Spring-MVC 源码初探（一）-FrameworkServlet/" class="archive-title">Spring MVC源码初探（一） FrameworkServlet</a>
+        <p class="archive-date">12-31</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2018/12/31/Spring-Boot教程汇总/" class="archive-title">Spring Boot教程汇总</a>
+        <p class="archive-date">12-31</p>
+      </div>
+    
+      <div class="section-list-item">
+        <a href="/2018/12/29/Spring-MVC基本原理/" class="archive-title">Spring MVC基本原理</a>
+        <p class="archive-date">12-29</p>
+      </div>
+    
+  </div>
+</section>
+  
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/tags/Spring-MVC/index.html';
+    $('#article-banner').geopattern(url);
+    $('.header').removeClass('fixed-header');
+  })();
+</script>
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
 </html>
