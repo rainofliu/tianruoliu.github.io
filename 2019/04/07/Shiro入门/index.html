@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Shiro入门 | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Shiro入门</h2>
+  <p class="post-date">2019-04-07</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id=""><a href="#" class="headerlink" title=""></a><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture267.png" alt=""></h1><h2 id="Shiro认证"><a href="#Shiro认证" class="headerlink" title="Shiro认证"></a>Shiro认证</h2><ol>
+<li>创建Security Manager</li>
+<li>主体提交认证到Security Manager</li>
+<li>Security Manager认证</li>
+<li>Authenticator认证</li>
+<li>Realm验证</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SimpleAccountRealm simpleAccountRealm=<span class="keyword">new</span> SimpleAccountRealm();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addUser</span><span class="params">()</span></span>&#123;</span><br><span class="line">        simpleAccountRealm.addAccount(<span class="string">"Mark"</span>,<span class="string">"1234"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager=<span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(simpleAccountRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject= SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token=<span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>,<span class="string">"1234"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"是否认证"</span>+subject.isAuthenticated());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 主体登出</span></span><br><span class="line">        subject.logout();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"是否认证"</span>+subject.isAuthenticated());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Shiro授权"><a href="#Shiro授权" class="headerlink" title="Shiro授权"></a>Shiro授权</h2><ol>
+<li>创建Security Manager</li>
+<li>主体授权</li>
+<li>Security Manager授权</li>
+<li>Authorizer授权</li>
+<li>Realm获取角色权限数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SimpleAccountRealm simpleAccountRealm=<span class="keyword">new</span> SimpleAccountRealm();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addUser</span><span class="params">()</span></span>&#123;</span><br><span class="line">        simpleAccountRealm.addAccount(<span class="string">"Mark"</span>,<span class="string">"1234"</span>,<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager=<span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(simpleAccountRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject= SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token=<span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>,<span class="string">"1234"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"是否认证"</span>+subject.isAuthenticated());</span><br><span class="line">        <span class="comment">// 判断授权</span></span><br><span class="line">        subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"admin"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Shiro自定义Realm"><a href="#Shiro自定义Realm" class="headerlink" title="Shiro自定义Realm"></a>Shiro自定义Realm</h2><p>内置Realm:</p>
+<ul>
+<li>IniRealm</li>
+<li>JdbcRealm</li>
+</ul>
+<h3 id="IniRealm"><a href="#IniRealm" class="headerlink" title="IniRealm"></a>IniRealm</h3><p>我们首先创建一个user.ini文件</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[users]</span></span><br><span class="line"><span class="attr">Mark</span>=<span class="number">123456</span>,admin</span><br><span class="line"><span class="section">[roles]</span></span><br><span class="line"><span class="attr">admin</span>=user:delete,user:update</span><br></pre></td></tr></table></figure>
+<p>接着测试代码测试主体的角色以及角色对应的权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IniRealmTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        IniRealm iniRealm = <span class="keyword">new</span> IniRealm(<span class="string">"classpath:user.ini"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(iniRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">        subject.checkRole(<span class="string">"admin"</span>);</span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">        subject.checkPermission(<span class="string">"user:update"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="JdbcRealm"><a href="#JdbcRealm" class="headerlink" title="JdbcRealm"></a>JdbcRealm</h3><ul>
+<li><p>首先引入pom依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.46<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>创建数据库表信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for `roles_permissions`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line">角色权限表</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`roles_permissions`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`roles_permissions`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`role_name`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`permission`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">2</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of roles_permissions</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`roles_permissions`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'admin'</span>, <span class="string">'user:select'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for `users`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line">用户表</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`users`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`users`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`password`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">2</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of users</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`users`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'Mark'</span>, <span class="string">'123456'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for `user_roles`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line">用户角色表</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`user_roles`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`user_roles`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`role_name`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">2</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of user_roles</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`user_roles`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'Mark'</span>, <span class="string">'admin'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Procedure structure for `idata`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`idata`</span>;</span><br><span class="line">DELIMITER ;;</span><br><span class="line"><span class="keyword">CREATE</span> DEFINER=<span class="string">`root`</span>@<span class="string">`localhost`</span> <span class="keyword">PROCEDURE</span> <span class="string">`idata`</span>()</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="keyword">declare</span> i <span class="built_in">int</span>;</span><br><span class="line">  <span class="keyword">set</span> i=<span class="number">1</span>;</span><br><span class="line">  while(i&lt;=1000)do</span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> t1 <span class="keyword">values</span>(i, <span class="number">1001</span>-i, i);</span><br><span class="line">    <span class="keyword">set</span> i=i+<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">set</span> i=<span class="number">1</span>;</span><br><span class="line">  while(i&lt;=1000000)do</span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> t2 <span class="keyword">values</span>(i, i, i);</span><br><span class="line">    <span class="keyword">set</span> i=i+<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">;;</span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcRealmTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    DruidDataSource dataSource=<span class="keyword">new</span> DruidDataSource();</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        dataSource.setUrl(<span class="string">"jdbc:mysql://127.0.0.1:3306/test"</span>);</span><br><span class="line">        dataSource.setUsername(<span class="string">"root"</span>);</span><br><span class="line">        dataSource.setPassword(<span class="string">"1027"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        JdbcRealm jdbcRealm=<span class="keyword">new</span> JdbcRealm();</span><br><span class="line"></span><br><span class="line">        jdbcRealm.setDataSource(dataSource);</span><br><span class="line">        <span class="comment">// 设置为true，才会去数据库的权限表查询权限</span></span><br><span class="line">        jdbcRealm.setPermissionsLookupEnabled(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(jdbcRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"ajin"</span>, <span class="string">"123"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">       subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">     subject.checkPermission(<span class="string">"user:select"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>我们可以自己设置数据库的sql语句进行查询，这样就可以自定义表名和字段名了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String sql=<span class="string">"select passwd from test_user where user_name=?"</span>;</span><br><span class="line">jdbcRealm.setAuthenticationQuery(sql);</span><br></pre></td></tr></table></figure>
+<p>因为JdbcRealm定义了一些sql语句</p>
+<ul>
+<li>用户登录的校验</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_AUTHENTICATION_QUERY = <span class="string">"select password from users where username = ?"</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用户对应角色的查询</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_USER_ROLES_QUERY = <span class="string">"select role_name from user_roles where username = ?"</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>用户的角色对应的权限查询</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_PERMISSIONS_QUERY = <span class="string">"select permission from roles_permissions where role_name = ?"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="自定义Realm"><a href="#自定义Realm" class="headerlink" title="自定义Realm"></a>自定义Realm</h3><p>自定义Realm继承自AuthorizingRealm</p>
+<ul>
+<li><p>创建自定义Realm</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.shiro.realm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.SimpleAuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.AuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.SimpleAuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.realm.AuthorizingRealm;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.PrincipalCollection;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Auther</span>: ajin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/4/6 20:25</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, String&gt; userMap = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        userMap.put(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="keyword">super</span>.setName(<span class="string">"customRealm"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 授权</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        String username = (String) principals.getPrimaryPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据用户名获取角色信息,从数据库或缓存中模拟</span></span><br><span class="line">        Set&lt;String&gt; roles = getRolesByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从数据库或者缓存中模拟获取权限信息</span></span><br><span class="line">        Set&lt;String&gt; permissions = getPermissionsByUsername(username);</span><br><span class="line"></span><br><span class="line">        SimpleAuthorizationInfo simpleAuthorizationInfo=<span class="keyword">new</span> SimpleAuthorizationInfo();</span><br><span class="line">        simpleAuthorizationInfo.setRoles(roles);</span><br><span class="line">        simpleAuthorizationInfo.setStringPermissions(permissions);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthorizationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getPermissionsByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; set=<span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        set.add(<span class="string">"user:delete"</span>);</span><br><span class="line">        set.add(<span class="string">"user:update"</span>);</span><br><span class="line">        <span class="keyword">return</span> set;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟从数据库或缓存中获取主体的角色</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getRolesByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; roles = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        roles.add(<span class="string">"admin"</span>);</span><br><span class="line">        roles.add(<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> roles;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 认证</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.从主体传过来的认证信息中获得用户名</span></span><br><span class="line"></span><br><span class="line">        String username = (String) token.getPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.通过用户名去数据库中获取凭证</span></span><br><span class="line"></span><br><span class="line">        String password = getPasswordByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (password == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        SimpleAuthenticationInfo simpleAuthenticationInfo = <span class="keyword">new</span></span><br><span class="line">                SimpleAuthenticationInfo(<span class="string">"Mark"</span>, password, <span class="string">"customRealm"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthenticationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟数据库查询凭证</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getPasswordByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userMap.get(username);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试自定义Realm</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealmTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        CustomRealm customRealm=<span class="keyword">new</span> CustomRealm();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(customRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">        subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">        subject.checkPermission(<span class="string">"user:delete"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>以上就是一个简单的主体认证和授权的过程</p>
+</blockquote>
+<h2 id="Shiro密码加密"><a href="#Shiro密码加密" class="headerlink" title="Shiro密码加密"></a>Shiro密码加密</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealmTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        CustomRealm customRealm=<span class="keyword">new</span> CustomRealm();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(customRealm);</span><br><span class="line">        <span class="comment">// 设置加密</span></span><br><span class="line">        HashedCredentialsMatcher matcher=<span class="keyword">new</span> HashedCredentialsMatcher();</span><br><span class="line">        matcher.setHashAlgorithmName(<span class="string">"md5"</span>);</span><br><span class="line">        matcher.setHashIterations(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        customRealm.setCredentialsMatcher(matcher);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">        subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">        subject.checkPermission(<span class="string">"user:delete"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.shiro.realm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.SimpleAuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.AuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.SimpleAuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.crypto.hash.Md5Hash;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.realm.AuthorizingRealm;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.PrincipalCollection;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Auther</span>: ajin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/4/6 20:25</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, String&gt; userMap = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        userMap.put(<span class="string">"Mark"</span>, <span class="string">"b51d5af6c801ff4bfd31a4a154f35d35"</span>);</span><br><span class="line">        <span class="keyword">super</span>.setName(<span class="string">"customRealm"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 授权</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        String username = (String) principals.getPrimaryPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据用户名获取角色信息,从数据库或缓存中模拟</span></span><br><span class="line">        Set&lt;String&gt; roles = getRolesByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从数据库或者缓存中模拟获取权限信息</span></span><br><span class="line">        Set&lt;String&gt; permissions = getPermissionsByUsername(username);</span><br><span class="line"></span><br><span class="line">        SimpleAuthorizationInfo simpleAuthorizationInfo = <span class="keyword">new</span> SimpleAuthorizationInfo();</span><br><span class="line">        simpleAuthorizationInfo.setRoles(roles);</span><br><span class="line">        simpleAuthorizationInfo.setStringPermissions(permissions);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthorizationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getPermissionsByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        set.add(<span class="string">"user:delete"</span>);</span><br><span class="line">        set.add(<span class="string">"user:update"</span>);</span><br><span class="line">        <span class="keyword">return</span> set;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟从数据库或缓存中获取主体的角色</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getRolesByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; roles = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        roles.add(<span class="string">"admin"</span>);</span><br><span class="line">        roles.add(<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> roles;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 认证</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.从主体传过来的认证信息中获得用户名</span></span><br><span class="line"></span><br><span class="line">        String username = (String) token.getPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.通过用户名去数据库中获取凭证</span></span><br><span class="line"></span><br><span class="line">        String password = getPasswordByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (password == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        SimpleAuthenticationInfo simpleAuthenticationInfo = <span class="keyword">new</span></span><br><span class="line">                SimpleAuthenticationInfo(<span class="string">"Mark"</span>, password, <span class="string">"customRealm"</span>);</span><br><span class="line">        <span class="comment">// 加盐</span></span><br><span class="line">        simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(<span class="string">"my"</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthenticationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟数据库查询凭证</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getPasswordByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userMap.get(username);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// md5加密</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Md5Hash md5Hash = <span class="keyword">new</span> Md5Hash(<span class="string">"123456"</span>,<span class="string">"my"</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(md5Hash.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>​    以上就是Shiro的基本入门知识了，算是对这个安全框架有了基本的了解与认识，以后会进一步地深入学习下。</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Shiro">
+    <span class="tag-code">Shiro</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/03/17/Spring-MVC源码初探（九）-ViewResolver/">
+        <span class="nav-arrow">← </span>
+        
+          Spring MVC源码初探（九） ViewResolver
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#"><span class="toc-nav-text"></span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Shiro认证"><span class="toc-nav-text">Shiro认证</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Shiro授权"><span class="toc-nav-text">Shiro授权</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Shiro自定义Realm"><span class="toc-nav-text">Shiro自定义Realm</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#IniRealm"><span class="toc-nav-text">IniRealm</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#JdbcRealm"><span class="toc-nav-text">JdbcRealm</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#自定义Realm"><span class="toc-nav-text">自定义Realm</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Shiro密码加密"><span class="toc-nav-text">Shiro密码加密</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/04/07/Shiro入门/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Shiro入门",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/04/07/Shiro入门/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
