@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      Spring MVC源码初探（十一） MultipartResolver | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>Spring MVC源码初探（十一） MultipartResolver</h2>
+  <p class="post-date">2019-04-11</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><code>MultipartResolver</code>是用来处理上传请求的一个接口，我们看下接口中的方法：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture306.png" alt=""></p>
+<p>它有两个子类：<code>StandardServletMultipartResolver</code>和<code>CommonsMultipartResolver</code>，前者采用Servlet的</p>
+<p>标准上传方式，后者采用的是Apache的commons-fileupload，我们接着就看一下这两个子类</p>
+<h1 id="StandardServletMultipartResolver"><a href="#StandardServletMultipartResolver" class="headerlink" title="StandardServletMultipartResolver"></a>StandardServletMultipartResolver</h1><h2 id="isMultipart"><a href="#isMultipart" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> StringUtils.startsWithIgnoreCase(request.getContentType(), <span class="string">"multipart/"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里判断是否是上传请求的方式，很简单，判断<code>contentType</code>是不是以<code>multipart/</code>开头</p>
+</blockquote>
+<h2 id="resolveMultipart"><a href="#resolveMultipart" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>该方法是将<code>HttpServletRequest</code>转化成<code>MultipartHttpServletRequest</code>这样的一个上传请求，这个类</p>
+<p>就是直接new了一个<code>StandardMultipartHttpServletRequest</code>对象，实现的比较简单。</p>
+<h2 id="cleanupMultipart"><a href="#cleanupMultipart" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>该方法是在处理完上传请求后将<strong>缓存</strong>进行清除，相对来说逻辑也比较简单容易理解。</p>
+<blockquote>
+<p>我们需要留意一下StandardMultipartHttpServletRequest#parseRequest方法，它主要是根据请求获取不同的<code>Part</code>（也就是上传部分的集合），然后使用它们来创建File并设置属性。</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture307.png" alt=""></p>
+<p>​    根据我对上述三个方法的理解，真正去处理上传请求，是在解析出的上传请求对象中的方法中来完成的，比如</p>
+<p><code>parseRequest()</code>方法进行了文件的创建。</p>
+<h1 id="CommonsMultipartResolver"><a href="#CommonsMultipartResolver" class="headerlink" title="CommonsMultipartResolver"></a>CommonsMultipartResolver</h1><p><code>CommonsMultipartResolver</code>是采用的Apache的<code>commons-fileupload</code>来进行文件上传的，这个类主要是依赖</p>
+<p>于<code>commons-fileupload</code>来完成一些具体的操作。</p>
+<h2 id="isMultipart-1"><a href="#isMultipart-1" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><p>它是通过<code>commons-fileupload</code>中的<code>ServletFileUpload#isMultipartContent()</code>来判断是否是上传请求</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> ServletFileUpload.isMultipartContent(request);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture308.png" alt=""></p>
+<p>首先它会判断是不是POST请求，不是直接返回false；如果是POST请求，则去调用下一个方法来判断是否是上传请求。</p>
+<h2 id="resolveMultipart-1"><a href="#resolveMultipart-1" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>它是根据<code>resolveLazily</code>来分类来返回一个上传请求对象， 默认<code>resolveLazily</code>是false</p>
+<p>两种逻辑不变的是都采用 <code>parseRequest(request)</code>方法来返回<code>MultipartParsingResult</code>对象，</p>
+<blockquote>
+<p>不同的是resolveLazily==true，是不将MultipartParsingResult中的属性封装给MultipartHttpServletRequest返回</p>
+<p>的；而另一种情况是需要将MultipartParsingResult的属性封装给MultipartHttpServletRequest并且返回。</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture309.png" alt=""></p>
+<h2 id="cleanupMultipart-1"><a href="#cleanupMultipart-1" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>这个是清理处理请求过程中产生的<code>MultiValueMap&lt;String, MultipartFile&gt;</code>对象</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
+<blockquote>
+<p><code>#cleanupFileIterms()</code></p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
+<blockquote>
+<p>这个就很容易理解，类似于ffmpeg处理音视频的时候，处理完了，就会将一些内存碎片给清除了，一样的道理。</p>
+</blockquote>
+<h2 id="parseRequest"><a href="#parseRequest" class="headerlink" title="parseRequest()"></a>parseRequest()</h2><p>这个是具体进行文件上传逻辑的代码，主要是通过<code>commons-uploadfile</code>中的<code>FileUpload</code>组件解析出</p>
+<p><code>fileItems</code>，然后再调用<code>parseFileItems</code>方法将<code>fileItems</code>分为文件和参数两类，并设置到对应的三个</p>
+<p>Map中。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture312.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture313.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture314.png" alt=""></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    其实MultipartResolver的话，本身的设计就是为了将上传请求封装成可以直接获取File的request，然后再进行文</p>
+<p>件的上传处理。</p>
+<p>​    我们到这里对于Spring MVC的大部分源码进行了基本的分析和总结，所以有了Spring MVC源码初探系列的11篇</p>
+<p>博客，这个过程有收获，也有不足的地方，没有进行更深入的探讨；但是到这里，我觉得整个系列的目的已经达到</p>
+<p>了，那就是先入门一个优秀框架的源码，适当做一些理解，并根据参考书去领悟源码设计的精妙。希望以后可以更</p>
+<p>深入得对其他更多优秀框架的源码做一些更深入的理解。</p>
+<p>​    总之，Time Walker始终在路上前进，继续看美丽的代码风景。很喜欢比较酷的一个结尾，是吴承恩《西游记》</p>
+<p>的第100回，“至此，西游记完”。此时，我也想说，至此，该系列完结，继续加油！</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Spring MVC">
+    <span class="tag-code">Spring MVC</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/04/10/Spring-MVC源码初探（十）-HandlerExceptionResolver/">
+        <span class="nav-arrow">← </span>
+        
+          Spring-MVC源码初探（十） HandlerExceptionResolver
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#概述"><span class="toc-nav-text">概述</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#StandardServletMultipartResolver"><span class="toc-nav-text">StandardServletMultipartResolver</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#isMultipart"><span class="toc-nav-text">isMultipart()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#resolveMultipart"><span class="toc-nav-text">resolveMultipart()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#cleanupMultipart"><span class="toc-nav-text">cleanupMultipart()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#CommonsMultipartResolver"><span class="toc-nav-text">CommonsMultipartResolver</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#isMultipart-1"><span class="toc-nav-text">isMultipart()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#resolveMultipart-1"><span class="toc-nav-text">resolveMultipart()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#cleanupMultipart-1"><span class="toc-nav-text">cleanupMultipart()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#parseRequest"><span class="toc-nav-text">parseRequest()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "Spring MVC源码初探（十一） MultipartResolver",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
