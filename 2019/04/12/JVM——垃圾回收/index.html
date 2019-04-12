@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      JVM——垃圾回收 | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>JVM——垃圾回收</h2>
+  <p class="post-date">2019-04-12</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h2 id="Java垃圾回收机制"><a href="#Java垃圾回收机制" class="headerlink" title="Java垃圾回收机制"></a>Java垃圾回收机制</h2><blockquote>
+<p>垃圾回收主要回收的是堆内存空间中的对象。</p>
+</blockquote>
+<p>对象被判定为垃圾的标准：</p>
+<ul>
+<li>没有被其他对象和引用变量引用</li>
+</ul>
+<h3 id="判断对象为垃圾的算法："><a href="#判断对象为垃圾的算法：" class="headerlink" title="判断对象为垃圾的算法："></a>判断对象为垃圾的算法：</h3><ul>
+<li>引用计数算法</li>
+<li>可达性分析算法</li>
+</ul>
+<h4 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h4><blockquote>
+<p>判断对象的引用数量</p>
+</blockquote>
+<ul>
+<li><p>通过判断对象的 引用数量来决定对象是否可以被回收</p>
+</li>
+<li><p>堆中的每一个对象实例都有一个计数器，被引用则+1，完成引用则-1</p>
+<blockquote>
+<p>比如某方法中声明了一个引用变量指向某对象实例，在方法执行结束后，该引用变量就会自动被回收，所以就完成了引用，则该对象实例的计数器-1</p>
+</blockquote>
+</li>
+<li><p>任何引用计数为0的对象实例可以被当作垃圾收集</p>
+</li>
+</ul>
+<p>优点：执行效率高，程序执行受影响比较小（简单粗暴）</p>
+<p>缺点： 无法检测出循环引用的情况，导致内存泄漏</p>
+<h4 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h4><blockquote>
+<p>通过判断对象的引用链是否可传达来决定对象是否可以被回收</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture207.png" alt=""></p>
+<p>可以作为GC Root的对象：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture208.png" alt=""></p>
+<h3 id="垃圾回收算法"><a href="#垃圾回收算法" class="headerlink" title="垃圾回收算法"></a>垃圾回收算法</h3><h4 id="标记-清除算法（Mark-and-Sweep）"><a href="#标记-清除算法（Mark-and-Sweep）" class="headerlink" title="标记-清除算法（Mark and Sweep）"></a>标记-清除算法（Mark and Sweep）</h4><p>标记：从根集合进行扫描，对存活的对象进行标记</p>
+<p>清除：对堆内存从头到尾进行线性遍历，回收不可达对象内存</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture209.png" alt=""></p>
+<p>缺点：碎片化</p>
+<h4 id="复制算法（Copying）"><a href="#复制算法（Copying）" class="headerlink" title="复制算法（Copying）"></a>复制算法（Copying）</h4><blockquote>
+<p>多用于新生代垃圾收集器</p>
+</blockquote>
+<ul>
+<li>分为对象面和空闲面</li>
+<li>对象在对象面上创建</li>
+<li>存活的对象被从对象面复制到空闲面</li>
+<li>将对象面所有对象内存清除</li>
+</ul>
+<blockquote>
+<p>适用于对象存活率比较低的场景，不用考虑内存碎片等复杂情况；对象存活率比较高的情况下，复制操作很耗时</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture210.png" alt=""></p>
+<h4 id="标记-整理算法（Compacting"><a href="#标记-整理算法（Compacting" class="headerlink" title="标记-整理算法（Compacting)"></a>标记-整理算法（Compacting)</h4><blockquote>
+<p>老年代，解决了内存碎片的问题，但是还是有一个按照内存地址排序的过程。</p>
+</blockquote>
+<ul>
+<li>标记：从根集合去扫描，对存活的对象进行标记</li>
+<li>清除：移动所有存活的对象，且按照内存地址次序依次排列，然后将末端内存地址以后的内存全部回收</li>
+</ul>
+<p> <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture211.png" alt=""></p>
+<p>优点：避免了内存的不连续性；</p>
+<p>​        不用设置两块内存互换；（和复制算法相比）</p>
+<p>​        适用于对象存活率较高的场景</p>
+<h4 id="分代收集算法（Generational-Collector"><a href="#分代收集算法（Generational-Collector" class="headerlink" title="分代收集算法（Generational Collector)"></a>分代收集算法（Generational Collector)</h4><blockquote>
+<p>对前几种垃圾回收算法的综合运用</p>
+</blockquote>
+<ul>
+<li>垃圾回收算法的组合拳</li>
+<li>按照对象生命周期的不同划分区域以采用不同的垃圾回收算法</li>
+<li>目的：提高JVM的回收效率</li>
+</ul>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture212.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture213.png" alt=""></p>
+<p>年轻代对象存活率低，使用复制算法；</p>
+<p>老年代对象存活率高，使用标记-整理算法</p>
+<blockquote>
+<p>分代收集算法GC的分类：</p>
+</blockquote>
+<ul>
+<li><p>Minor GC </p>
+<blockquote>
+<p>年轻代：尽可能快速收集掉哪些生命周期短的对象</p>
+</blockquote>
+<ul>
+<li><p>Eden 区 </p>
+<p>对象刚被创建出来的时候，会被优先分配到Eden区；当然如果内存不够了，也会被分配到Surivor区，甚至被分配到老年代中 </p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>两个Survivor区</p>
+<p>From区，To区</p>
+<blockquote>
+<p>这两个Survivor区，具体哪个区被分配为From区，哪个区被分配为To区也不是固定的，随着垃圾回收的进行而相互转换</p>
+</blockquote>
+<p>年轻代的目标是快速收集掉那些生命周期短的对象</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture214.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li>Full GC</li>
+</ul>
+<blockquote>
+<p>对象如何晋升到老年代？</p>
+</blockquote>
+<ul>
+<li>经历一定Minor次数还能存活的对象（对象每经历一次Minor GC，则对象年龄自动加一，达到一定的年龄，默认15岁，则被晋升为老年代</li>
+</ul>
+<ul>
+<li><p>Survivor区中放不下的对象</p>
+<p>我们从年轻代开始讲起，对象刚创建出来在Eden Space中分配，当Eden空间满了(没有足够的空间)，则进行一次Minor GC，每一次Minor GC结束后，Eden区就会被清空，Eden区中依然存活的对象，会被放到两个Survivor中的一个中，当Survivor中放不下了，就会将对象放到老年代中。</p>
+</li>
+</ul>
+<ul>
+<li><p>新生成的大对象（-XX:+PretenuerSizeThreshold可控制大对象的大小，达到了一定的Size后，对象自动被放入老</p>
+<p>年代中）</p>
+</li>
+</ul>
+<blockquote>
+<p>以上三种情况都是可以用参数进行配置的</p>
+</blockquote>
+<p>常用的调优参数：</p>
+<ul>
+<li><p>-XX:SurvivorRatio：Eden和Survivor的比值，默认8：1</p>
+</li>
+<li><p>-XX:NewRatio：老年代与年轻代的内存大小比例 </p>
+<p>新生代与老年代内存的总大小是由-Xms - Xmx来控制的</p>
+</li>
+<li><p>-XX:MaxTenuringThreshold：对象从年轻代晋升到老年代经历GC的最大次数</p>
+</li>
+</ul>
+<p>老年代：存放生命周期较长的对象</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture215.png" alt=""></p>
+<p>老年代采用标记-清理算法或者标记-整理算法来回收垃圾</p>
+<ul>
+<li><p>Full GC和Major GC</p>
+<p>Full GC比Minor GC慢很多，但执行效率低</p>
+<p>Full GC发生的频率要比Minor GC发生的频率要低很多（因为老年代保存的是生命周期比较长的对象）</p>
+</li>
+</ul>
+<blockquote>
+<p>触发Full GC的条件：</p>
+</blockquote>
+<ul>
+<li><p>老年代空间不足（不要创建太大的对象）</p>
+</li>
+<li><p>永久代空间不足（针对JDK7以前的版本）</p>
+<blockquote>
+<p>JDK 8采用元空间来代替永久代空间，减少了Full GC的频率</p>
+</blockquote>
+</li>
+<li><p>CMS GC 时出现的<code>promotion fail ，concurrent mode failure</code></p>
+<blockquote>
+<p><code>promotion fail</code>是指在Minor GC时，Survivor中放不下对象，就把对象放老年代了，老年代也放不下了，就会触发<code>Full GC</code></p>
+<p><code>，concurrent mode failure</code>：老年代空间不足</p>
+</blockquote>
+</li>
+<li><p>Minor GC晋升到老年代的平均大小大于老年代的剩余空间</p>
+<blockquote>
+<p>Minro GC晋升到老年代，会检查老年代的剩余空间，如果不足，就会触发Full GC</p>
+</blockquote>
+</li>
+<li><p>程序调用System.gc()提示虚拟机去回收对象，但是具体由虚拟机判断回不回收</p>
+</li>
+<li><p>使用RMI来进行RPC或者管理你的JDK应用时，每小时执行一次Full GC</p>
+</li>
+</ul>
+<h3 id="常见的垃圾收集器"><a href="#常见的垃圾收集器" class="headerlink" title="常见的垃圾收集器"></a>常见的垃圾收集器</h3><p>理论知识：</p>
+<ol>
+<li>Stop-the-World（除了GC线程外，其他线程都处于等待状态）</li>
+</ol>
+<ul>
+<li>JVM由于要执行GC而停止了应用程序的执行</li>
+<li>任何一种GC算法中都会发生</li>
+<li>多数GC优化通过减少Stop-the-world发生的时间来提高程序性能</li>
+</ul>
+<ol start="2">
+<li><p>Safepoint 安全点</p>
+<ul>
+<li>分析过程中对象引用关系不会发生变化的点</li>
+<li>产生Safepoint的地方：方法调用；循环跳转；异常跳转</li>
+<li>安全点数量得适中</li>
+</ul>
+<p>我理解为静态点，这样GC才可以找到一个稳定得点来执行</p>
+</li>
+</ol>
+<h4 id="JVM的运行模式"><a href="#JVM的运行模式" class="headerlink" title="JVM的运行模式"></a>JVM的运行模式</h4><ul>
+<li>Server 启动的JVM，是轻量级的JVM，进行了很多优化</li>
+<li>Client  启动较快  </li>
+</ul>
+<h4 id="垃圾收集器之间的联系"><a href="#垃圾收集器之间的联系" class="headerlink" title="垃圾收集器之间的联系"></a>垃圾收集器之间的联系</h4><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture216.png" alt=""></p>
+<p>年轻代常见的垃圾回收器</p>
+<ul>
+<li><p>Serial 收集器（-XX:+UseSerialGC，复制算法） </p>
+<ul>
+<li><p>单线程收集，进行垃圾收集时，必须暂停所有工作线程</p>
+</li>
+<li><p>简单高效，Client模式下默认的年轻代收集器</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture217.png" alt=""></p>
+</li>
+</ul>
+</li>
+<li><p>ParNew收集器（-XX:+UseParNewGC，复制算法）</p>
+<ul>
+<li>多线程收集，其余的行为，特点和Serial收集器一样</li>
+<li>单核执行效率不如Serial，在多核下执行具有优势</li>
+</ul>
+</li>
+<li><p>Parallel Scavenge收集器（-XX:+UseParallelGC)  复制算法</p>
+<p>系统吞吐量=CPU运行用户代码时间/（运行用户代码时间+垃圾收集时间）</p>
+<ul>
+<li>多线程。多核下执行具有优势，Server模式默认的年轻代收集器</li>
+<li>比起关注用户线程停顿时间，更关注系统的吞吐量</li>
+</ul>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture218.png" alt=""></p>
+</li>
+</ul>
+<p>老年代常见的垃圾收集器</p>
+<ul>
+<li>Serial Old收集器（-XX:+UseSerialOldGC,标记整理算法）<ul>
+<li>单线程收集，进行垃圾收集时，必须暂停所有工作线程</li>
+<li>简单高效，Client模式下默认的老年代收集器</li>
+</ul>
+</li>
+<li>Parallel Old收集器（-XX:+UserParallelOldGC,标记整理算法）<ul>
+<li>多线程，吞吐量优先</li>
+</ul>
+</li>
+</ul>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture219.png" alt=""></p>
+<ul>
+<li><p>CMS收集器（-XX:+UseConcMarkSweepGC，标记清除算法）</p>
+<p>几乎做到垃圾收集线程与用户线程同时工作，缩短了stop the world的时间</p>
+<ul>
+<li>初始标记阶段：stop the world :smiley:</li>
+<li>并发标记：并发追溯标记，程序不会停顿</li>
+<li>并发预清理：查找执行并发标记阶段从年轻代晋升到老年代的对象</li>
+<li>重新标记：暂停虚拟机，扫描CMS堆中剩余的对象​ :smile:</li>
+<li>并发清理：清理垃圾对象，程序不会卡顿</li>
+<li>并发重置：重置CMS收集器的数据结构</li>
+</ul>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture220.png" alt=""></p>
+<blockquote>
+<p>会产生内存碎片</p>
+</blockquote>
+</li>
+<li><p>G1收集器（-XX:+UseG1GC，复制+标记-整理算法）<strong>同时用于老年代与新生代的垃圾收集器</strong></p>
+<p>Garbage First的特点：</p>
+<ul>
+<li>并行与并发   减少 stop the world 的时间</li>
+<li>分代收集     独立管理整个堆空间</li>
+<li>空间整合 标记整理算法，不会产生碎片，因为由内存空间整合的过程</li>
+<li>可预测的停顿          </li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>将整个Java堆内存划分成多个大小相等的Region</p>
+</li>
+<li><p>年轻代与老年代不再物理隔离 </p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture221.png" alt=""></p>
+</li>
+</ul>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#JVM">
+    <span class="tag-code">JVM</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/04/12/JVM——Java内存模型/">
+        <span class="nav-arrow">← </span>
+        
+          JVM——Java内存模型
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Java垃圾回收机制"><span class="toc-nav-text">Java垃圾回收机制</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#判断对象为垃圾的算法："><span class="toc-nav-text">判断对象为垃圾的算法：</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#引用计数算法"><span class="toc-nav-text">引用计数算法</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#可达性分析算法"><span class="toc-nav-text">可达性分析算法</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#垃圾回收算法"><span class="toc-nav-text">垃圾回收算法</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#标记-清除算法（Mark-and-Sweep）"><span class="toc-nav-text">标记-清除算法（Mark and Sweep）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#复制算法（Copying）"><span class="toc-nav-text">复制算法（Copying）</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#标记-整理算法（Compacting"><span class="toc-nav-text">标记-整理算法（Compacting)</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#分代收集算法（Generational-Collector"><span class="toc-nav-text">分代收集算法（Generational Collector)</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#常见的垃圾收集器"><span class="toc-nav-text">常见的垃圾收集器</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#JVM的运行模式"><span class="toc-nav-text">JVM的运行模式</span></a></li><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#垃圾收集器之间的联系"><span class="toc-nav-text">垃圾收集器之间的联系</span></a></li></ol></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/04/12/JVM——垃圾回收/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "JVM——垃圾回收",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/04/12/JVM——垃圾回收/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
