@@ -150,8 +150,7 @@
 <p>我们需要留意一下StandardMultipartHttpServletRequest#parseRequest方法，它主要是根据请求获取不同的<code>Part</code>（也就是上传部分的集合），然后使用它们来创建File并设置属性。</p>
 </blockquote>
 <p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture307.png" alt=""></p>
-<p>​    根据我对上述三个方法的理解，真正去处理上传请求，是在解析出的上传请求对象中的方法中来完成的，比如</p>
-<p><code>parseRequest()</code>方法进行了文件的创建。</p>
+<p>​    根据我对上述三个方法的理解，真正去处理上传请求，是在解析出的上传请求对象中的方法中来完成的，比如<code>parseRequest()</code>方法进行了文件的创建。</p>
 <h1 id="CommonsMultipartResolver"><a href="#CommonsMultipartResolver" class="headerlink" title="CommonsMultipartResolver"></a>CommonsMultipartResolver</h1><p><code>CommonsMultipartResolver</code>是采用的Apache的<code>commons-fileupload</code>来进行文件上传的，这个类主要是依赖</p>
 <p>于<code>commons-fileupload</code>来完成一些具体的操作。</p>
 <h2 id="isMultipart-1"><a href="#isMultipart-1" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><p>它是通过<code>commons-fileupload</code>中的<code>ServletFileUpload#isMultipartContent()</code>来判断是否是上传请求</p>
@@ -180,14 +179,9 @@
 <p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture312.png" alt=""></p>
 <p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture313.png" alt=""></p>
 <p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture314.png" alt=""></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    其实MultipartResolver的话，本身的设计就是为了将上传请求封装成可以直接获取File的request，然后再进行文</p>
-<p>件的上传处理。</p>
-<p>​    我们到这里对于Spring MVC的大部分源码进行了基本的分析和总结，所以有了Spring MVC源码初探系列的11篇</p>
-<p>博客，这个过程有收获，也有不足的地方，没有进行更深入的探讨；但是到这里，我觉得整个系列的目的已经达到</p>
-<p>了，那就是先入门一个优秀框架的源码，适当做一些理解，并根据参考书去领悟源码设计的精妙。希望以后可以更</p>
-<p>深入得对其他更多优秀框架的源码做一些更深入的理解。</p>
-<p>​    总之，Time Walker始终在路上前进，继续看美丽的代码风景。很喜欢比较酷的一个结尾，是吴承恩《西游记》</p>
-<p>的第100回，“至此，西游记完”。此时，我也想说，至此，该系列完结，继续加油！</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    其实MultipartResolver的话，本身的设计就是为了将上传请求封装成可以直接获取File的request，然后再进行文件的上传处理。</p>
+<p>​    我们到这里对于Spring MVC的大部分源码进行了基本的分析和总结，所以有了Spring MVC源码初探系列的11篇博客，这个过程有收获，也有不足的地方，没有进行更深入的探讨；但是到这里，我觉得整个系列的目的已经达到了，那就是先入门一个优秀框架的源码，适当做一些理解，并根据参考书去领悟源码设计的精妙。希望以后可以更深入得对其他更多优秀框架的源码做一些更深入的理解。</p>
+<p>​    总之，Time Walker始终在路上前进，继续看美丽的代码风景。很喜欢比较酷的一个结尾，是吴承恩《西游记》的第100回，“至此，西游记完”。此时，我也想说，至此，该系列完结，继续加油！</p>
 </section>
     <!-- Tags START -->
     
