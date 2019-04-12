@@ -144,6 +144,9 @@
 <p>详细内容，学习多线程与并发的时候再去深入</p>
 <h2 id="Java对象模型"><a href="#Java对象模型" class="headerlink" title="Java对象模型"></a>Java对象模型</h2><p>Java是一种面向对象的语言，而Java对象在JVM中的存储也是有一定的结构的。而这个关于Java对象自身的存储模型称之为Java对象模型。<br>Java对象模型其实就是Java对象在JVM中的表现形式。</p>
 <p>具体内容，以后再深入</p>
+<blockquote>
+<p>每一个Java类，在被JVM加载的时候，JVM会给这个类创建一个<code>instanceKlass</code>，保存在方法区，用来在JVM层表示该Java类。当我们在Java代码中，使用new创建一个对象的时候，JVM会创建一个<code>instanceOopDesc</code>对象，这个对象中包含了两部分信息，对象头以及元数据。对象头中有一些运行时数据，其中就包括和多线程相关的锁的信息。元数据其实维护的是指针，指向的是对象所属的类的<code>instanceKlass</code>。</p>
+</blockquote>
 <h1 id="Java内存模型的理解（JMM"><a href="#Java内存模型的理解（JMM" class="headerlink" title="Java内存模型的理解（JMM)"></a>Java内存模型的理解（JMM)</h1><p>并发编程，为了保证数据的安全，需要满足以下三个特性：</p>
 <p><strong>原子性</strong>是指在一个操作中就是cpu不可以在中途暂停然后再调度，既不被中断操作，要不执行完成，要不就不执行。</p>
 <p><strong>可见性</strong>是指当多个线程访问同一个变量时，一个线程修改了这个变量的值，其他线程能够立即看得到修改的值。</p>
