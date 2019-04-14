@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      MyBatis插件介绍 | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>MyBatis插件介绍</h2>
+  <p class="post-date">2019-04-14</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>其实MyBatis插件开发，就是在SQL语句执行过程中的某一点进行拦截。</p>
+<p>MyBatis允许使用插件来拦截的接口和方法如下所示：（这些可以被拦截)</p>
+<ul>
+<li>Executor ( update 、 query 、 flushStatements 、 commit 、 rollback 、<br>getTransaction 、 close 、 isClosed)</li>
+<li>ParameterHandler ( getParameterObj ect 、 setParameters)</li>
+<li>Resul tSetHandler ( handleResul tSets 、 handleCursorResultSe ts 、<br>handleOutputParameters)</li>
+<li>StatementHandler (prepare 、 parameterize 、 batch 、 update 、 query) </li>
+</ul>
+<h1 id="拦截器接口介绍"><a href="#拦截器接口介绍" class="headerlink" title="拦截器接口介绍"></a>拦截器接口介绍</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Interceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">Object <span class="title">intercept</span><span class="params">(Invocation invocation)</span> <span class="keyword">throws</span> Throwable</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function">Object <span class="title">plugin</span><span class="params">(Object target)</span></span>;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 用来传递插件的参数，可以通过参数来改变插件的行为</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Properties properties)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="setProperties"><a href="#setProperties" class="headerlink" title="setProperties()"></a>setProperties()</h2><p>我们在mybatis-config.xml文件中作如下的配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--声明一个插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">”</span> <span class="attr">tk.mybatis.simple.plugin</span> <span class="attr">.</span> <span class="attr">XXXInterceptor</span> " &gt;</span></span><br><span class="line"><span class="tag">&lt; <span class="attr">property</span> <span class="attr">name</span> ＝ ” <span class="attr">propl</span> ” <span class="attr">value</span> ＝” <span class="attr">value</span> <span class="attr">l</span> ”/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> ＝ ” <span class="attr">prop2</span> ” <span class="attr">value</span> ＝” <span class="attr">value2</span>“/&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里面的property标签定义了拦截器的参数，这两个参数可以通过<code>setProperties()</code>传递给我们的拦截器</p>
+</blockquote>
+<h2 id="plugin"><a href="#plugin" class="headerlink" title="plugin()"></a>plugin()</h2><p><code>Object plugin(Object target);</code></p>
+<p><code>target</code>:拦截器要拦截的对象</p>
+<blockquote>
+<p>该方法会在创建被拦截的接口实现类时调用</p>
+</blockquote>
+<p>该方法的实现很简单 ，只需要调用 MyBatis 提供的<br><code>Plugin (org . apache. ibatis. plugin. Plugin ）</code>类的 <code>wrap</code> 静态方法就可以通过 Java 的<br>动态代理拦截目标对象。这个接口方法通常的实现代码如下 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">plugin</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> Plugin.wrap(target , <span class="keyword">this</span>) ; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>wrap</code>方法会自动判断<strong>拦截器的签名和被拦截对象的接口</strong>是否匹配，只有匹配的<br>情况下才会使用动态代理拦截目标对象，因此在上面的实现方法中不必做额外的逻辑判断 。 </p>
+<h2 id="intercept"><a href="#intercept" class="headerlink" title="intercept()"></a>intercept()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Invocation invocation)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"> <span class="comment">// 获取当前被拦截的对象</span></span><br><span class="line">Object target ＝invocation.getTarget ();</span><br><span class="line"> <span class="comment">// 获取当前被拦截的方法</span></span><br><span class="line">Method method = invocation.getMethod() ;</span><br><span class="line"> <span class="comment">// 获取被拦截方法的参数</span></span><br><span class="line">Object[] args = invocation.getArgs() ;</span><br><span class="line"> <span class="comment">// 返回执行的结果</span></span><br><span class="line">Object result ＝invocation .proceed ();</span><br><span class="line"><span class="keyword">return</span> result </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="拦截器签名介绍"><a href="#拦截器签名介绍" class="headerlink" title="拦截器签名介绍"></a>拦截器签名介绍</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Intercepts</span>(&#123;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="meta">@Signature</span> (</span><br><span class="line">type = ResultSetHandler.class ,</span><br><span class="line">method = ” handleResultSets ”,</span><br><span class="line">args = &#123;Statement. <span class="class"><span class="keyword">class</span>&#125;)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>type</code>    设置拦截的接口</p>
+</li>
+<li><p><code>method</code>  设置拦截接口的方法</p>
+</li>
+<li><p><code>args</code> 设置拦截方法的参数类型数组，通过方法名和参数类型可以确定唯一一个方法</p>
+</li>
+</ul>
+<p>在我的项目当中是这样定义的拦截器签名：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Intercepts</span>(&#123; <span class="meta">@Signature</span>(type = Executor.class, method = <span class="string">"update"</span>, args = &#123; MappedStatement.class, Object.class &#125;),</span><br><span class="line">		<span class="meta">@Signature</span>(type = Executor.class, method = <span class="string">"query"</span>, args = &#123; MappedStatement.class, Object.class,</span><br><span class="line">				RowBounds.class, ResultHandler.class &#125;) &#125;)</span><br></pre></td></tr></table></figure>
+<p>我需要对<code>Executor</code>接口进行拦截，先拦截其update方法，再拦截器query方法，被拦截方法中的参数根据update和query方法来决定。</p>
+<p>这是Executor接口中的两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(MappedStatement ms, Object parameter)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line"> &lt;E&gt; <span class="function">List&lt;E&gt; <span class="title">query</span><span class="params">(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler)</span> <span class="keyword">throws</span> SQLException</span>;</span><br></pre></td></tr></table></figure>
+<p>我的理解是<code>MapppedStatement</code>对象对应的是我们XXXmapper.xml文件中<code>&lt;select&gt;&lt;/select&gt;</code>标签对象，Executor是一个执行器，负责通过动态代理来执行<code>MappedStatement</code>。</p>
+<blockquote>
+<p>我们就是要拦截这个执行器，让SQL语句在执行之前动态地选择数据源，也就是查询语句走从库，增删改语句走主库。</p>
+</blockquote>
+<h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><p>我的项目需要对sql语句进行拦截，使得其动态地选择数据源；所以我就拦截了Executor接口，并编写了动态选择数据源的逻辑。这样就体现了主从同步的作用，从库用来读，主库负责写。</p>
+<p>核心的代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取BoundSql（Sql语句对象）</span></span><br><span class="line">BoundSql boundSql = ms.getSqlSource().getBoundSql(objects[<span class="number">1</span>]);</span><br><span class="line"><span class="comment">// 获取SQL语句</span></span><br><span class="line">String sql = boundSql.getSql().toLowerCase(Locale.CHINA).replaceAll(<span class="string">"[\\t\\n\\r]"</span>, <span class="string">" "</span>);</span><br><span class="line"><span class="keyword">if</span> (sql.matches(REGEX)) &#123;</span><br><span class="line">                   <span class="comment">// 设置访问主库</span></span><br><span class="line">	lookupKey = DynamicDataSourceHolder.DB_MASTER;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                   <span class="comment">// 设置访问从库</span></span><br><span class="line">	lookupKey = DynamicDataSourceHolder.DB_SLAVE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#MyBatis">
+    <span class="tag-code">MyBatis</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/04/14/揭秘-SpringBootApplication/">
+        <span class="nav-arrow">← </span>
+        
+          揭秘@SpringBootApplication
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#拦截器接口介绍"><span class="toc-nav-text">拦截器接口介绍</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#setProperties"><span class="toc-nav-text">setProperties()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#plugin"><span class="toc-nav-text">plugin()</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#intercept"><span class="toc-nav-text">intercept()</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#拦截器签名介绍"><span class="toc-nav-text">拦截器签名介绍</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#实战"><span class="toc-nav-text">实战</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/04/14/MyBatis插件介绍/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "MyBatis插件介绍",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/04/14/MyBatis插件介绍/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
