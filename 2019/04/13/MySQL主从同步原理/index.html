@@ -10,7 +10,7 @@
   
   <title>
     
-      MyBatis学习指南 | 时间旅行者
+      MySQL主从同步原理 | 时间旅行者
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,8 +126,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>MyBatis学习指南</h2>
-  <p class="post-date">2019-02-04</p>
+  <h2>MySQL主从同步原理</h2>
+  <p class="post-date">2019-04-13</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -135,49 +135,71 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>MyBatis的学习指导方针：</p>
-<ol>
-<li><p>通过看书籍和官方文档的方式进行<strong>入门</strong>；</p>
-</li>
-<li><p>然后再多编码实践，偏<strong>实战</strong>的方式进行巩固；</p>
-</li>
-<li><strong>进阶</strong>通过学习源码的方式</li>
-</ol>
-<p>由此指导方针制定的学习指南如下所示：</p>
-<ol>
-<li><p>学习《MyBatis从入门到精通》</p>
-<p>​    这本书比较容易懂，跟着书本理解并写完整本书的代码后，会对MyBatis有一个基本的了解，并且看完基本的xml映射文件都会写了，属于入门和偏<strong>实战</strong>的书籍。一定要好好看完，跟着写代码和理解。</p>
-</li>
-</ol>
-<ol start="2">
-<li><p>学习<a href="http://www.mybatis.org/mybatis-3/zh/" target="_blank" rel="noopener">MyBatis官方文档</a></p>
-<p>​    从来没见过如此好懂的官方文档，之前小马哥说官方文档是学习过程中的一个重要来源，但是Spring Cloud的官方文档，貌似看了，还是对Spring Cloud的理解没有太大提升，可能是自己的功底还是不够吧。</p>
+    <section class="markdown-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>当系统应用访问量大大增加的时候，单台服务器的性能出现瓶颈，数据库的读写效率就会大大降低，这时候就需要主从同步，也就是一个主库带着多个从库，主库主要负责写，并将数据同步到从库，而从库负责读，这样就缓解了数据库的读写压力。并且，当主库宕机的时候，会自动切换一个旧的从库，将其升级成新的主库。</p>
+<p>那么我们就来看看数据库主从同步的原理</p>
+<h1 id="主从同步简介"><a href="#主从同步简介" class="headerlink" title="主从同步简介"></a>主从同步简介</h1><p>主从同步，对于主库与从库的配置，可以我们在服务器上进行配置。配置主要就是建立主库与从库的关系，核心就是主库赋予从库一个用户账号来从主库那里同步数据。</p>
 <blockquote>
-<p>学习官方文档，可以巩固之前《MyBatis从入门到精通》中所学的知识</p>
+<p>我在设置同步账号的时候，由于从库的密码级别调得很高，导致同步出错。之前觉得MySQL的密码没必要设置得这么简单，但是后来发现，在企业级开发中，为了保证安全性，必须设置复杂的密码，并且最好不要使用root用户来连接数据库。并且3306端是人人皆知，我们可以修改成别的端口，以防止数据库被攻击。</p>
+</blockquote>
+<p>关于配置层面，就是应用程序层面动态选择主库还是从库，主库是写操作，从库是读操作。比如如果使用了MyBatis，就可以采用其自定义的插件来实现对SQL语句的拦截，实现读操作走从库，写操作访问主库。</p>
+<blockquote>
+<p>关于MyBatis的插件实现动态访问主库和从库，会在之后的学习中有涉及，并尽可能地输出到我的个人博客。</p>
+</blockquote>
+<h1 id="binlog简介"><a href="#binlog简介" class="headerlink" title="binlog简介"></a>binlog简介</h1><p>MySQL实现<strong>主从同步</strong>，离不开<code>binlog</code>。我们需要首先了解下<code>binlog</code>。</p>
+<p>binlog日志用于记录所有更新了数据或者已经潜在更新了数据（例如，没有匹配任何行的一个DELETE）的所有语句。语句以“事件”的形式保存，它描述数据更改，它是以二进制的形式保存在磁盘中。我们可以通过mysql提供的查看工具<code>mysqlbinlog</code>文件中的内容，例如 mysqlbinlog mysql-bin.00001 | more，这里注意一下binlog文件的后缀名00001，binlog文件大小和个数会不断的增加，当MySQL停止或重启时，会产生一个新的binlog文件，后缀名会按序号递增，例如mysql-bin.00002、mysql-bin.00003，并且当binlog文件大小超过 max_binlog_size系统变量配置时也会产生新的binlog文件。</p>
+<p>主库的<code>binlog</code>可以将主库的数据同步到从库，然后从库将这些数据写入到数据库当中，这样就实现了主从同步。</p>
+<h2 id="binlog日志格式"><a href="#binlog日志格式" class="headerlink" title="binlog日志格式"></a>binlog日志格式</h2><p>（1） <code>statement</code> ： 记录每一条更改数据的sql;</p>
+<ul>
+<li>优点：binlog文件较小，节约I/O，性能较高。</li>
+<li>缺点：不是所有的数据更改都会写入binlog文件中，尤其是使用MySQL中的一些特殊函数（如LOAD_FILE()、UUID()等）和一些不确定的语句操作，从而导致主从数据无法复制的问题。</li>
+</ul>
+<p>（2） <code>row</code>： 不记录sql，只记录<strong>每行数据的更改细节</strong></p>
+<ul>
+<li>优点：详细的记录了每一行数据的更改细节，这也意味着不会由于使用一些特殊函数或其他情况导致不能复制的问题。</li>
+<li>缺点：由于row格式记录了每一行数据的更改细节，会产生大量的binlog日志内容，性能不佳，并且会增大主从同步延迟出现的几率。</li>
+</ul>
+<p>（3） <code>mixed</code>：一般的语句修改使用statment格式保存binlog，如一些函数，statement无法完成主从复制的操作，则采用row格式保存binlog，MySQL会根据执行的每一条具体的sql语句来区分对待记录的日志形式，也就是在Statement和Row之间选择一种。</p>
+<blockquote>
+<p>从库的数据库版本要不低于主库的版本，是为了让从库接收到主库的binlog后，能够正确执行。</p>
+</blockquote>
+<h1 id="主从同步原理"><a href="#主从同步原理" class="headerlink" title="主从同步原理"></a>主从同步原理</h1><p>mysql主从复制需要三个线程，master（binlog dump thread）、slave（I/O thread 、SQL thread）。</p>
+<p><strong>master</strong></p>
+<p>（1）<code>binlog dump</code>线程：当主库中有数据更新时，那么主库就会根据按照设置的binlog格式，将此次更新的事件类型写入到主库的binlog文件中，此时主库会创建log dump线程通知slave有数据更新，当I/O线程请求日志内容时，会将此时的binlog名称和当前更新的位置同时传给slave的I/O线程。</p>
+<p><strong>slave</strong></p>
+<p>（2）<code>I/O</code>线程：该线程会连接到master，向log dump线程请求一份指定binlog文件位置的副本，并将请求回来的binlog存到本地的relay log中，relay log和binlog日志一样也是记录了数据更新的事件，它也是按照递增后缀名的方式，产生多个relay log（ host_name-relay-bin.000001）文件，slave会使用一个index文件（ host_name-relay-bin.index）来追踪当前正在使用的relay log文件。</p>
+<p>（3）<code>SQL</code>线程：该线程检测到relay log有更新后，会读取并在本地做redo操作，将发生在主库的事件在本地重新执行一遍，来保证主从数据同步。此外，如果一个relay log文件中的全部事件都执行完毕，那么SQL线程会自动将该relay log 文件删除掉。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/linkedkeeper0_b3fa3bae-e0f3-4a9b-b16f-4e4da63362b9.jpg" alt=""></p>
+<p>这里面需要注意是从库开启了一个IO线程，将主库的binlog内容写入到Relay log中，然后SQL线程检测到Relay log的更新，就将数据同步到数据库中。</p>
+<blockquote>
+<p>为了性能考虑，不会直接将主库的binlog写给从库，而是通过Relay log先接受主库数据，然后再同步到从库中。</p>
+</blockquote>
+<h1 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h1><ol>
+<li><p>主从同步有延迟吗？</p>
+<blockquote>
+<p>有的，因为从库的同步比较消耗时间</p>
+</blockquote>
+</li>
+<li><p>主从同步能完全缓解数据库的压力吗？</p>
+<blockquote>
+<p>不能，因为数据库还会承受一定的压力，高并发下性能还会下降，这时候可以通过消息队列进行削峰处理，限制PQS；也可以说采用Redis等缓存中间件来缓解从库的读请求压力；另外还可以进行分库分表，将数据库的大表拆分成小表，然后分摊到每个小表的请求就会很少，这样，数据库的压力也就减小了</p>
+</blockquote>
+</li>
+<li><p>你们的数据库服务器有没有采用主从同步？</p>
+<blockquote>
+<p>我们的系统，是一主一从，主库主要负责写入数据，从库负责同步主库写入的数据并且接收后台管理系统（运营）和用户的读请求；另外，我们采用了缓存ehcache，缓解了数据库从库的压力；特别地，对于一些冷数据，我们提前从从库中读取出来，作为一个js静态文件写入到云服务器的磁盘中，然后用户访问前台页面的时候，就直接从js文件中获取。这样做的话，缓解了缓存服务器的压力，并且可以更迅速的获取数据，加快了前台页面的响应速度。</p>
 </blockquote>
 </li>
 </ol>
-<ol start="3">
-<li>一定要找例子多练习，只有练习与尝试，才能更好地掌握MyBatis的实战内容</li>
-</ol>
-<ol start="4">
-<li><p>学习《MyBatis技术内幕》</p>
-<p>​    这本书偏源码，属于进阶的学习，当然学习源码还可以参考别人的博客。</p>
-<p>目前，就是把第一章的简介看完再说。</p>
-</li>
-</ol>
+<p><strong>一点思考</strong></p>
+<p>主从同步的架构下，主库与从库的延迟是客观存在的；这一点对于关系数据库是这样的，对Redis也同样适用，因为不是自己本机的数据，同步到另一台机器，这个同步就会产生延迟，我们能做的就是缩小延迟。</p>
 </section>
     <!-- Tags START -->
     
       <div class="tags">
         <span>Tags:</span>
         
-  <a href="/tags#学习指南">
-    <span class="tag-code">学习指南</span>
-  </a>
-
-  <a href="/tags#MyBatis">
-    <span class="tag-code">MyBatis</span>
+  <a href="/tags#数据库">
+    <span class="tag-code">数据库</span>
   </a>
 
       </div>
@@ -188,20 +210,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2019/02/01/《SQL必知必会》/">
+      <a class="nav-left" href="/2019/04/12/数据结构基本总结/">
         <span class="nav-arrow">← </span>
         
-          《SQL必知必会》笔记
+          数据结构基本总结
         
       </a>
     
-    
-      <a class="nav-right" href="/2019/02/05/官方文档记录/">
-        
-          官方文档记录
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -245,7 +260,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="nav">none</ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#主从同步简介"><span class="toc-nav-text">主从同步简介</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#binlog简介"><span class="toc-nav-text">binlog简介</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#binlog日志格式"><span class="toc-nav-text">binlog日志格式</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#主从同步原理"><span class="toc-nav-text">主从同步原理</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#思考"><span class="toc-nav-text">思考</span></a></li></ol>
     
   </div>
 </aside>
@@ -255,7 +270,7 @@
 
 <script>
   (function () {
-    var url = 'https://www.liutianruo.com/2019/02/04/MyBatis学习指南/';
+    var url = 'https://www.liutianruo.com/2019/04/13/MySQL主从同步原理/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -311,7 +326,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "MyBatis学习指南",
+        id: "MySQL主从同步原理",
         owner: "",
         repo: "",
         oauth: {
@@ -339,7 +354,7 @@
 <script>
   var disqus_shortname = '';
   
-  var disqus_url = 'https://www.liutianruo.com/2019/02/04/MyBatis学习指南/';
+  var disqus_url = 'https://www.liutianruo.com/2019/04/13/MySQL主从同步原理/';
   
   (function(){
     var dsq = document.createElement('script');
