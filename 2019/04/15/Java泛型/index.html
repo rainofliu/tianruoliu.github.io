@@ -10,7 +10,7 @@
   
   <title>
     
-      深入Java IO | 时间旅行者
+      Java泛型 | 时间旅行者
     
   </title>
   <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -126,8 +126,8 @@
 </header>
 
     <div id="article-banner">
-  <h2>深入Java IO</h2>
-  <p class="post-date">2019-04-14</p>
+  <h2>Java泛型</h2>
+  <p class="post-date">2019-04-15</p>
   <div class="arrow-down">
     <a href="javascript:;"></a>
   </div>
@@ -135,105 +135,38 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>机智的我，又在知识星球找到了IO的干货，那就跟着干货深入整理一下IO的全面知识点。</p>
-<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ol>
-<li><p>什么是流，什么是比特，什么是字节，什么是字符 </p>
-<ul>
-<li>流：流是一串连续不断的数据集合，可以一段一段的写入长的数据流，读取数据流的时候是不知道流的分段 情况的，只能从前往后读取数据流</li>
-<li>比特：是二进制的最小单位，0或者1</li>
-<li>字节：是计算机操作数据的最小单位，8位bit，（-128~</li>
-<li>字符：用户可读写的最小单位，16位bit，（0~65535） </li>
-</ul>
-</li>
-<li><p>什么是IO，包含哪几种流 </p>
+    <section class="markdown-content"><h1 id="泛型简介"><a href="#泛型简介" class="headerlink" title="泛型简介"></a>泛型简介</h1><p><strong>什么是Java中的泛型呢？</strong></p>
+<p>Java泛型（generics） 是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。泛型最主要的应用是在JDK 5中的新集合类框架中。<br>泛型最大的好处是可以提高代码的复用性。以List接口为例，我们可以将String、Integer等类型放入List中，如不用泛型，存放String类型要写一个List接口，存放Integer要写另外一个List接口，泛型可以很好的解决这个问题。</p>
 <blockquote>
-<p>它是指计算机与外部世界或者一个程序与计算机的其余部分的之间的接口。它对于任何计算机系统都非常关键，因而所有 I/O 的主体实际上是内置在操作系统中的。单独的程序一般是让系统为它们完成大部分的工作。 在 Java 编程中，直到最近一直使用 流 的方式完成 I/O。所有 I/O 都被视为单个的字节的移动，通过一个称为 Stream 的对象一次移动一个字节。流 I/O 用于与外部世界接触。它也在内部使用，用于将对象转换为字节，然后再转换回对象 </p>
+<p>类是对象的模板，泛型是类的模板。</p>
 </blockquote>
-<p>字节流，字符流，输入流，输出流 </p>
+<p><strong>什么是类型擦除？</strong></p>
+<p>类型擦除指的是通过类型参数合并，将泛型类型实例关联到同一份字节码上。编译器只为泛型类型生成一份字节码，并将其实例关联到这份字节码上。</p>
+<p>类型擦除的关键在于从泛型类型中清除类型参数的相关信息，并且再必要的时候添加类型检查和类型转换的方法。</p>
+<p> 类型擦除可以简单的理解为将泛型java代码转换为普通java代码，只不过编译器更直接点，将泛型java代码直接转换成普通java字节码。 </p>
+<p>类型擦除的主要过程如下：</p>
+<ol>
+<li><p>将所有的泛型参数用其最左边界（最顶级的父类型）类型替换。</p>
 </li>
-<li><p>什么是字节流和字符流，区别，之间如何转换 </p>
+<li><p>移除所有的类型参数。</p>
+</li>
+</ol>
+<p><strong>Java泛型中K T V E ？ object等分别代表什么含义。</strong></p>
 <ul>
-<li><p>字节流：操作的是byte类型的数据，直接对文件本身进行操作，主要操作类是<code>OutputStream</code>、<code>InputStream</code>的子类</p>
-</li>
-<li><p>字符流：操作的是字符类型的数据，使用<strong>缓冲区</strong>缓冲字符，不关闭流就不会输出任何内容，主要操作类是 Reader、Writer的子类</p>
-</li>
+<li>E – Element (在集合中使用，因为集合中存放的是元素)</li>
+<li>T – Type（Java 类）</li>
+<li>K – Key（键）</li>
+<li>V – Value（值）</li>
+<li>N – Number（数值类型）</li>
+<li>？ – 表示不确定的java类型（无限制通配符类型）</li>
+<li>S、U、V – 2nd、3rd、4th types</li>
+<li>Object – 是所有类的根类，任何类的对象都可以设置给该Object引用变量，使用的时候可能需要类型强制转换，但是用使用了泛型T、E等这些标识符后，在实际用之前类型就已经确定了，不需要再进行类型强制转换。</li>
 </ul>
-</li>
-<li><p>什么是输入流和输出流</p>
-<ul>
-<li>输入流：把数据写入存储介质的操作</li>
-<li>输出流：从存储介质中读取数据的操作</li>
-</ul>
-</li>
-</ol>
-<h1 id="NIO-BIO-AIO"><a href="#NIO-BIO-AIO" class="headerlink" title="NIO,BIO,AIO"></a>NIO,BIO,AIO</h1><ol>
-<li><p>什么是<code>NIO</code></p>
-<p>NIO与IO的作用和目的是相同的，都是计算机与外部世界或者一个程序与计算机的其余部分的之间的接口，只<br>不过，IO是以流的方式处理数据，而NIO是以块的方式处理数据<br>IO：流式数据创建过滤器很容易，面向流的IO慢<br>NIO：按照块处理比按照流处理的快，但是缺少优雅性和简单性 </p>
-</li>
-<li><p>什么是<code>AIO</code></p>
-<p>Java AIO即Async非阻塞，是异步非阻塞的IO。 </p>
-</li>
-<li><p>什么是<code>BIO</code></p>
-<p>Java BIO即Block I/O ， 同步并阻塞的IO。</p>
-</li>
-</ol>
-<ol start="4">
-<li><p>NIO,BIO,AIO之间的区别与联系 </p>
-<p>BIO：同步阻塞IO模式，必须等待这件事情做完了才去做下一件事情<br>AIO：异步非阻塞IO模式，不用等待这件事情做完了才去做下一件事，这件事情做完了就会自动告诉我他做完<br>了<br>NIO：同时支持阻塞与非阻塞模式 </p>
-</li>
-</ol>
-<ol start="5">
-<li><p>Java中BIO、NIO、AIO分别适用哪些场景 </p>
-<p><code>BIO</code>：适用于连接数较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前<br>的唯一选择，但程序直观简单易理解</p>
-<p><code>NIO</code>方式适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较<br>复杂，JDK1.4开始支持。</p>
-<p><code>AIO</code>方式适用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，<br>编程比较复杂，JDK7开始支持 </p>
-</li>
-<li><p>IO流需不需要关闭,如果关闭的话应该如何关闭。需要注意什么 </p>
-<ul>
-<li>IO流一定要关闭，不然会内存泄漏，进而导致内存溢出</li>
-<li>一般在finally块中关闭，并且关闭流的操作可能会抛出异常，要对其进行捕获 </li>
-</ul>
-</li>
-<li><p>什么是同步，什么是异步</p>
-<p>A调用B<br>同步：A调用B后，B马上去执行，执行完成会告诉A，A本次调用会得到结果<br>异步：A调用B后，B并不会马上执行，但是一定会执行，执行完成会告诉A，A本次调用不会得到结 果</p>
-</li>
-<li><p>什么是阻塞？什么是非阻塞？ </p>
-<p>A调用B</p>
-<p>阻塞：A调用B之后一直等待B的结果，等不到就不做别的事情<br>非阻塞：A调用B之后就去做自己事情了，不需要等待B完成 </p>
-</li>
-<li><p>同步，异步 和 阻塞，非阻塞之间的区别？ </p>
-<p>同步，异步，是描述被调用方的。 阻塞，非阻塞，是描述调用方的。 同步不一定阻塞，异步也不一定非阻塞。没有必然关系。 </p>
-</li>
-</ol>
-<h1 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h1><ol>
-<li>IO模型有哪5种？ </li>
-</ol>
-<ul>
-<li>阻塞式IO模型</li>
-<li>非阻塞IO模型</li>
-<li>IO复用模型</li>
-<li>信号驱动IO模型</li>
-<li>异步IO模型 </li>
-</ul>
-<ol start="2">
-<li><p>阻塞IO</p>
-<p>当用户线程发出IO请求之后，内核会去查看数据是否就绪，如果没有就绪就会等待数据就绪，而用户线程就<br>会处于阻塞状态，用户线程交出CPU。当数据就绪之后，内核会将数据拷贝到用户线程，并返回结果给用户<br>线程，用户线程才解除block状态。 </p>
-</li>
-<li><p>非阻塞IO</p>
-<p>当用户线程发起一个read操作后，并不需要等待，而是马上就得到了一个结果。如果结果是一个error时，它<br>就知道数据还没有准备好，于是它可以再次发送read操作。一旦内核中的数据准备好了，并且又再次收到了<br>用户线程的请求，那么它马上就将数据拷贝到了用户线程，然后返回。 </p>
-</li>
-<li><p>什么是多路复用IO模型 </p>
-<blockquote>
-<p>不断去轮询多个<code>socket</code>的状态，只有当<code>socket</code>真正有读写事件时，才真正调用实际的IO读写操作。<br>多路复用IO比较适合连接数比较多的情况。<br>多路复用IO为何比非阻塞IO模型的效率高是因为在非阻塞IO中，不断地询问socket状态时通过用户线程去进行的，而在多路复用IO中，轮询每个socket状态是内核在进行的，这个效率要比用户线程要高的多。 </p>
-</blockquote>
-</li>
-<li><p>什么是信号驱动IO模型 </p>
-<p>在信号驱动IO模型中，当用户线程发起一个IO请求操作，会给对应的socket注册一个信号函数，然后用户线<br>程会继续执行，当内核数据就绪时会发送一个信号给用户线程，用户线程接收到信号之后，便在信号函数中<br>调用IO读写操作来进行实际的IO请求操作。</p>
-</li>
-<li><p>什么是异步IO模型 </p>
-<p>当进程发起一个 IO 操作，进程返回（不阻塞），但也不能返回结果；内核 把整个 IO 处理完后，会通知进程<br>结果。如果 IO 操作成功则进程直接获取到数据。 </p>
-</li>
-</ol>
+<p><strong>谈谈你对Java泛型中上下界限定符extends 和 super的理解</strong></p>
+<p><code>&lt;? extends T&gt;</code> 表示类型的上界，表示参数化类型的可能是T 或是 T的子类<br><code>&lt;? super T&gt;</code> 表示类型下界（Java Core中叫超类型限定），表示参数化类型是此类型的超类型（父类型），直至Object</p>
+<p><strong>PECS原则</strong><br>如果要从集合中读取类型T的数据，并且不能写入，可以使用 ? extends 通配符；(Producer Extends)<br>如果要从集合中写入类型T的数据，并且不需要读取，可以使用 ? super 通配符；(Consumer Super)<br>如果既要存又要取，那么就不要使用任何通配符。</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>关于泛型，理解得还不深刻，这次学习了解了类型擦除的原理，关于其他更深的问题，会比较模糊。</p>
+<p>很惭愧地写了这篇整理泛型的博客，希望以后可以加强一下对泛型的理解。</p>
 </section>
     <!-- Tags START -->
     
@@ -252,20 +185,13 @@
   <div class="nav-container">
     <!-- reverse left and right to put prev and next in a more logic postition -->
     
-      <a class="nav-left" href="/2019/04/14/单例模式/">
+      <a class="nav-left" href="/2019/04/14/深入Java-IO/">
         <span class="nav-arrow">← </span>
         
-          单例模式
+          深入Java IO
         
       </a>
     
-    
-      <a class="nav-right" href="/2019/04/15/Java泛型/">
-        
-          Java泛型
-        
-        <span class="nav-arrow"> →</span>
-      </a>
     
   </div>
 
@@ -309,7 +235,7 @@
   <div class="toc-main">
     <strong class="toc-title">Catalog</strong>
     
-      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#基本概念"><span class="toc-nav-text">基本概念</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#NIO-BIO-AIO"><span class="toc-nav-text">NIO,BIO,AIO</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#IO模型"><span class="toc-nav-text">IO模型</span></a></li></ol>
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#泛型简介"><span class="toc-nav-text">泛型简介</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#总结"><span class="toc-nav-text">总结</span></a></li></ol>
     
   </div>
 </aside>
@@ -319,7 +245,7 @@
 
 <script>
   (function () {
-    var url = 'https://www.liutianruo.com/2019/04/14/深入Java-IO/';
+    var url = 'https://www.liutianruo.com/2019/04/15/Java泛型/';
     var banner = ''
     if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
       $('#article-banner').css({
@@ -375,7 +301,7 @@
     var gitmentConfig = "";
     if (gitmentConfig !== 'undefined') {
       var gitment = new Gitment({
-        id: "深入Java IO",
+        id: "Java泛型",
         owner: "",
         repo: "",
         oauth: {
@@ -403,7 +329,7 @@
 <script>
   var disqus_shortname = '';
   
-  var disqus_url = 'https://www.liutianruo.com/2019/04/14/深入Java-IO/';
+  var disqus_url = 'https://www.liutianruo.com/2019/04/15/Java泛型/';
   
   (function(){
     var dsq = document.createElement('script');
