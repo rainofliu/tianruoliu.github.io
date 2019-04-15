@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      扒皮Java注解 | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>扒皮Java注解</h2>
+  <p class="post-date">2019-04-15</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>我们在日常开发中常常会用到注解，比如Spring MVC的一些注解或者是Spring原生的一些注解。但是无论是什么注解，它的原生功能支持，都来自于Java。所以这篇博客，我们来看看Java中注解的基本原理，然后再引申到Spring中去。</p>
+<h1 id="注解定义"><a href="#注解定义" class="headerlink" title="注解定义"></a>注解定义</h1><p>小马哥说过基于注解的编程是一种元编程，注解就是元数据，是一种让程序员简化开发的东西。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zxsq.annotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 新建一个测试的注解</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)  <span class="comment">// 注解在JVM运行时还能起作用</span></span><br><span class="line"><span class="meta">@Documented</span>  <span class="comment">// 将注解加入到JavaDoc</span></span><br><span class="line"><span class="meta">@Target</span>(ElementType.TYPE)  <span class="comment">// 注解可以在类上使用</span></span><br><span class="line"><span class="meta">@Inherited</span> <span class="comment">// 一个类上的注解可以被它的子类继承</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> NewAnnotation &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">default</span> 1</span>;</span><br><span class="line">    <span class="function">String <span class="title">msg</span><span class="params">()</span> <span class="keyword">default</span> "OK"</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>@Target(ElementType.METHOD)<br>@Retention(RetentionPolicy.SOURCE)<br>public @interface Override {<br>}<br>这里面的<br>@Target、@Retention<br>就是元注解。<br>元注解有四个:</p>
+<ul>
+<li><p>@Target（表示该注解可以用于什么地方）、</p>
+</li>
+<li><p>@Retention（表示再什么级别保存该注解信息）、</p>
+</li>
+<li><p>@Documented（将此注解包含再javadoc中）、</p>
+</li>
+<li><p>@Inherited（允许子类继承父类中的注解）。</p>
+</li>
+</ul>
+<h1 id="JDK注解"><a href="#JDK注解" class="headerlink" title="JDK注解"></a>JDK注解</h1><ol>
+<li><code>@Override</code>表示当前方法覆盖了父类的方法</li>
+<li><code>@Deprecation</code> 表示方法已经过时,方法上有横线，使用时会有警告。</li>
+<li><code>@SuppressWarnings</code> 表示关闭一些警告信息(通知java编译器忽略特定的编译警告)</li>
+<li><code>SafeVarargs</code> (jdk1.7更新) 表示：专门为抑制“堆污染”警告提供的。</li>
+<li><code>@FunctionalInterface</code> (jdk1.8更新) 表示：用来指定某个接口必须是函数式接口，否则就会编译出错。</li>
+</ol>
+<h1 id="自定义注解"><a href="#自定义注解" class="headerlink" title="自定义注解"></a>自定义注解</h1><p>在Java中，类使用class定义，接口使用interface定义，注解和接口的定义差不多，增加了一个@符号，即@interface，代码如下：<br>public @interface EnableAuth {<br>}</p>
+<p>注解中可以定义成员变量，用于信息的描述，跟接口中方法的定义类似，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAuth &#123;</span><br><span class="line"><span class="function">String <span class="title">name</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>还可以添加默认值：<br>public @interface EnableAuth {<br>String name() default “Javaer”;<br>}<br>上面的介绍只是完成了自定义注解的第一步，开发中日常使用注解大部分是用在类上，方法上，字段上，示列代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target</span>(ElementType.METHOD)</span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)</span><br><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> EnableAuth &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Target</code><br>用于指定被修饰的注解修饰哪些程序单元，也就是上面说的类，方法，字段</p>
+<p><code>Retention</code></p>
+<p>用于指定被修饰的注解被保留多长时间，</p>
+<p>分别<code>SOURCE</code>（注解仅存在于源码中，在class字节码文件中不包含）,</p>
+<p><code>CLASS</code>（默认的保留策略，注解会在class字节码文件中存在，但运行时无法获取）,</p>
+<p><code>RUNTIME</code>（注解会在class字节码文件中存在，在运行时可以通过反射获取到）三种类型，</p>
+<p>如果想要在程序运行过程中通过反射来获取注解的信息需要将Retention设置为RUNTIME</p>
+<p><code>Documented</code><br>用于指定被修饰的注解类将被javadoc工具提取成文档</p>
+<p><code>Inherited</code><br>用于指定被修饰的注解类将具有继承性</p>
+<p><strong>如何获取注解中的值</strong></p>
+<p>可以通过反射来判断类，方法，字段上是否有某个注解以及获取注解中的值, 获取某个类中方法上的注解代码示例如下：</p>
+<blockquote>
+<p>注解</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zxsq.annotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.*;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 新建一个测试的注解</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">@Retention</span>(RetentionPolicy.RUNTIME)  <span class="comment">// 注解在JVM运行时还能起作用</span></span><br><span class="line"><span class="meta">@Documented</span>  <span class="comment">// 将注解加入到JavaDoc</span></span><br><span class="line"><span class="meta">@Target</span>(ElementType.METHOD)  <span class="comment">// 注解可以在类上使用</span></span><br><span class="line"><span class="meta">@Inherited</span> <span class="comment">// 一个类上的注解可以被它的子类继承</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> NewAnnotation &#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">default</span> 1</span>;</span><br><span class="line">    <span class="function">String <span class="title">msg</span><span class="params">()</span> <span class="keyword">default</span> "yes"</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zxsq.annotation;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Auther</span>: ajin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/4/15 11:58</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NewAnnotationTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@NewAnnotation</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Class clazz=Class.forName(<span class="string">"com.zxsq.annotation.NewAnnotationTest"</span>);</span><br><span class="line"></span><br><span class="line">                Method method =clazz.getMethod(<span class="string">"test"</span>);</span><br><span class="line">                <span class="keyword">if</span> (method.isAnnotationPresent(NewAnnotation.class))&#123;</span><br><span class="line">                    <span class="keyword">int</span> id=method.getAnnotation(NewAnnotation.class).id();</span><br><span class="line">                    String msg=method.getAnnotation(NewAnnotation.class).msg();</span><br><span class="line">                    System.out.println(id);</span><br><span class="line">                    System.out.println(msg);</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;<span class="keyword">catch</span> (NoSuchMethodException e)&#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过isAnnotationPresent判断是否存在某个注解，通过getAnnotation获取注解对象，然后获取值</p>
+<p>控制台打印：</p>
+<p>1<br>yes</p>
+<h1 id="Spring中的注解"><a href="#Spring中的注解" class="headerlink" title="Spring中的注解"></a>Spring中的注解</h1><ol>
+<li>Spring常用注解</li>
+</ol>
+<p><code>@Configuration</code>把一个类作为一个IoC容器，它的某个方法头上如果注册了@Bean，就会作为这个Spring容器中的Bean。<br><code>@Scope</code>注解 作用域<br><code>@Lazy(true)</code> 表示延迟初始化<br><code>@Service</code>用于标注业务层组件、<br><code>@Controller</code>用于标注控制层组件@Repository用于标注数据访问组件，即DAO组件。<br><code>@Component</code>泛指组件，当组件不好归类的时候，我们可以使用这个注解进行标注。<br><code>@Scope</code>用于指定scope作用域的（用在类上）<br><code>@PostConstruct</code>用于指定初始化方法（用在方法上）<br><code>@PreDestory</code>用于指定销毁方法（用在方法上）<br><code>@DependsOn</code>：定义Bean初始化及销毁时的顺序<br><code>@Primary</code>：自动装配时当出现多个Bean候选者时，被注解为@Primary的Bean将作为首选者，否则将抛出异常<br><code>@Autowired</code> 默认按类型装配，如果我们想使用按名称装配，可以结合@Qualifier注解一起使用。如下：<br><code>@Autowired @Qualifier(&quot;personDaoBean&quot;)</code> 存在多个实例配合使用<br><code>@Resource</code>默认按名称装配，当找不到与名称匹配的bean才会按类型装配。<br><code>@PostConstruct</code>初始化注解<br><code>@PreDestroy</code> 摧毁注解 默认 单例  启动就加载</p>
+<ol start="2">
+<li>几个注解的区别</li>
+</ol>
+<p><code>@Component</code>指的是组件，</p>
+<p><code>@Controller</code>，<code>@Repository</code>和<code>@Service</code> 注解都被<code>@Component</code>修饰，用于代码中区分<strong>表现层，持久层和业务层</strong>的组件，代码中组件不好归类时可以使用<code>@Component</code>来标注</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Java">
+    <span class="tag-code">Java</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/04/15/反射深入理解/">
+        <span class="nav-arrow">← </span>
+        
+          反射深入理解
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#注解定义"><span class="toc-nav-text">注解定义</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#JDK注解"><span class="toc-nav-text">JDK注解</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#自定义注解"><span class="toc-nav-text">自定义注解</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Spring中的注解"><span class="toc-nav-text">Spring中的注解</span></a></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/04/15/扒皮Java注解/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "扒皮Java注解",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/04/15/扒皮Java注解/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
