@@ -146,8 +146,11 @@
 </blockquote>
 </li>
 <li><p>恢复</p>
+<blockquote>
+<p>通过mysqlbinlog工具去恢复数据</p>
+</blockquote>
 </li>
-<li><p>审计</p>
+<li><p>增量备份</p>
 </li>
 </ul>
 <h1 id="Binlog相关的变量"><a href="#Binlog相关的变量" class="headerlink" title="Binlog相关的变量"></a>Binlog相关的变量</h1><table>
@@ -195,8 +198,20 @@
 </tbody>
 </table>
 <ul>
-<li>ROW：使得Binlog文件变得很大</li>
-<li>STATEMENT : 会记录SQL语句的上下文信息，但是不支持函数等数据</li>
+<li><p>ROW：使得Binlog文件变得很大</p>
+<blockquote>
+<p>非常清晰的记录下每行数据的修改细节，不需要记录SQL语句上下文信息，因此不会发生特定情况下的procedure,function及trigger的调用触发无法被正确复制的问题，任何情况都可以被复制，且能加快从库重放日志的效率，保证从库数据的一致性</p>
+</blockquote>
+</li>
+<li><p>STATEMENT : 会记录SQL语句的上下文信息，但是不支持函数等数据</p>
+<blockquote>
+<p>我之前的商铺项目，就是采用的STAMEMENT来进行主从同步的，这样不用记录每一行数据的变化，只需要记录执行语句的细节和上下文环境；</p>
+<p>在一些修改记录比较多的情况下比ROW类型大大减少日志量，节约IO，提升性能；还可以用于实时的还原，同时主从版本不一样，从服务器版本可以比主服务器版本高，这样主库的SQL,从库执行起来不会出错。</p>
+</blockquote>
+</li>
+<li><p>MIXED</p>
+<p>以上两种类型各有优势</p>
+</li>
 </ul>
 <h1 id="管理Binlog相关的语句"><a href="#管理Binlog相关的语句" class="headerlink" title="管理Binlog相关的语句"></a>管理Binlog相关的语句</h1><table>
 <thead>
@@ -265,6 +280,14 @@
 <p><strong><code>DELETE_ROWS_EVENT</code></strong>   删除数据，delete操作</p>
 <blockquote>
 <p>Event_type的介绍基于MySQL 8.0</p>
+</blockquote>
+<p>注意：我们在实际应用中要搞明白binlog的Event</p>
+<blockquote>
+<p>每个Event包含header和data部分；header提供了Event的创建时间，哪个服务器等信息，data部分提供的针对该Event的具体信息，如具体数据的修改。</p>
+</blockquote>
+<p><strong>我们对Binlog的解析，就是对Event的解析</strong></p>
+<blockquote>
+<p>Binlog中不会打印数据表的列名。</p>
 </blockquote>
 </section>
     <!-- Tags START -->
