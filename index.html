@@ -129,6 +129,41 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2019/04/17/MySQL-Binlog/">MySQL Binlog</a>
+      </h2>
+      <p class="article-date">2019年4月17日</p>
+      
+        
+  <a href="/tags#数据库">
+    <span class="tag-code">数据库</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          什么是Binlog二进制日志，记录对数据发生或潜在发生更改的SQL语句，并以二进制形式保存到磁盘中
+
+日常开发是必须打开Binlog的，没有Binlog无法实现主从同步。
+
+Binlog的作用
+复制
+
+master同步到slave，就是借助了Binlog
+
+
+恢复
+
+审计
+
+
+Binlog相 ...
+        
+      </div>
+      <a class="more" href="/2019/04/17/MySQL-Binlog/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2019/04/15/设计模式概述/">设计模式概述</a>
       </h2>
       <p class="article-date">2019年4月15日</p>
@@ -163,7 +198,12 @@
       
       <div class="article-summary">
         
-          
+          前言
+工厂模式包含简单工厂模式、工厂方法模式和抽象工厂模式。
+
+我们就分别来看一下这三种模式
+简单工厂模式简单工厂模式是属于创建型模式，又叫做静态工厂方法（Static Factory Method）模式。
+简单工厂模式是由一个工厂对象决定创建出哪一种产品类的实例。简单工厂模式是工厂模式家族 ...
         
       </div>
       <a class="more" href="/2019/04/15/工厂模式/">Read more</a>
@@ -326,27 +366,6 @@ Executor ( update 、 query 、 flushStatements 、 commit 、 rollback 、getT 
         
       </div>
       <a class="more" href="/2019/04/14/揭秘-SpringBootApplication/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/04/14/Spring-Boot启动流程分析/">Spring Boot启动流程分析</a>
-      </h2>
-      <p class="article-date">2019年4月14日</p>
-      
-        
-  <a href="/tags#Spring Boot">
-    <span class="tag-code">Spring Boot</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          前言Spring Boot简化了我们的开发，省去了Spring中大量的配置工作，有一个概念叫“约定优于配置”，咱们这篇博客不会分析这个，在后续博客会更新自动配置的内容，也就是@SpringBootApplication的分析。
-今天主要看一下Spring Boot项目的启动类，了解下Spri ...
-        
-      </div>
-      <a class="more" href="/2019/04/14/Spring-Boot启动流程分析/">Read more</a>
     </article>
   
 
