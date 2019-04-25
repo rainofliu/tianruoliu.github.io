@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      1.入门Kafka | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>1.入门Kafka</h2>
+  <p class="post-date">2019-04-25</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><p>[TOC]</p>
+<h1 id="Kafka的基本知识"><a href="#Kafka的基本知识" class="headerlink" title="Kafka的基本知识"></a>Kafka的基本知识</h1><blockquote>
+<p>Kafka是一个多分区，多副本且基于Zookeeper协调的分布式消息系统。</p>
+</blockquote>
+<h2 id="消息系统"><a href="#消息系统" class="headerlink" title="消息系统"></a>消息系统</h2><p>一个消息系统负责将消息从一个应用传递到另一个应用，应用只需要关注数据，而不需要关注数据在两个应用之间如何传递。</p>
+<ul>
+<li><p>点对点消息系统</p>
+<blockquote>
+<p>消息发布者往消息队列中写入消息，消息接收者不停从消息队列中取消息</p>
+</blockquote>
+</li>
+<li><p>发布订阅消息系统</p>
+<blockquote>
+<p>消息被持久化到一个<code>Topic</code>当中，消费者可以订阅一个或多个<code>Topic</code>;</p>
+<p>消息被消费后不会立马被删除</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture325.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>消息系统具有系统解耦，冗余存储，流量削峰，缓冲，异步通信，扩展性，可恢复性等功能。</p>
+</blockquote>
+<h2 id="存储系统"><a href="#存储系统" class="headerlink" title="存储系统"></a>存储系统</h2><p>Kafka把消息持久化到磁盘，相较于基于内存存储的系统，降低了数据丢失的风险。</p>
+<h2 id="Kafka基本概念"><a href="#Kafka基本概念" class="headerlink" title="Kafka基本概念"></a>Kafka基本概念</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture326.png" alt=""></p>
+<p>producer往Topics中写入消息，consumer从Brokers中拿取producer写的消息副本数据。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture328.png" alt=""></p>
+<p>​                                                        <strong>[ Kafka体系结构 ]</strong></p>
+<p>​    一个典型的Kafka架构包括若干个<code>Producer</code>,若干个<code>Broker</code>,若干<code>Consumer</code>和一个<code>ZooKeeper</code>集群。</p>
+<ul>
+<li><code>Producer</code>将消息发送给<code>Broker</code></li>
+<li><code>Broker</code>负责将收到的消息保存到磁盘</li>
+<li><code>Consumer</code>负责从<code>Broker</code>订阅并消费信息</li>
+</ul>
+<p><strong>详细解释</strong></p>
+<h3 id="Broker：服务代理节点。"><a href="#Broker：服务代理节点。" class="headerlink" title="Broker：服务代理节点。"></a><code>Broker</code>：服务代理节点。</h3><blockquote>
+<p>Broker 可以简单地看作一个独立的 Kafka服务节点或 Kafka 服务实例。</p>
+<p>大多数情况下也可以将 Broker 看作一台 Kafka 服务器，前提是这台服务器上只部署了一个 Kafka 实例。</p>
+<p>一个或多个 Broker 组成了 一个 Kafka 集群。</p>
+<p>一般而言，我们更习惯使用首字母小写的 broker 来表示服务代理节点 。 </p>
+</blockquote>
+<h3 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h3><p><code>Topic</code></p>
+<p>Kafka中的消息以主题为单位进行归类，生产者负责将消息发送到特定的主题，而消费者负责订阅主题并消费消息。</p>
+<blockquote>
+<p>发送到Kafka集群中的每一条消息都要指定主题</p>
+</blockquote>
+<h3 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h3><p><code>Partition</code></p>
+<p>主题是一个逻辑上的概念，它可以细分为多个分区。这样来说，一个分区只属于一个主题。</p>
+<p>同一个主题下面的不同分区包含的消息是不同的。</p>
+<blockquote>
+<p>分区在存储层面可以看作一个可追加的日志（ Log ）文件，消息在被追加到分区日志、文件的时<br>候都会分配一个特定的偏移量（ offset ）。</p>
+<p> offset 是消息在分区中的唯一标识， Kafka 通过它来保<br>证消息在分区内的顺序性，不过 offset 并不跨越分区，也就是说， Kafka 保证的是分区有序而不<br>是主题有序。 </p>
+</blockquote>
+<p>我们跟着图理一下：</p>
+<blockquote>
+<p>主题中有 4 个分区，消息被顺序追加到每个分区日志文件的尾部。</p>
+<p> Kafka中的分区可以分布在不同的服务器 （ broker）上，也就是说，一个主题可以横跨多个 broker，以<br>此来提供比单个 broker 更强大的性能 。 </p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture329.png" alt=""></p>
+<p>每一条消息被发送到 <code>broker</code>之前，会根据<strong>分区规则</strong>选择存储到哪个具体的分区 。 如果分区</p>
+<p>规则设定得合理，所有的消息都可以均匀地分配到不同的分区中 。 如果一个主题只对应一个文</p>
+<p>件，那么这个文件所在的机器 I/O 将会成为这个主题的性能瓶颈，而分区解决了这个问题 。 在</p>
+<p>创建主题的时候可以通过指定的参数来设置分区的个数，当然也可以在主题创建完成之后去修</p>
+<p>改分区的数量，通过增加分区的数量可以实现水平扩展。</p>
+<h4 id="多副本机制"><a href="#多副本机制" class="headerlink" title="多副本机制"></a>多副本机制</h4><p>Kafka为了分区引入了多副本机制 ,通过增加副本数量来提升容灾能力。同一分区的不同副本中保存的是相同的消</p>
+<p>息（在同一时刻，副本之间并非完全一样），副本之间是“ 一主多从”的关系，其中 leader 副本负 责处理读写请</p>
+<p>求 ， follower 副本只负 责与 lead er 副本的消息同步。副本处于不同的 broker 中 ，当 leader 副本出现故障时，</p>
+<p>从 follower 副本中重新选举新的 leader 副本对外提供服务。 Kafka 通过多副本机制实现了故障的自动转移，当 </p>
+<p>Kafka 集群中某个 broker 失效时仍然能保证服务可用 。 </p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture330.png" alt=""></p>
+<blockquote>
+<p>就是保存副本，使得有一个Broker宕机，也不会影响整个Kafka集群丢失消息。</p>
+</blockquote>
+<p>该Kafka 集群中有 4 个 broker，某个主题中有 3 个分区，且副本因子（即副本个数〉也为 3 ，如此每个分区便有 l 个 leader 副本和 2 个 follower 副本。生产者和消费者只与 leader副本进行交互，而 follow 副本只负责消息的同步，很多时候 follower 副本中的消息相对 leader副本而言会有一定的滞后。 </p>
+<h3 id="Kafka消费端的容灾"><a href="#Kafka消费端的容灾" class="headerlink" title="Kafka消费端的容灾"></a>Kafka消费端的容灾</h3><p>Consumer采用<code>pull</code>的方式从服务端拉取消息，并且保存消费的具体位置。当消费者宕机后恢复上线了，可以根据之前保存的消费的具体位置重新拉取需要的消息进行消费，这样就不会造出消息的丢失。</p>
+<blockquote>
+<p>消费端宕机重启后，仍能从上一次消费位置开始继续消费。</p>
+</blockquote>
+<h3 id="AR-ISR"><a href="#AR-ISR" class="headerlink" title="AR ISR"></a>AR ISR</h3><p>分区中 的所有副本统称为 AR ( Assigned Replicas ） 。 所有与 leader 副本保持一定程度同步</p>
+<p>的副本（包括 leader 副本在内〕组成 ISR On-Sync Replicas ) , ISR 集合是 AR 集合中 的一个子</p>
+<p>集 。</p>
+<p> 消息会先发送到 <code>leader</code> 副本，然后<code>follower</code> 副本才能从 leader 副本中拉取消息进行同步，</p>
+<p>同步期间内 <code>follower</code>副本相对于<code>leader</code> 副本而言会有一定程度的滞后 。 前面所说的“一定程度</p>
+<p>的同步”是指可忍受的滞后范围，这个范围可以通过参数进行配置 。 与 leader 副本同步滞后过</p>
+<p>多的副本（不包括 leader 副本）组成 OSR ( Out-of-Sync Replicas ），由此可见， AR=ISR+OSR 。</p>
+<p>在正常情况下， 所有的 follower 副本都应该与 leader 副本保持一定程度 的同步，即 AR=ISR,</p>
+<p>OSR 集合为空。 </p>
+<p><code>leader</code> 副本负责维护和跟踪 <code>ISR</code>集合中所有<code>followe</code> 副 本 的滞后状态， 当 <code>follower</code> 副本落后<br>太多或失效时， leader 副本会把它从 ISR 集合中剔除 。 如果 OSR 集合中有 <code>follower</code>副本 “追上“<br>了 leader 副本，那么 leader 副本会把它从 OSR 集合转移至 ISR 集合 。 默认情况下， 当 <code>leade</code>r 副<br>本发生故障时，只 有在 ISR 集合中的副本才有资格被选举为新的<code>leader</code>， 而在 OSR 集合中的副<br>本则没有任何机会（不过这个原则也可以通过修改相应的参数配置来改变） 。 </p>
+<h1 id="Kafka的安装与配置"><a href="#Kafka的安装与配置" class="headerlink" title="Kafka的安装与配置"></a>Kafka的安装与配置</h1><h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><p>首先需要安装JDK，配置环境变量。我们选择的是JDK8。安装过程略去。</p>
+<h2 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h2><p><code>ZooKeeper</code>集群中有三个角色，<code>leader</code>,<code>follower</code>和<code>observer</code>。一个<code>leader</code>，其他的都是 <code>follower</code> 和 <code>obsever</code>。</p>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#broker的编号，如果集群中有多个broker，则每个broker的编号需要设置的不同</span><br><span class="line">broker.id=0</span><br><span class="line">#broker对外提供的服务入口地址</span><br><span class="line">listeners=PLAINTEXT://localhost：9092 </span><br><span class="line">#存放消息日志文件的地址</span><br><span class="line">log.dirs=/tmp/kafka-logs</span><br><span class="line">#Kafka所需的ZooKeeper集群地址，为了方便演示，我们假设Kafka和ZooKeeper都安装在本机	</span><br><span class="line">zookeeper.connect=localhost：2181/kafka</span><br></pre></td></tr></table></figure>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture327.png" alt=""></p>
+<p>​    </p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Kafka">
+    <span class="tag-code">Kafka</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/04/21/HashMap源码分析/">
+        <span class="nav-arrow">← </span>
+        
+          HashMap源码分析
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的基本知识"><span class="toc-nav-text">Kafka的基本知识</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#消息系统"><span class="toc-nav-text">消息系统</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#存储系统"><span class="toc-nav-text">存储系统</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Kafka基本概念"><span class="toc-nav-text">Kafka基本概念</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Broker：服务代理节点。"><span class="toc-nav-text">Broker：服务代理节点。</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#主题"><span class="toc-nav-text">主题</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#分区"><span class="toc-nav-text">分区</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-4"><a class="toc-nav-link" href="#多副本机制"><span class="toc-nav-text">多副本机制</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#Kafka消费端的容灾"><span class="toc-nav-text">Kafka消费端的容灾</span></a></li><li class="toc-nav-item toc-nav-level-3"><a class="toc-nav-link" href="#AR-ISR"><span class="toc-nav-text">AR ISR</span></a></li></ol></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#Kafka的安装与配置"><span class="toc-nav-text">Kafka的安装与配置</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#JDK"><span class="toc-nav-text">JDK</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ZooKeeper"><span class="toc-nav-text">ZooKeeper</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#Kafka"><span class="toc-nav-text">Kafka</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/04/25/1.入门Kafka/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "1.入门Kafka",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/04/25/1.入门Kafka/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
