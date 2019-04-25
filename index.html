@@ -129,6 +129,27 @@
   
     <article class="article-card">
       <h2 class="article-head">
+        <a href="/2019/04/25/MySQL主从同步深入总结/">MySQL主从同步深入总结</a>
+      </h2>
+      <p class="article-date">2019年4月25日</p>
+      
+        
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
+  </a>
+
+      
+      <div class="article-summary">
+        
+          如何实现 MySQL 的读写分离？其实很简单，就是基于主从复制架构，简单来说，就搞一个主库，挂多个从库，然后我们就单单只是写主库，然后主库会自动把数据给同步到从库上去。
+MySQL 主从复制原理的是啥？主库将变更写入 binlog 日志，然后从库连接到主库之后，从库有一个 IO 线程，将主库 ...
+        
+      </div>
+      <a class="more" href="/2019/04/25/MySQL主从同步深入总结/">Read more</a>
+    </article>
+  
+    <article class="article-card">
+      <h2 class="article-head">
         <a href="/2019/04/25/消息队列相关总结/">消息队列相关总结</a>
       </h2>
       <p class="article-date">2019年4月25日</p>
@@ -349,27 +370,6 @@ master同步到slave，就是借助了Binlog
         
       </div>
       <a class="more" href="/2019/04/15/反射深入理解/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/04/15/Java泛型/">Java泛型</a>
-      </h2>
-      <p class="article-date">2019年4月15日</p>
-      
-        
-  <a href="/tags#Java">
-    <span class="tag-code">Java</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          泛型简介什么是Java中的泛型呢？
-Java泛型（generics） 是JDK 5中引入的一个新特性，允许在定义类和接口的时候使用类型参数（type parameter）。声明的类型参数在使用时用具体的类型来替换。泛型最主要的应用是在JDK 5中的新集合类框架中。泛型最大的好处是可以提高代码 ...
-        
-      </div>
-      <a class="more" href="/2019/04/15/Java泛型/">Read more</a>
     </article>
   
 
