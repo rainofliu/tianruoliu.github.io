@@ -135,8 +135,7 @@
 <main class="app-body flex-box">
   <!-- Article START -->
   <article class="post-article">
-    <section class="markdown-content"><p>[TOC]</p>
-<h1 id="Kafka的基本知识"><a href="#Kafka的基本知识" class="headerlink" title="Kafka的基本知识"></a>Kafka的基本知识</h1><blockquote>
+    <section class="markdown-content"><h1 id="Kafka的基本知识"><a href="#Kafka的基本知识" class="headerlink" title="Kafka的基本知识"></a>Kafka的基本知识</h1><blockquote>
 <p>Kafka是一个多分区，多副本且基于Zookeeper协调的分布式消息系统。</p>
 </blockquote>
 <h2 id="消息系统"><a href="#消息系统" class="headerlink" title="消息系统"></a>消息系统</h2><p>一个消息系统负责将消息从一个应用传递到另一个应用，应用只需要关注数据，而不需要关注数据在两个应用之间如何传递。</p>
@@ -184,8 +183,7 @@
 <p>主题是一个逻辑上的概念，它可以细分为多个分区。这样来说，一个分区只属于一个主题。</p>
 <p>同一个主题下面的不同分区包含的消息是不同的。</p>
 <blockquote>
-<p>分区在存储层面可以看作一个可追加的日志（ Log ）文件，消息在被追加到分区日志、文件的时<br>候都会分配一个特定的偏移量（ offset ）。</p>
-<p> offset 是消息在分区中的唯一标识， Kafka 通过它来保<br>证消息在分区内的顺序性，不过 offset 并不跨越分区，也就是说， Kafka 保证的是分区有序而不<br>是主题有序。 </p>
+<p>分区在存储层面可以看作一个可追加的日志（ Log ）文件，消息在被追加到分区日志、文件的时<br>候都会分配一个特定的偏移量（ offset ）。offset 是消息在分区中的唯一标识， Kafka 通过它来保证消息在分区内的顺序性，不过 offset 并不跨越分区，也就是说， Kafka 保证的是分区有序而不 是主题有序。 </p>
 </blockquote>
 <p>我们跟着图理一下：</p>
 <blockquote>
@@ -209,6 +207,7 @@
 <h1 id="Kafka的安装与配置"><a href="#Kafka的安装与配置" class="headerlink" title="Kafka的安装与配置"></a>Kafka的安装与配置</h1><h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><p>首先需要安装JDK，配置环境变量。我们选择的是JDK8。安装过程略去。</p>
 <h2 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h2><p><code>ZooKeeper</code>集群中有三个角色，<code>leader</code>,<code>follower</code>和<code>observer</code>。一个<code>leader</code>，其他的都是 <code>follower</code> 和 <code>obsever</code>。</p>
 <h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#broker的编号，如果集群中有多个broker，则每个broker的编号需要设置的不同</span><br><span class="line">broker.id=0</span><br><span class="line">#broker对外提供的服务入口地址</span><br><span class="line">listeners=PLAINTEXT://localhost：9092 </span><br><span class="line">#存放消息日志文件的地址</span><br><span class="line">log.dirs=/tmp/kafka-logs</span><br><span class="line">#Kafka所需的ZooKeeper集群地址，为了方便演示，我们假设Kafka和ZooKeeper都安装在本机	</span><br><span class="line">zookeeper.connect=localhost：2181/kafka</span><br></pre></td></tr></table></figure>
+<p>PS: 这里附上Kafka的一些常用命令。</p>
 <p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture327.png" alt=""></p>
 <p>​    </p>
 </section>
@@ -236,6 +235,13 @@
         
       </a>
     
+    
+      <a class="nav-right" href="/2019/04/25/2.生产者/">
+        
+          2.生产者
+        
+        <span class="nav-arrow"> →</span>
+      </a>
     
   </div>
 
