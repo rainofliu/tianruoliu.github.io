@@ -193,16 +193,8 @@
 <p> Kafka中的分区可以分布在不同的服务器 （ broker）上，也就是说，一个主题可以横跨多个 broker，以<br>此来提供比单个 broker 更强大的性能 。 </p>
 </blockquote>
 <p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture329.png" alt=""></p>
-<p>每一条消息被发送到 <code>broker</code>之前，会根据<strong>分区规则</strong>选择存储到哪个具体的分区 。 如果分区</p>
-<p>规则设定得合理，所有的消息都可以均匀地分配到不同的分区中 。 如果一个主题只对应一个文</p>
-<p>件，那么这个文件所在的机器 I/O 将会成为这个主题的性能瓶颈，而分区解决了这个问题 。 在</p>
-<p>创建主题的时候可以通过指定的参数来设置分区的个数，当然也可以在主题创建完成之后去修</p>
-<p>改分区的数量，通过增加分区的数量可以实现水平扩展。</p>
-<h4 id="多副本机制"><a href="#多副本机制" class="headerlink" title="多副本机制"></a>多副本机制</h4><p>Kafka为了分区引入了多副本机制 ,通过增加副本数量来提升容灾能力。同一分区的不同副本中保存的是相同的消</p>
-<p>息（在同一时刻，副本之间并非完全一样），副本之间是“ 一主多从”的关系，其中 leader 副本负 责处理读写请</p>
-<p>求 ， follower 副本只负 责与 lead er 副本的消息同步。副本处于不同的 broker 中 ，当 leader 副本出现故障时，</p>
-<p>从 follower 副本中重新选举新的 leader 副本对外提供服务。 Kafka 通过多副本机制实现了故障的自动转移，当 </p>
-<p>Kafka 集群中某个 broker 失效时仍然能保证服务可用 。 </p>
+<p>每一条消息被发送到 <code>broker</code>之前，会根据<strong>分区规则</strong>选择存储到哪个具体的分区 。 如果分区规则设定得合理，所有的消息都可以均匀地分配到不同的分区中 。 如果一个主题只对应一个文<br>件，那么这个文件所在的机器 I/O 将会成为这个主题的性能瓶颈，而分区解决了这个问题 。 在创建主题的时候可以通过指定的参数来设置分区的个数，当然也可以在主题创建完成之后去修改分区的数量，通过增加分区的数量可以实现水平扩展。</p>
+<h4 id="多副本机制"><a href="#多副本机制" class="headerlink" title="多副本机制"></a>多副本机制</h4><p>Kafka为了分区引入了多副本机制 ,通过增加副本数量来提升容灾能力。同一分区的不同副本中保存的是相同的消息（在同一时刻，副本之间并非完全一样），副本之间是“ 一主多从”的关系，其中 leader 副本负 责处理读写请求 ， follower 副本只负 责与 lead er 副本的消息同步。副本处于不同的 broker 中 ，当 leader 副本出现故障时，从 follower 副本中重新选举新的 leader 副本对外提供服务。 Kafka 通过多副本机制实现了故障的自动转移，当 Kafka 集群中某个 broker 失效时仍然能保证服务可用 。 </p>
 <p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture330.png" alt=""></p>
 <blockquote>
 <p>就是保存副本，使得有一个Broker宕机，也不会影响整个Kafka集群丢失消息。</p>
@@ -212,16 +204,8 @@
 <blockquote>
 <p>消费端宕机重启后，仍能从上一次消费位置开始继续消费。</p>
 </blockquote>
-<h3 id="AR-ISR"><a href="#AR-ISR" class="headerlink" title="AR ISR"></a>AR ISR</h3><p>分区中 的所有副本统称为 AR ( Assigned Replicas ） 。 所有与 leader 副本保持一定程度同步</p>
-<p>的副本（包括 leader 副本在内〕组成 ISR On-Sync Replicas ) , ISR 集合是 AR 集合中 的一个子</p>
-<p>集 。</p>
-<p> 消息会先发送到 <code>leader</code> 副本，然后<code>follower</code> 副本才能从 leader 副本中拉取消息进行同步，</p>
-<p>同步期间内 <code>follower</code>副本相对于<code>leader</code> 副本而言会有一定程度的滞后 。 前面所说的“一定程度</p>
-<p>的同步”是指可忍受的滞后范围，这个范围可以通过参数进行配置 。 与 leader 副本同步滞后过</p>
-<p>多的副本（不包括 leader 副本）组成 OSR ( Out-of-Sync Replicas ），由此可见， AR=ISR+OSR 。</p>
-<p>在正常情况下， 所有的 follower 副本都应该与 leader 副本保持一定程度 的同步，即 AR=ISR,</p>
-<p>OSR 集合为空。 </p>
-<p><code>leader</code> 副本负责维护和跟踪 <code>ISR</code>集合中所有<code>followe</code> 副 本 的滞后状态， 当 <code>follower</code> 副本落后<br>太多或失效时， leader 副本会把它从 ISR 集合中剔除 。 如果 OSR 集合中有 <code>follower</code>副本 “追上“<br>了 leader 副本，那么 leader 副本会把它从 OSR 集合转移至 ISR 集合 。 默认情况下， 当 <code>leade</code>r 副<br>本发生故障时，只 有在 ISR 集合中的副本才有资格被选举为新的<code>leader</code>， 而在 OSR 集合中的副<br>本则没有任何机会（不过这个原则也可以通过修改相应的参数配置来改变） 。 </p>
+<h3 id="AR-ISR"><a href="#AR-ISR" class="headerlink" title="AR ISR"></a>AR ISR</h3><p>分区中 的所有副本统称为 AR ( Assigned Replicas ） 。 所有与 leader 副本保持一定程度同步<br>的副本（包括 leader 副本在内〕组成 ISR On-Sync Replicas ) , ISR 集合是 AR 集合中 的一个子集 。<br>消息会先发送到 <code>leader</code> 副本，然后<code>follower</code> 副本才能从 leader 副本中拉取消息进行同步，同步期间内 <code>follower</code>副本相对于<code>leader</code> 副本而言会有一定程度的滞后 。 前面所说的“一定程度的同步”是指可忍受的滞后范围，这个范围可以通过参数进行配置 。 与 leader 副本同步滞后过多的副本（不包括 leader 副本）组成 OSR ( Out-of-Sync Replicas ），由此可见， AR=ISR+OSR 。在正常情况下， 所有的 follower 副本都应该与 leader 副本保持一定程度 的同步，即 AR=ISR,OSR 集合为空。 </p>
+<p><code>leader</code> 副本负责维护和跟踪 <code>ISR</code>集合中所有<code>followe</code> 副 本 的滞后状态， 当 <code>follower</code> 副本落后太多或失效时， leader 副本会把它从 ISR 集合中剔除 。 如果 OSR 集合中有 <code>follower</code>副本 “追上“了 leader 副本，那么 leader 副本会把它从 OSR 集合转移至 ISR 集合 。默认情况下， 当 <code>leader</code> 副本发生故障时，只 有在 ISR 集合中的副本才有资格被选举为新的<code>leader</code>， 而在 OSR 集合中的副本则没有任何机会（不过这个原则也可以通过修改相应的参数配置来改变） 。 </p>
 <h1 id="Kafka的安装与配置"><a href="#Kafka的安装与配置" class="headerlink" title="Kafka的安装与配置"></a>Kafka的安装与配置</h1><h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><p>首先需要安装JDK，配置环境变量。我们选择的是JDK8。安装过程略去。</p>
 <h2 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h2><p><code>ZooKeeper</code>集群中有三个角色，<code>leader</code>,<code>follower</code>和<code>observer</code>。一个<code>leader</code>，其他的都是 <code>follower</code> 和 <code>obsever</code>。</p>
 <h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#broker的编号，如果集群中有多个broker，则每个broker的编号需要设置的不同</span><br><span class="line">broker.id=0</span><br><span class="line">#broker对外提供的服务入口地址</span><br><span class="line">listeners=PLAINTEXT://localhost：9092 </span><br><span class="line">#存放消息日志文件的地址</span><br><span class="line">log.dirs=/tmp/kafka-logs</span><br><span class="line">#Kafka所需的ZooKeeper集群地址，为了方便演示，我们假设Kafka和ZooKeeper都安装在本机	</span><br><span class="line">zookeeper.connect=localhost：2181/kafka</span><br></pre></td></tr></table></figure>
