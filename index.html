@@ -343,32 +343,34 @@ Kafka是一个多分区，多副本且基于Zookeeper协调的分布式消息系
   
     <article class="article-card">
       <h2 class="article-head">
-        <a href="/2019/04/21/HashMap源码分析/">HashMap源码分析</a>
+        <a href="/2019/04/17/MySQL-Binlog/">MySQL Binlog</a>
       </h2>
-      <p class="article-date">2019年4月21日</p>
+      <p class="article-date">2019年4月17日</p>
       
         
-  <a href="/tags#Java">
-    <span class="tag-code">Java</span>
+  <a href="/tags#MySQL">
+    <span class="tag-code">MySQL</span>
   </a>
 
       
       <div class="article-summary">
         
-          前言今天主要对HashMap进行源码级别的学习，本博客基于JDK1.8。
-图解数据结构数组
-数组本质上是一块连续的内存，存放一系列具有共同特性的内容。
+          什么是Binlog二进制日志，记录对数据发生或潜在发生更改的SQL语句，并以二进制形式保存到磁盘中
 
-因为数组是连续的内存，所以数组可以快速地定位。（快速寻址）
+日常开发是必须打开Binlog的，没有Binlog无法实现主从同步。
 
-数组添加元素，（除了在尾部添加）需要移动   （插入节点困难）
+Binlog的作用
+复制
 
-单链表
+master同步到slave，就是借助了Binlog
 
- ...
+
+恢复
+
+通过mysqlbinlo ...
         
       </div>
-      <a class="more" href="/2019/04/21/HashMap源码分析/">Read more</a>
+      <a class="more" href="/2019/04/17/MySQL-Binlog/">Read more</a>
     </article>
   
 
