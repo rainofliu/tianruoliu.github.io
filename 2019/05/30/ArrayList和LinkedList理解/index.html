@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+  <meta name="description" content="Java学习记录博客">
+  <meta name="keyword" content="Java学习博客">
+  
+    <link rel="shortcut icon" href="/css/images/logo.png">
+  
+  <title>
+    
+      《ArrayList和LinkedList理解》 | 时间旅行者
+    
+  </title>
+  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
+  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+<link rel="stylesheet" href="/css/plugins/gitment.css">
+  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
+  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src="/js/qrious.js"></script>
+<script src="/js/gitment.js"></script>
+  
+  
+    <!-- MathJax support START -->
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <!-- MathJax support END -->
+  
+
+
+</head>
+<div class="wechat-share">
+  <img src="/css/images/logo.png">
+</div>
+
+  <body>
+    <header class="header fixed-header">
+  <div class="header-container">
+    <a class="home-link" href="/">
+      <div class="logo"></div>
+      <span>时间旅行者</span>
+    </a>
+    <ul class="right-list">
+      
+        <li class="list-item">
+          
+            <a href="/" class="item-link">Home</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/tags/" class="item-link">Tags</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/archives/" class="item-link">Archives</a>
+          
+        </li>
+      
+        <li class="list-item">
+          
+            <a href="/about/" class="item-link">About</a>
+          
+        </li>
+      
+    </ul>
+    <div class="menu">
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </div>
+    <div class="menu-mask">
+      <ul class="menu-list">
+        
+          <li class="menu-item">
+            
+              <a href="/" class="menu-link">Home</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/tags/" class="menu-link">Tags</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/archives/" class="menu-link">Archives</a>
+            
+          </li>
+        
+          <li class="menu-item">
+            
+              <a href="/about/" class="menu-link">About</a>
+            
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</header>
+
+    <div id="article-banner">
+  <h2>《ArrayList和LinkedList理解》</h2>
+  <p class="post-date">2019-05-30</p>
+  <div class="arrow-down">
+    <a href="javascript:;"></a>
+  </div>
+</div>
+<main class="app-body flex-box">
+  <!-- Article START -->
+  <article class="post-article">
+    <section class="markdown-content"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>ArrayList是基于数组实现的，LinkedList是基于链表实现的，这是我们都知道的。但是这只是表面，今天，我们从</p>
+<p>ArrayList和LinkedList的源码实现来深入理解，并且阐述一些性能优化的问题。</p>
+<p>如下，这是ArrayList和LinkedList的继承关系图。</p>
+<p><img src="https://static001.geekbang.org/resource/image/ab/36/ab73021caa4545ae0ac917e0f36cde36.jpg" alt=""></p>
+<h1 id="ArrayList是如何实现的？"><a href="#ArrayList是如何实现的？" class="headerlink" title="ArrayList是如何实现的？"></a>ArrayList是如何实现的？</h1><p>学习之前想想这些问题：</p>
+<p>问题 1：我们在查看ArrayList的实现类源码时，你会发现对象数组 <code>elementData</code>使用了<code>transient</code>修饰，我们知道<code>transient</code>关键字修饰该属性，则表示该属性不会被序列化，然而我们并没有看到文档中说明<code>ArrayList</code>不能被序列化，这是为什么？</p>
+<p>问题2：我们在使用<code>ArrayList</code> 进行新增、删除时，经常被提醒“使用<code>ArrayList</code>做新增删除操作会影响效率”。那是不是<code>ArrayList</code>在大量新增元素的场景下效率就一定会变慢呢？</p>
+<h2 id="继承实现关系"><a href="#继承实现关系" class="headerlink" title="继承实现关系"></a>继承实现关系</h2><ul>
+<li><p>ArrayList实现了List接口，继承了AbstractList抽象类</p>
+</li>
+<li><p>ArrayList实现了<code>RandomAccess</code>接口</p>
+<p><code>RandomAccess</code>是一个空接口，空接口的意义就是一个标记。</p>
+<p>看了jdk的注释，是允许随机访问的意思；只要实现该接口的 List 类，都能实现快速随机访问</p>
+</li>
+</ul>
+<ul>
+<li><p>还实现了<code>Cloneable</code>和<code>Serilizable</code>，可以实现克隆和序列化</p>
+<p><code>private static final long serialVersionUID = 8683452581122892189L;</code></p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ArrayList</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">        <span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt;, <span class="title">RandomAccess</span>, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="ArrayList的属性"><a href="#ArrayList的属性" class="headerlink" title="ArrayList的属性"></a>ArrayList的属性</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"> 	</span><br><span class="line"><span class="comment">// 默认初始化容量</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_CAPACITY = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 对象数组</span></span><br><span class="line"><span class="keyword">transient</span> Object[] elementData; <span class="comment">// 非私有，以简化嵌套类访问</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 数组长度，数组现有几个元素</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;</span><br></pre></td></tr></table></figure>
+<p>我们现在想想问题1，就是<code>transient</code>修饰了elementData，不支持序列化，然后ArrayList还偏偏实现了<code>Serializable</code>接口，到底ArrayList能不能实现序列化呢？</p>
+<p>如果能序列化，那序列化如何实现的呢？</p>
+<p>我们来探索一番。</p>
+<p>ArrayList是基于数组实现的，ArrayList的数组是基于动态增长的。</p>
+<blockquote>
+<p> 因此并不是所有被分配的内存空间都存储了数据</p>
+</blockquote>
+<p>所以我们的外部序列化会序列化整个数组。ArrayList 为了避免这些没有存储数据的内存空间被序列化，内部提供了两个私有方法<code>writeObject</code>以及<code>readObject</code> 来自我完成序列化与反序列化，从而在序列化与反序列化数组时节省了空间和时间。</p>
+<blockquote>
+<p>可以类比一下，HashMap的序列化和反序列化，也是内部自己实现的。</p>
+</blockquote>
+<blockquote>
+<p>所以我们的<code>transient</code>只是为了不让这个对象数组被外部序列化所作的一种保护。</p>
+</blockquote>
+<h2 id="ArrayList构造方法"><a href="#ArrayList构造方法" class="headerlink" title="ArrayList构造方法"></a>ArrayList构造方法</h2><p>ArrayList有三个构造方法，我们分别看一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 构造一个空的对象数组</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">this</span>.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这是我们默认的写法，<code>List&lt;String&gt; list = new ArrayList&lt;String&gt;();
+    }</code>,这个构造器会构造一个空的对象数组elementData</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(Collection&lt;? extends E&gt; c)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">// 传入一个集合给ArrayList</span></span><br><span class="line">    	<span class="comment">// 将集合转成对象数组</span></span><br><span class="line">        elementData = c.toArray();</span><br><span class="line">        <span class="keyword">if</span> ((size = elementData.length) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// c.toArray might (incorrectly) not return Object[] (see 6260652)</span></span><br><span class="line">            <span class="keyword">if</span> (elementData.getClass() != Object[].class)</span><br><span class="line">                elementData = Arrays.copyOf(elementData, size, Object[].class);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// replace with empty array.</span></span><br><span class="line">            <span class="keyword">this</span>.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">        &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</span><br><span class="line">    	<span class="comment">// 按照初始容量创建数组大小</span></span><br><span class="line">       <span class="keyword">if</span> (initialCapacity &gt; <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="keyword">this</span>.elementData = <span class="keyword">new</span> Object[initialCapacity];</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (initialCapacity == <span class="number">0</span>) &#123;</span><br><span class="line">           <span class="comment">// 使用默认的空数组</span></span><br><span class="line">           <span class="keyword">this</span>.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">       &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">           <span class="comment">// 参数小于0，报异常</span></span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal Capacity: "</span>+</span><br><span class="line">                                              initialCapacity);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们还要注意一个细节Arrays.asList()方法，产生的ArrayList是Arrays类中的一个静态私有内部类对象，而并非我们这里的java.util.ArrayList</p>
+</blockquote>
+<p>调优小攻略：</p>
+<blockquote>
+<p>当ArrayList新增元素时，如果所存储的元素已经超过其已有大小，它会计算元素大小后再进行动态扩容，数组的扩容会导致整个数组进行一次内存复制。</p>
+<p>因此，我们在初始化ArrayList时，可以通过<code>ArrayList(int initialCapacity)</code> 构造函数合理指定数组初始大小，这样有助于减少数组的扩容次数，从而提高系统性能。</p>
+</blockquote>
+<h2 id="ArrayList新增元素"><a href="#ArrayList新增元素" class="headerlink" title="ArrayList新增元素"></a>ArrayList新增元素</h2><ol>
+<li><p>直接将元素加到数组的末尾</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// 确认数组容量是否足够</span></span><br><span class="line">    ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">    elementData[size++] = e;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加元素到任意位置</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> index, E element)</span> </span>&#123;</span><br><span class="line">    rangeCheckForAdd(index);</span><br><span class="line"></span><br><span class="line">    ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">    System.arraycopy(elementData, index, elementData, index + <span class="number">1</span>,</span><br><span class="line">                     size - index);</span><br><span class="line">    elementData[index] = element;</span><br><span class="line">    size++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>两个方法的相同之处是在添加元素之前，都会先确认容量大小，如果容量够大，就不用进行扩容；如果容量不够大，就会按照原来数组的1.5倍大小进行扩容，在扩容之后需要将数组复制到新分配的内存地址。</p>
+<p>​    <code>ensureCapacityInternal()</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacityInternal</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">     ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p><code>ensureExplicitCapacity</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureExplicitCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    modCount++;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// overflow-conscious code</span></span><br><span class="line">    <span class="keyword">if</span> (minCapacity - elementData.length &gt; <span class="number">0</span>)</span><br><span class="line">        grow(minCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>grow</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// overflow-conscious code</span></span><br><span class="line">    <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">    <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = minCapacity;</span><br><span class="line">    <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">        newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">    <span class="comment">// minCapacity is usually close to size, so this is a win:</span></span><br><span class="line">    elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>扩容就会生成一个新的对象数组，把之前数组的元素拷贝过来。</p>
+<p>猜想一下，之前的对象数组是不是可能会被GC干掉呢？</p>
+</blockquote>
+<p>两个方法也有不同之处，添加元素到任意位置，会导致在该位置后的所有元素都需要重新排列，而将元素添加到数组的末尾，在没有发生扩容的前提下，是不会有元素复制排序过程的。</p>
+<p>所以刚刚第二个问题，ArrayList添加元素，如果是添加到数组末尾，而没有发生扩容，它的性能也是足够好的。</p>
+<p>要做到这一点，就需要我们新建ArrayList的时候，需要初始化数组的容量。</p>
+<h2 id="ArrayList删除元素"><a href="#ArrayList删除元素" class="headerlink" title="ArrayList删除元素"></a>ArrayList删除元素</h2><p>ArrayList的删除方法和添加任意位置元素的方法是有些相同的。ArrayList 在每一次有效的删除元素操作之后，都要进行数组的重组，并且删除的元素位置越靠前，数组重组的开销就越大。</p>
+<blockquote>
+<p>其实这就是线性结构的缺陷了。</p>
+</blockquote>
+<h1 id="LinkedList的实现"><a href="#LinkedList的实现" class="headerlink" title="LinkedList的实现"></a>LinkedList的实现</h1><p>LinkedList是基于<strong>双向链表</strong>数据结构实现的，LinkedList定义了一个<code>Node</code>结构，<code>Node</code>结构中包含了3个部分：元素内容item、前指针prev以及后指针next。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    	<span class="comment">// 元素内容</span></span><br><span class="line">       E item;</span><br><span class="line">    	<span class="comment">// 前指针</span></span><br><span class="line">       Node&lt;E&gt; next;</span><br><span class="line">    	<span class="comment">// 后指针</span></span><br><span class="line">       Node&lt;E&gt; prev;</span><br><span class="line"></span><br><span class="line">       Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) &#123;</span><br><span class="line">           <span class="keyword">this</span>.item = element;</span><br><span class="line">           <span class="keyword">this</span>.next = next;</span><br><span class="line">           <span class="keyword">this</span>.prev = prev;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>总结一下，LinkedList 就是由<code>Node</code>结构对象连接而成的一个双向链表。</p>
+<h2 id="实现类"><a href="#实现类" class="headerlink" title="实现类"></a>实现类</h2><ul>
+<li><p>LinkedList实现了List接口，继承了AbstractSequentialList类</p>
+</li>
+<li><p>它实现了Deque类</p>
+<blockquote>
+<p><code>Deque</code>: 线性集合，支持两端的元素插入和移除(队列)</p>
+</blockquote>
+</li>
+<li><p>实现了Cloneable和java.io.Serializable接口，支持克隆和序列化</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="keyword">extends</span> <span class="title">AbstractSequentialList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">    <span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt;, <span class="title">Deque</span>&lt;<span class="title">E</span>&gt;, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="LinkedList新增元素"><a href="#LinkedList新增元素" class="headerlink" title="LinkedList新增元素"></a>LinkedList新增元素</h2><p>LinkedList 添加元素的实现很简洁，但添加的方式却有很多种。</p>
+<p>默认的add（E e）方法是将添加的元素加到队尾，首先是将last元素置换到临时变量中，生成一个新的Node节点对象，然后将last引用指向新节点对象，之前的last对象的前指针指向新节点对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        linkLast(e);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">  * 链接e作为最后一个元素。</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">linkLast</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> Node&lt;E&gt; l = last;</span><br><span class="line">        <span class="keyword">final</span> Node&lt;E&gt; newNode = <span class="keyword">new</span> Node&lt;&gt;(l, e, <span class="keyword">null</span>);</span><br><span class="line">        last = newNode;</span><br><span class="line">        <span class="keyword">if</span> (l == <span class="keyword">null</span>)</span><br><span class="line">            first = newNode;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            l.next = newNode;</span><br><span class="line">        size++;</span><br><span class="line">        modCount++;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="LinkedList-删除元素"><a href="#LinkedList-删除元素" class="headerlink" title="LinkedList 删除元素"></a>LinkedList 删除元素</h2><p>在LinkedList 删除元素的操作中，我们首先要通过循环找到要删除的元素，如果要删除的位置处于List的前半段，就从前往后找；若其位置处于后半段，就从后往前找。<br>这样做的话，无论要删除较为靠前或较为靠后的元素都是非常高效的，但如果List 拥有大量元素，移除的元素又在List的中间段，那效率相对来说会很低。</p>
+<h2 id="LinkedList-遍历元素"><a href="#LinkedList-遍历元素" class="headerlink" title="LinkedList 遍历元素"></a>LinkedList 遍历元素</h2><p>LinkedList的获取元素操作实现跟LinkedList的删除元素操作基本类似，通过分前后半段来循环查找到对应的元素。但是通过这种方式来查询元素是非常低效的，特别是在for循环遍历的情况下，每一次循环都会去遍历半个List。</p>
+</section>
+    <!-- Tags START -->
+    
+      <div class="tags">
+        <span>Tags:</span>
+        
+  <a href="/tags#Java性能调优">
+    <span class="tag-code">Java性能调优</span>
+  </a>
+
+      </div>
+    
+    <!-- Tags END -->
+    <!-- NAV START -->
+    
+  <div class="nav-container">
+    <!-- reverse left and right to put prev and next in a more logic postition -->
+    
+      <a class="nav-left" href="/2019/05/30/《字符串性能优化的一点总结》/">
+        <span class="nav-arrow">← </span>
+        
+          《字符串性能优化的一点总结》
+        
+      </a>
+    
+    
+  </div>
+
+    <!-- NAV END -->
+    <!-- 打赏 START -->
+    
+      <div class="money-like">
+        <div class="reward-btn">
+          赏
+          <span class="money-code">
+            <span class="alipay-code">
+              <div class="code-image"></div>
+              <b>使用支付宝打赏</b>
+            </span>
+            <span class="wechat-code">
+              <div class="code-image"></div>
+              <b>使用微信打赏</b>
+            </span>
+          </span>
+        </div>
+        <p class="notice">若你觉得我的文章对你有帮助，欢迎点击上方按钮对我打赏</p>
+      </div>
+    
+    <!-- 打赏 END -->
+    <!-- 二维码 START -->
+    
+      <div class="qrcode">
+        <canvas id="share-qrcode"></canvas>
+        <p class="notice">扫描二维码，分享此文章</p>
+      </div>
+    
+    <!-- 二维码 END -->
+    
+      <!-- No Comment -->
+    
+  </article>
+  <!-- Article END -->
+  <!-- Catalog START -->
+  
+    <aside class="catalog-container">
+  <div class="toc-main">
+    <strong class="toc-title">Catalog</strong>
+    
+      <ol class="toc-nav"><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#前言"><span class="toc-nav-text">前言</span></a></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#ArrayList是如何实现的？"><span class="toc-nav-text">ArrayList是如何实现的？</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#继承实现关系"><span class="toc-nav-text">继承实现关系</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ArrayList的属性"><span class="toc-nav-text">ArrayList的属性</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ArrayList构造方法"><span class="toc-nav-text">ArrayList构造方法</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ArrayList新增元素"><span class="toc-nav-text">ArrayList新增元素</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#ArrayList删除元素"><span class="toc-nav-text">ArrayList删除元素</span></a></li></ol></li><li class="toc-nav-item toc-nav-level-1"><a class="toc-nav-link" href="#LinkedList的实现"><span class="toc-nav-text">LinkedList的实现</span></a><ol class="toc-nav-child"><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#实现类"><span class="toc-nav-text">实现类</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LinkedList新增元素"><span class="toc-nav-text">LinkedList新增元素</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LinkedList-删除元素"><span class="toc-nav-text">LinkedList 删除元素</span></a></li><li class="toc-nav-item toc-nav-level-2"><a class="toc-nav-link" href="#LinkedList-遍历元素"><span class="toc-nav-text">LinkedList 遍历元素</span></a></li></ol></li></ol>
+    
+  </div>
+</aside>
+  
+  <!-- Catalog END -->
+</main>
+
+<script>
+  (function () {
+    var url = 'https://www.liutianruo.com/2019/05/30/ArrayList和LinkedList理解/';
+    var banner = ''
+    if (banner !== '' && banner !== 'undefined' && banner !== 'null') {
+      $('#article-banner').css({
+        'background-image': 'url(' + banner + ')'
+      })
+    } else {
+      $('#article-banner').geopattern(url)
+    }
+    $('.header').removeClass('fixed-header')
+
+     // error image
+    $(".markdown-content img").on('error', function() {
+      $(this).attr('src', 'http://file.muyutech.com/error-img.png')
+      $(this).css({
+        'cursor': 'default'
+      })
+    })
+
+    // zoom image
+    $(".markdown-content img").on('click', function() {
+      var src = $(this).attr('src')
+      if (src !== 'http://file.muyutech.com/error-img.png') {
+        var imageW = $(this).width()
+        var imageH = $(this).height()
+        
+        var zoom = ($(window).width() * 0.95 / imageW).toFixed(2)
+        zoom = zoom < 1 ? 1 : zoom
+        zoom = zoom > 2 ? 2 : zoom
+        var transY = (($(window).height() - imageH) / 2).toFixed(2)
+
+        $('body').append('<div class="image-view-wrap"><div class="image-view-inner"><img src="'+ src +'" /></div></div>')
+        $('.image-view-wrap').addClass('wrap-active')
+        $('.image-view-wrap img').css({
+          'width': `${imageW}`,
+          'transform': `translate3d(0, ${transY}px, 0) scale3d(${zoom}, ${zoom}, 1)`
+        })
+        $('html').css('overflow', 'hidden')
+
+        $('.image-view-wrap').on('click', function() {
+          $(this).remove()
+          $('html').attr('style', '')
+        })
+      }
+    })
+
+    // qrcode
+    var qr = new QRious({
+      element: document.getElementById('share-qrcode'),
+      value: document.location.href
+    });
+
+    // gitment
+    var gitmentConfig = "";
+    if (gitmentConfig !== 'undefined') {
+      var gitment = new Gitment({
+        id: "《ArrayList和LinkedList理解》",
+        owner: "",
+        repo: "",
+        oauth: {
+          client_id: "",
+          client_secret: ""
+        },
+        theme: {
+          render(state, instance) {
+            const container = document.createElement('div')
+            container.lang = "en-US"
+            container.className = 'gitment-container gitment-root-container'
+            container.appendChild(instance.renderHeader(state, instance))
+            container.appendChild(instance.renderEditor(state, instance))
+            container.appendChild(instance.renderComments(state, instance))
+            container.appendChild(instance.renderFooter(state, instance))
+            return container;
+          }
+        }
+      })
+      gitment.render(document.getElementById('comments'))
+    }
+  })();
+</script>
+
+<script>
+  var disqus_shortname = '';
+  
+  var disqus_url = 'https://www.liutianruo.com/2019/05/30/ArrayList和LinkedList理解/';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//go.disqus.com/embed.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
+    <div class="scroll-top">
+  <span class="arrow-icon"></span>
+</div>
+    <footer class="app-footer">
+  <p class="copyright">
+    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
+    <br>
+    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
+  </p>
+</footer>
+
+<script>
+  function async(u, c) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+</script>
+<script>
+  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+    FastClick.attach(document.body);
+  })
+</script>
+
+<script>
+  var hasLine = 'true';
+  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
+    $('figure pre').each(function(i, block) {
+      var figure = $(this).parents('figure');
+      if (hasLine === 'false') {
+        figure.find('.gutter').hide();
+      }
+      var lang = figure.attr('class').split(' ')[1] || 'code';
+      var codeHtml = $(this).html();
+      var codeTag = document.createElement('code');
+      codeTag.className = lang;
+      codeTag.innerHTML = codeHtml;
+      $(this).attr('class', '').empty().html(codeTag);
+      figure.attr('data-lang', lang.toUpperCase());
+      hljs.highlightBlock(block);
+    });
+  })
+</script>
+<!-- Baidu Tongji -->
+
+<script src="/js/script.js"></script>
+  </body>
+</html>
