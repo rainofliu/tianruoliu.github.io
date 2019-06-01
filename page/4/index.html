@@ -1,424 +1,2637 @@
 <!DOCTYPE html>
-<html>
-  <head><meta name="generator" content="Hexo 3.8.0">
-  <meta http-equiv="content-type" content="text/html; charset=utf-8">
-  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-  <meta name="description" content="Java学习记录博客">
-  <meta name="keyword" content="Java学习博客">
-  
-    <link rel="shortcut icon" href="/css/images/logo.png">
-  
-  <title>
-    
-      时间旅行者
-    
-  </title>
-  <link href="//cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
-  <link href="//cdn.bootcss.com/highlight.js/9.12.0/styles/tomorrow.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/css/style.css">
-<link rel="stylesheet" href="/css/plugins/gitment.css">
-  <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-  <script src="//cdn.bootcss.com/geopattern/1.2.3/js/geopattern.min.js"></script>
-  <script src="//cdn.bootcss.com/nprogress/0.2.0/nprogress.min.js"></script>
-  <script src="/js/qrious.js"></script>
-<script src="/js/gitment.js"></script>
-  
-  
-    <!-- MathJax support START -->
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
-        tex2jax: {
-          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-          processEscapes: true,
-          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-        }
-      });
-    </script>
 
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for (i=0; i < all.length; i += 1) {
-          all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-      });
-    </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <!-- MathJax support END -->
+
+
   
+
+
+<html class="theme-next muse use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Java学习记录博客">
+<meta property="og:type" content="website">
+<meta property="og:title" content="时间旅行者">
+<meta property="og:url" content="https://www.liutianruo.com/page/4/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="Java学习记录博客">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="时间旅行者">
+<meta name="twitter:description" content="Java学习记录博客">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/page/4/">
+
+
+
+
+
+  <title>时间旅行者</title>
+  
+
+
+
+
+
+
 
 
 </head>
-<div class="wechat-share">
-  <img src="/css/images/logo.png">
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
 </div>
 
-  <body>
-    <header class="header fixed-header">
-  <div class="header-container">
-    <a class="home-link" href="/">
-      <div class="logo"></div>
-      <span>时间旅行者</span>
-    </a>
-    <ul class="right-list">
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
       
-        <li class="list-item">
-          
-            <a href="/" class="item-link active">Home</a>
-          
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            Home
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/tags/" class="item-link">Tags</a>
-          
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            Archives
+          </a>
         </li>
       
-        <li class="list-item">
-          
-            <a href="/archives/" class="item-link">Archives</a>
-          
-        </li>
-      
-        <li class="list-item">
-          
-            <a href="/about/" class="item-link">About</a>
-          
-        </li>
+
       
     </ul>
-    <div class="menu">
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
-      <span class="icon-bar"></span>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/07/Shiro入门/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/07/Shiro入门/" itemprop="url">Shiro入门</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-04-07T12:36:06+08:00">
+                2019-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id=""><a href="#" class="headerlink" title=""></a><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture267.png" alt=""></h1><h2 id="Shiro认证"><a href="#Shiro认证" class="headerlink" title="Shiro认证"></a>Shiro认证</h2><ol>
+<li>创建Security Manager</li>
+<li>主体提交认证到Security Manager</li>
+<li>Security Manager认证</li>
+<li>Authenticator认证</li>
+<li>Realm验证</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SimpleAccountRealm simpleAccountRealm=<span class="keyword">new</span> SimpleAccountRealm();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addUser</span><span class="params">()</span></span>&#123;</span><br><span class="line">        simpleAccountRealm.addAccount(<span class="string">"Mark"</span>,<span class="string">"1234"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager=<span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(simpleAccountRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject= SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token=<span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>,<span class="string">"1234"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"是否认证"</span>+subject.isAuthenticated());</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 主体登出</span></span><br><span class="line">        subject.logout();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"是否认证"</span>+subject.isAuthenticated());</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Shiro授权"><a href="#Shiro授权" class="headerlink" title="Shiro授权"></a>Shiro授权</h2><ol>
+<li>创建Security Manager</li>
+<li>主体授权</li>
+<li>Security Manager授权</li>
+<li>Authorizer授权</li>
+<li>Realm获取角色权限数据</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AuthenticationTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    SimpleAccountRealm simpleAccountRealm=<span class="keyword">new</span> SimpleAccountRealm();</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Before</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addUser</span><span class="params">()</span></span>&#123;</span><br><span class="line">        simpleAccountRealm.addAccount(<span class="string">"Mark"</span>,<span class="string">"1234"</span>,<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager=<span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(simpleAccountRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject= SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token=<span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>,<span class="string">"1234"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"是否认证"</span>+subject.isAuthenticated());</span><br><span class="line">        <span class="comment">// 判断授权</span></span><br><span class="line">        subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"admin"</span>);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Shiro自定义Realm"><a href="#Shiro自定义Realm" class="headerlink" title="Shiro自定义Realm"></a>Shiro自定义Realm</h2><p>内置Realm:</p>
+<ul>
+<li>IniRealm</li>
+<li>JdbcRealm</li>
+</ul>
+<h3 id="IniRealm"><a href="#IniRealm" class="headerlink" title="IniRealm"></a>IniRealm</h3><p>我们首先创建一个user.ini文件</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[users]</span></span><br><span class="line"><span class="attr">Mark</span>=<span class="number">123456</span>,admin</span><br><span class="line"><span class="section">[roles]</span></span><br><span class="line"><span class="attr">admin</span>=user:delete,user:update</span><br></pre></td></tr></table></figure>
+<p>接着测试代码测试主体的角色以及角色对应的权限</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">IniRealmTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        IniRealm iniRealm = <span class="keyword">new</span> IniRealm(<span class="string">"classpath:user.ini"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(iniRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">        subject.checkRole(<span class="string">"admin"</span>);</span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">        subject.checkPermission(<span class="string">"user:update"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="JdbcRealm"><a href="#JdbcRealm" class="headerlink" title="JdbcRealm"></a>JdbcRealm</h3><ul>
+<li><p>首先引入pom依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>mysql<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>mysql-connector-java<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>5.1.46<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.alibaba<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>druid<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.1.11<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>创建数据库表信息</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SET</span> FOREIGN_KEY_CHECKS=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for `roles_permissions`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line">角色权限表</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`roles_permissions`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`roles_permissions`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`role_name`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`permission`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">2</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of roles_permissions</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`roles_permissions`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'admin'</span>, <span class="string">'user:select'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for `users`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line">用户表</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`users`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`users`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">11</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`password`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">2</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of users</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`users`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'Mark'</span>, <span class="string">'123456'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Table structure for `user_roles`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line">用户角色表</span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`user_roles`</span>;</span><br><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="string">`user_roles`</span> (</span><br><span class="line">  <span class="string">`id`</span> <span class="built_in">int</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span> AUTO_INCREMENT,</span><br><span class="line">  <span class="string">`username`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  <span class="string">`role_name`</span> <span class="built_in">varchar</span>(<span class="number">12</span>) <span class="keyword">NOT</span> <span class="literal">NULL</span>,</span><br><span class="line">  PRIMARY <span class="keyword">KEY</span> (<span class="string">`id`</span>)</span><br><span class="line">) <span class="keyword">ENGINE</span>=<span class="keyword">InnoDB</span> AUTO_INCREMENT=<span class="number">2</span> <span class="keyword">DEFAULT</span> <span class="keyword">CHARSET</span>=utf8;</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Records of user_roles</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">INSERT</span> <span class="keyword">INTO</span> <span class="string">`user_roles`</span> <span class="keyword">VALUES</span> (<span class="string">'1'</span>, <span class="string">'Mark'</span>, <span class="string">'admin'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="comment">-- Procedure structure for `idata`</span></span><br><span class="line"><span class="comment">-- ----------------------------</span></span><br><span class="line"><span class="keyword">DROP</span> <span class="keyword">PROCEDURE</span> <span class="keyword">IF</span> <span class="keyword">EXISTS</span> <span class="string">`idata`</span>;</span><br><span class="line">DELIMITER ;;</span><br><span class="line"><span class="keyword">CREATE</span> DEFINER=<span class="string">`root`</span>@<span class="string">`localhost`</span> <span class="keyword">PROCEDURE</span> <span class="string">`idata`</span>()</span><br><span class="line"><span class="keyword">begin</span></span><br><span class="line">  <span class="keyword">declare</span> i <span class="built_in">int</span>;</span><br><span class="line">  <span class="keyword">set</span> i=<span class="number">1</span>;</span><br><span class="line">  while(i&lt;=1000)do</span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> t1 <span class="keyword">values</span>(i, <span class="number">1001</span>-i, i);</span><br><span class="line">    <span class="keyword">set</span> i=i+<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">set</span> i=<span class="number">1</span>;</span><br><span class="line">  while(i&lt;=1000000)do</span><br><span class="line">    <span class="keyword">insert</span> <span class="keyword">into</span> t2 <span class="keyword">values</span>(i, i, i);</span><br><span class="line">    <span class="keyword">set</span> i=i+<span class="number">1</span>;</span><br><span class="line">  <span class="keyword">end</span> <span class="keyword">while</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">end</span></span><br><span class="line">;;</span><br><span class="line">DELIMITER ;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">JdbcRealmTest</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    DruidDataSource dataSource=<span class="keyword">new</span> DruidDataSource();</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        dataSource.setUrl(<span class="string">"jdbc:mysql://127.0.0.1:3306/test"</span>);</span><br><span class="line">        dataSource.setUsername(<span class="string">"root"</span>);</span><br><span class="line">        dataSource.setPassword(<span class="string">"1027"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        JdbcRealm jdbcRealm=<span class="keyword">new</span> JdbcRealm();</span><br><span class="line"></span><br><span class="line">        jdbcRealm.setDataSource(dataSource);</span><br><span class="line">        <span class="comment">// 设置为true，才会去数据库的权限表查询权限</span></span><br><span class="line">        jdbcRealm.setPermissionsLookupEnabled(<span class="keyword">true</span>);</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(jdbcRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"ajin"</span>, <span class="string">"123"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">       subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">     subject.checkPermission(<span class="string">"user:select"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>我们可以自己设置数据库的sql语句进行查询，这样就可以自定义表名和字段名了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String sql=<span class="string">"select passwd from test_user where user_name=?"</span>;</span><br><span class="line">jdbcRealm.setAuthenticationQuery(sql);</span><br></pre></td></tr></table></figure>
+<p>因为JdbcRealm定义了一些sql语句</p>
+<ul>
+<li>用户登录的校验</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_AUTHENTICATION_QUERY = <span class="string">"select password from users where username = ?"</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>用户对应角色的查询</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_USER_ROLES_QUERY = <span class="string">"select role_name from user_roles where username = ?"</span>;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>用户的角色对应的权限查询</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">static</span> <span class="keyword">final</span> String DEFAULT_PERMISSIONS_QUERY = <span class="string">"select permission from roles_permissions where role_name = ?"</span>;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="自定义Realm"><a href="#自定义Realm" class="headerlink" title="自定义Realm"></a>自定义Realm</h3><p>自定义Realm继承自AuthorizingRealm</p>
+<ul>
+<li><p>创建自定义Realm</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.shiro.realm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.SimpleAuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.AuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.SimpleAuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.realm.AuthorizingRealm;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.PrincipalCollection;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Auther</span>: ajin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/4/6 20:25</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, String&gt; userMap = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        userMap.put(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="keyword">super</span>.setName(<span class="string">"customRealm"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 授权</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        String username = (String) principals.getPrimaryPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据用户名获取角色信息,从数据库或缓存中模拟</span></span><br><span class="line">        Set&lt;String&gt; roles = getRolesByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从数据库或者缓存中模拟获取权限信息</span></span><br><span class="line">        Set&lt;String&gt; permissions = getPermissionsByUsername(username);</span><br><span class="line"></span><br><span class="line">        SimpleAuthorizationInfo simpleAuthorizationInfo=<span class="keyword">new</span> SimpleAuthorizationInfo();</span><br><span class="line">        simpleAuthorizationInfo.setRoles(roles);</span><br><span class="line">        simpleAuthorizationInfo.setStringPermissions(permissions);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthorizationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getPermissionsByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; set=<span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        set.add(<span class="string">"user:delete"</span>);</span><br><span class="line">        set.add(<span class="string">"user:update"</span>);</span><br><span class="line">        <span class="keyword">return</span> set;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟从数据库或缓存中获取主体的角色</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getRolesByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; roles = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        roles.add(<span class="string">"admin"</span>);</span><br><span class="line">        roles.add(<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> roles;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 认证</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.从主体传过来的认证信息中获得用户名</span></span><br><span class="line"></span><br><span class="line">        String username = (String) token.getPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.通过用户名去数据库中获取凭证</span></span><br><span class="line"></span><br><span class="line">        String password = getPasswordByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (password == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        SimpleAuthenticationInfo simpleAuthenticationInfo = <span class="keyword">new</span></span><br><span class="line">                SimpleAuthenticationInfo(<span class="string">"Mark"</span>, password, <span class="string">"customRealm"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthenticationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟数据库查询凭证</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getPasswordByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userMap.get(username);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>测试自定义Realm</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealmTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        CustomRealm customRealm=<span class="keyword">new</span> CustomRealm();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(customRealm);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">        subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">        subject.checkPermission(<span class="string">"user:delete"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<blockquote>
+<p>以上就是一个简单的主体认证和授权的过程</p>
+</blockquote>
+<h2 id="Shiro密码加密"><a href="#Shiro密码加密" class="headerlink" title="Shiro密码加密"></a>Shiro密码加密</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealmTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testAuthentication</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        CustomRealm customRealm=<span class="keyword">new</span> CustomRealm();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1. 构建SecurityManager环境</span></span><br><span class="line">        DefaultSecurityManager defaultSecurityManager = <span class="keyword">new</span> DefaultSecurityManager();</span><br><span class="line">        defaultSecurityManager.setRealm(customRealm);</span><br><span class="line">        <span class="comment">// 设置加密</span></span><br><span class="line">        HashedCredentialsMatcher matcher=<span class="keyword">new</span> HashedCredentialsMatcher();</span><br><span class="line">        matcher.setHashAlgorithmName(<span class="string">"md5"</span>);</span><br><span class="line">        matcher.setHashIterations(<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        customRealm.setCredentialsMatcher(matcher);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2. 主体提交认证请求,shiro获取提交的主体信息</span></span><br><span class="line">        SecurityUtils.setSecurityManager(defaultSecurityManager);</span><br><span class="line">        Subject subject = SecurityUtils.getSubject();</span><br><span class="line"></span><br><span class="line">        UsernamePasswordToken token = <span class="keyword">new</span> UsernamePasswordToken(<span class="string">"Mark"</span>, <span class="string">"123456"</span>);</span><br><span class="line">        <span class="comment">// 主体登录</span></span><br><span class="line">        subject.login(token);</span><br><span class="line">        <span class="comment">// 判断主体的角色是否正确</span></span><br><span class="line">        subject.checkRoles(<span class="string">"admin"</span>,<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 查看主体对应角色的权限</span></span><br><span class="line">        subject.checkPermission(<span class="string">"user:delete"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.imooc.shiro.realm;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationException;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.AuthenticationToken;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authc.SimpleAuthenticationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.AuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.authz.SimpleAuthorizationInfo;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.crypto.hash.Md5Hash;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.realm.AuthorizingRealm;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.subject.PrincipalCollection;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">import</span> java.util.Set;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Auther</span>: ajin</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Date</span>: 2019/4/6 20:25</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CustomRealm</span> <span class="keyword">extends</span> <span class="title">AuthorizingRealm</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    Map&lt;String, String&gt; userMap = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line"></span><br><span class="line">    &#123;</span><br><span class="line">        userMap.put(<span class="string">"Mark"</span>, <span class="string">"b51d5af6c801ff4bfd31a4a154f35d35"</span>);</span><br><span class="line">        <span class="keyword">super</span>.setName(<span class="string">"customRealm"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 授权</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthorizationInfo <span class="title">doGetAuthorizationInfo</span><span class="params">(PrincipalCollection principals)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        String username = (String) principals.getPrimaryPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据用户名获取角色信息,从数据库或缓存中模拟</span></span><br><span class="line">        Set&lt;String&gt; roles = getRolesByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 从数据库或者缓存中模拟获取权限信息</span></span><br><span class="line">        Set&lt;String&gt; permissions = getPermissionsByUsername(username);</span><br><span class="line"></span><br><span class="line">        SimpleAuthorizationInfo simpleAuthorizationInfo = <span class="keyword">new</span> SimpleAuthorizationInfo();</span><br><span class="line">        simpleAuthorizationInfo.setRoles(roles);</span><br><span class="line">        simpleAuthorizationInfo.setStringPermissions(permissions);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthorizationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getPermissionsByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        set.add(<span class="string">"user:delete"</span>);</span><br><span class="line">        set.add(<span class="string">"user:update"</span>);</span><br><span class="line">        <span class="keyword">return</span> set;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟从数据库或缓存中获取主体的角色</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> Set&lt;String&gt; <span class="title">getRolesByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Set&lt;String&gt; roles = <span class="keyword">new</span> HashSet&lt;String&gt;();</span><br><span class="line">        roles.add(<span class="string">"admin"</span>);</span><br><span class="line">        roles.add(<span class="string">"user"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> roles;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 认证</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> AuthenticationInfo <span class="title">doGetAuthenticationInfo</span><span class="params">(AuthenticationToken token)</span> <span class="keyword">throws</span> AuthenticationException </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 1.从主体传过来的认证信息中获得用户名</span></span><br><span class="line"></span><br><span class="line">        String username = (String) token.getPrincipal();</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.通过用户名去数据库中获取凭证</span></span><br><span class="line"></span><br><span class="line">        String password = getPasswordByUsername(username);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (password == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        SimpleAuthenticationInfo simpleAuthenticationInfo = <span class="keyword">new</span></span><br><span class="line">                SimpleAuthenticationInfo(<span class="string">"Mark"</span>, password, <span class="string">"customRealm"</span>);</span><br><span class="line">        <span class="comment">// 加盐</span></span><br><span class="line">        simpleAuthenticationInfo.setCredentialsSalt(ByteSource.Util.bytes(<span class="string">"my"</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> simpleAuthenticationInfo;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 模拟数据库查询凭证</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> String <span class="title">getPasswordByUsername</span><span class="params">(String username)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> userMap.get(username);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// md5加密</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Md5Hash md5Hash = <span class="keyword">new</span> Md5Hash(<span class="string">"123456"</span>,<span class="string">"my"</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(md5Hash.toString());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>​    以上就是Shiro的基本入门知识了，算是对这个安全框架有了基本的了解与认识，以后会进一步地深入学习下。</p>
+
+          
+        
+      
     </div>
-    <div class="menu-mask">
-      <ul class="menu-list">
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/03/17/Spring-MVC源码初探（九）-ViewResolver/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
         
-          <li class="menu-item">
-            
-              <a href="/" class="menu-link mobile-active">Home</a>
-            
-          </li>
         
-          <li class="menu-item">
-            
-              <a href="/tags/" class="menu-link">Tags</a>
-            
-          </li>
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/17/Spring-MVC源码初探（九）-ViewResolver/" itemprop="url">Spring MVC源码初探（九） ViewResolver</a></h1>
         
-          <li class="menu-item">
+
+        <div class="post-meta">
+          <span class="post-time">
             
-              <a href="/archives/" class="menu-link">Archives</a>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-17T13:50:06+08:00">
+                2019-03-17
+              </time>
             
-          </li>
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
         
-          <li class="menu-item">
-            
-              <a href="/about/" class="menu-link">About</a>
-            
-          </li>
+          
+            <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>​    <code>ViewResolver</code>的作用是根据视图名和<code>Locale</code>对象解析出视图；</p>
+<p>​    解析过程主要做两件事：</p>
+<ul>
+<li><p>解析使用的<strong>模板</strong></p>
+</li>
+<li><p>解析视图的<strong>类型</strong></p>
+</li>
+</ul>
+<p>下面这是<code>ViewResolver</code>接口的代码，看了就一目了然</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture79.png" alt=""></p>
+<p><code>ViewResolver</code>体系中主要包含<code>AbstractCachingViewResolver</code>，<code>BeanNameViewResolver</code>，</p>
+<p><code>ContentNegotiatingViewResolver</code>和<code>ViewResolverComposite</code>。</p>
+<p><code>BeanNameViewResolver</code>比较简单，就是将视图名作为<code>beanName</code>拿到<code>ApplicationContext</code>中进行解析；</p>
+<p> 而<code>ViewResolverComposite</code>是一个封装了多个<code>ViewResolver</code>的容器。</p>
+<p>接下来我们主要看一下<code>AbstractCachingViewResolver</code>和<code>ContentNegotiatingViewResolver</code>这两个分支。</p>
+<h2 id="2-ContentNegotiatingViewResolver"><a href="#2-ContentNegotiatingViewResolver" class="headerlink" title="2.ContentNegotiatingViewResolver"></a>2.ContentNegotiatingViewResolver</h2><p>​    <code>ContentNegotiatingViewResolver</code>解析器的作用是在别的解析器解析的结果上增加了对<code>contentType</code>和</p>
+<p>后缀的支持。</p>
+<p>​    具体的解析过程是：首先遍历所封装的<code>ViewResolver</code>具体解析视图，可能会解析出多个视图，然后再根据</p>
+<p><code>request</code>获取<code>contentType</code>，也可能会获取多个结果，最后对两个结果进行匹配查找出最优的视图。</p>
+<h3 id="2-1-ViewResolver集合的初始化"><a href="#2-1-ViewResolver集合的初始化" class="headerlink" title="2.1 ViewResolver集合的初始化"></a>2.1 ViewResolver集合的初始化</h3><p>​    <code>private List&lt;ViewResolver&gt; viewResolvers</code></p>
+<p>​    <code>ContentNegotiatingViewResolver</code>进行的视图解析，是采用上面申明的一个<code>ViewResolver</code>集合来进</p>
+<p>行的。</p>
+<p>​      </p>
+<p>​    这里就需要了解下这些<code>ViewResolver</code>是如何被初始化的。一种方法是手动设置，另外一种方法是如果没有</p>
+<p>则自动获取Spring容器中除了<code>ContentNegotiatingViewResolver</code>自己以外的所有的<code>ViewResolver</code>，并设置</p>
+<p>给<code>viewResolvers</code>属性。</p>
+<blockquote>
+<p> 详细流程见下方的代码</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture80.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture81.png" alt=""></p>
+<h3 id="2-2-视图的解析"><a href="#2-2-视图的解析" class="headerlink" title="2.2 视图的解析"></a>2.2 视图的解析</h3><p>​    视图的解析是通过<code>resolveViewName()</code>来完成的，我们来具体分析一下。</p>
+<blockquote>
+<p>注意：MediaType和contentType在本篇博客中，指的是同一个概念，下方代码能看到。</p>
+</blockquote>
+<p>​    </p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture83.png" alt=""></p>
+<p>核心代码如图所示，注释已经很详细了。</p>
+<h4 id="2-2-1-getCandidateViews"><a href="#2-2-1-getCandidateViews" class="headerlink" title="2.2.1 getCandidateViews()"></a>2.2.1 getCandidateViews()</h4><p><code>getCandidateViews()</code>是获取所有候选的视图</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture84.png" alt=""></p>
+<h4 id="2-2-3-getBestView"><a href="#2-2-3-getBestView" class="headerlink" title="2.2.3 getBestView()"></a>2.2.3 getBestView()</h4><p>​    </p>
+<p>​    该方法是为了获取最优视图。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture85.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture86.png" alt=""></p>
+<p>看一下老师的总结：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture87.png" alt=""></p>
+<h2 id="3-AbstractCachingViewResolver"><a href="#3-AbstractCachingViewResolver" class="headerlink" title="3. AbstractCachingViewResolver"></a>3. AbstractCachingViewResolver</h2><h3 id="3-1-概述"><a href="#3-1-概述" class="headerlink" title="3.1 概述"></a>3.1 概述</h3><p>​    <code>AbstractCachingViewResolver</code>提供了统一的缓存功能，当视图解析过一次后就被缓存了起来，直到缓存</p>
+<p>被删除前视图的解析都会自动从缓存中获取。</p>
+<p>​    <code>AbstractCachingViewResolver</code>有三个直接继承类：<code>ResourceBundleViewResolver</code>，</p>
+<p><code>XmlViewResolver</code>和<code>UrlBasedViewResolver</code>。前两个分别使用properties属性配置文件和xml配置文件来解析</p>
+<p>视图，我们简单了解，需要着重看一下的是<code>UrlBasedViewResolver</code>。</p>
+<p>​    在看<code>UrlBasedViewResolver</code>之前，我们需要先看一下<code>AbstractCachingViewResolver</code>中解析视图的方</p>
+<p>法。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture88.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture89.png" alt=""></p>
+<p>注意：这里的<code>createView()</code>调用了一个模板方法<code>loadView(）</code>，这个模板方法是由子类去实现的。</p>
+<h3 id="3-2-UrlBasedViewResolver"><a href="#3-2-UrlBasedViewResolver" class="headerlink" title="3.2 UrlBasedViewResolver"></a>3.2 UrlBasedViewResolver</h3><p>​    <code>UrlBasedViewResolver</code>重写了父类的<code>getCacheKey</code>，<code>createView</code>和<code>loadView</code>方法。</p>
+<h4 id="3-2-1-getCacheKey"><a href="#3-2-1-getCacheKey" class="headerlink" title="3.2.1 getCacheKey()"></a>3.2.1 getCacheKey()</h4><p>​    父类<code>AbstractCachingViewResolver</code>的getCacheKey方法：</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture90.png" alt=""></p>
+<p>子类的重写：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture91.png" alt=""></p>
+<blockquote>
+<p><code>UrlBasedViewResolver</code>不支持<code>Locale</code></p>
+</blockquote>
+<h4 id="3-2-2-createView"><a href="#3-2-2-createView" class="headerlink" title="3.2.2 createView()"></a>3.2.2 createView()</h4><p>​    </p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture92.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture93.png" alt=""></p>
+<h5 id="3-2-2-1-loadView"><a href="#3-2-2-1-loadView" class="headerlink" title="3.2.2.1 loadView()"></a>3.2.2.1 loadView()</h5><p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture94.png" alt=""></p>
+<blockquote>
+<p><code>buildView</code>()需要再看一下</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture95.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture96.png" alt=""></p>
+<blockquote>
+<p>​    这里面由一个<code>getViewClass</code>()来获取<code>viewClass</code>属性，那么<code>UrlBasesViewResolver</code>的子类就需要</p>
+<p>提供<code>setViewClass</code>()方法来设置<code>viewClass</code>，也就是获取所用的视图类型。</p>
+</blockquote>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture97.png" alt=""></p>
+
+          
         
-      </ul>
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/03/16/Spring-MVC源码初探（八）HandlerAdapter-二）组件/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/16/Spring-MVC源码初探（八）HandlerAdapter-二）组件/" itemprop="url">Spring MVC源码初探（八）HandlerAdapter(二）组件</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-16T20:05:24+08:00">
+                2019-03-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-概述"><a href="#1-概述" class="headerlink" title="1. 概述"></a>1. 概述</h2><p>​    </p>
+<p>​    上面一篇文章，我们看了HandlerAdapter体系的核心源码，其中涉及到了一些不熟悉的组件，这篇博客就来了</p>
+<p>解一下这些组件。</p>
+<h2 id="2-ModelAndViewContainer"><a href="#2-ModelAndViewContainer" class="headerlink" title="2. ModelAndViewContainer"></a>2. ModelAndViewContainer</h2><p>ModelAndViewContainer，它不仅保存了Model和View的信息，而且还承担着整个请求过程中的数据传递工作</p>
+<h3 id="2-1-属性"><a href="#2-1-属性" class="headerlink" title="2.1 属性"></a>2.1 属性</h3><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture67.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture68.png" alt=""></p>
+<blockquote>
+<p> 此处的属性中，主要留意defaultModel和redirectModel</p>
+</blockquote>
+<h3 id="2-2-getModel"><a href="#2-2-getModel" class="headerlink" title="2.2 getModel()"></a>2.2 getModel()</h3><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture69.png" alt=""></p>
+<blockquote>
+<p>这里的getModel方法会根据条件判断返回defaultModel还是redirectModel</p>
+</blockquote>
+<h2 id="3-SessionAttributesHandler-amp-amp-SessionAttributeStore"><a href="#3-SessionAttributesHandler-amp-amp-SessionAttributeStore" class="headerlink" title="3. SessionAttributesHandler&amp;&amp;SessionAttributeStore"></a>3. SessionAttributesHandler&amp;&amp;SessionAttributeStore</h2><p>​    <code>SessionAttributesHandler</code>处理添加了<code>@SessionAttributes</code>注解的参数，它更像是一个安排任务的领</p>
+<p>导，指派哪个Handler可以缓存哪些参数，哪个参数在当前的SessionAttributes中是否存在，如何操作多个参数等任</p>
+<p>务。而具体的存储工作是由<code>SessionAttributeStore</code>来完成的。</p>
+<p>​    </p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture70.png" alt=""></p>
+<p>这些属性对应<code>@SessionAttributes</code>注解中的参数:</p>
+<ol>
+<li><p>attributeNames对应的是参数名</p>
+</li>
+<li><p>attributeTypes对应的是types参数</p>
+</li>
+</ol>
+<ol start="3">
+<li>knownAttributeNames存储已知的可以被当前处理器处理的属性名</li>
+</ol>
+<p><code>SessionAttributeStore</code>是一个接口，它的默认实现是<code>DefaultSessionAttributeStore</code>，该类对每个参数</p>
+<p>进行保存，取回和删除的操作。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture71.png" alt=""></p>
+<blockquote>
+<p>SessionAttributesHandler是在ModelFacotry中使用的。</p>
+</blockquote>
+<p>摘录下韩路彪老师的总结：</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture72.png" alt=""></p>
+<h2 id="4-ModelFactory"><a href="#4-ModelFactory" class="headerlink" title="4. ModelFactory"></a>4. ModelFactory</h2><p><code>ModelFactory</code>就是用来维护<code>Model</code>的，主要做两件事</p>
+<ol>
+<li><p>初始化Model</p>
+</li>
+<li><p>处理器执行完成后，将Model中的相应参数更新到<code>SessionAttributes</code>中</p>
+</li>
+</ol>
+<h3 id="4-1-初始化Model"><a href="#4-1-初始化Model" class="headerlink" title="4.1 初始化Model"></a>4.1 初始化Model</h3><p>​    在处理器执行之前把相应数据设置到Model中。</p>
+<p>​    </p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture73.png" alt=""></p>
+<p>​    </p>
+<h3 id="4-2-更新Model"><a href="#4-2-更新Model" class="headerlink" title="4.2 更新Model"></a>4.2 更新Model</h3><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture74.png" alt=""></p>
+<h2 id="5-ServletInvocableHandlerMethod"><a href="#5-ServletInvocableHandlerMethod" class="headerlink" title="5. ServletInvocableHandlerMethod"></a>5. ServletInvocableHandlerMethod</h2><h3 id="5-1-HandlerMethod"><a href="#5-1-HandlerMethod" class="headerlink" title="5.1 HandlerMethod"></a>5.1 HandlerMethod</h3><p><code>HandlerMethod</code>是用于封装Handler和其中具体处理请求的Method。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture75.png" alt=""></p>
+<blockquote>
+<p> 主要是看一下bean和method这两个属性</p>
+</blockquote>
+<h3 id="5-2-InvocableHandlerMethod"><a href="#5-2-InvocableHandlerMethod" class="headerlink" title="5.2 InvocableHandlerMethod"></a>5.2 InvocableHandlerMethod</h3><p><code>InvocableHandlerMethod</code>是<code>HandlerMethod</code>的子类，可以直接调用内部属性method的方法。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture76.png" alt=""></p>
+<h3 id="5-3-ServletInvocableHandlerMethod"><a href="#5-3-ServletInvocableHandlerMethod" class="headerlink" title="5.3 ServletInvocableHandlerMethod"></a>5.3 ServletInvocableHandlerMethod</h3><p>​    该类在父类<code>InvocableHandlerMethod</code>基础上新增的功能有：</p>
+<ol>
+<li>对<code>@ResponseStatus</code>注解的支持</li>
+<li>对返回值的处理</li>
+<li>对异步处理结果的处理</li>
+</ol>
+<blockquote>
+<p>此部分略过</p>
+</blockquote>
+<h2 id="6-HandlerMethodArgumentResolver"><a href="#6-HandlerMethodArgumentResolver" class="headerlink" title="6. HandlerMethodArgumentResolver"></a>6. HandlerMethodArgumentResolver</h2><p>​    <code>HandlerMethodArgumentResolver</code>接口，是用来为处理器解析参数的，其实现类非常多。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture77.png" alt=""></p>
+<h2 id="7-HandlerMethodReturnValueHandler"><a href="#7-HandlerMethodReturnValueHandler" class="headerlink" title="7. HandlerMethodReturnValueHandler"></a>7. HandlerMethodReturnValueHandler</h2><p><code>HandlerMethodReturnValueHandler</code>用于<code>ServletInvocableHandlerMethod</code>中，作用是处理处理器执行后</p>
+<p>的返回值。主要做三件事情：</p>
+<ol>
+<li>将相应参数添加到<code>Model</code>中</li>
+<li>设置<code>View</code></li>
+<li>如果请求已经处理完，则将<code>ModelAndViewContainer</code>的requestHandled设置为true</li>
+</ol>
+<h2 id="8-总结"><a href="#8-总结" class="headerlink" title="8. 总结"></a>8. 总结</h2><p>​    看完了这些组件，我们总结下整个HandlerAdapter部分的原理。</p>
+<p>​    在HandlerAdapter体系中，最复杂的是RequestMappingHandlerAdapter，整个处理过程为：解析参数，处理请求</p>
+<p>和处理返回值。</p>
+<p>​    </p>
+<p>​    对该类的处理流程，引用书上的话来说明：</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture78.png" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/03/15/Spring-MVC源码初探（七）HandlerAdapter（一）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/03/15/Spring-MVC源码初探（七）HandlerAdapter（一）/" itemprop="url">Spring MVC源码初探（七） HandlerAdapter（一）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-03-15T10:59:02+08:00">
+                2019-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>​    </p>
+<p>​    前面我们看了<code>HandlerMapping</code>体系，<code>HandlerMapping</code>就是根据request获取<code>HandlerExecutionChain</code>的这么一个组件。那么拿到了<code>HandlerExecutionChain</code>中的处理器和拦截器以后，我们需要用<code>HandlerAdapter</code>来调用Handler来完成处理器的操作。</p>
+<p>​    </p>
+<p>​    我们首先看下HandlerMapping的继承体系</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture34.png" alt=""></p>
+<p>​                （上图来自《看透Spring MVC：源代码分析与实践》）</p>
+<h2 id="2-HandlerAdapter简介"><a href="#2-HandlerAdapter简介" class="headerlink" title="2. HandlerAdapter简介"></a>2. HandlerAdapter简介</h2><h3 id="2-1-概述"><a href="#2-1-概述" class="headerlink" title="2.1 概述"></a>2.1 概述</h3><p>​        HandlerAdapter是一个接口，首先来看下接口本身的源码</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture35.png" alt=""></p>
+<p>我们发现，该接口的核心方法是<code>handle</code>方法，就是指挥Handler处理器干活的方法。</p>
+<h3 id="2-2-子类简介"><a href="#2-2-子类简介" class="headerlink" title="2.2 子类简介"></a>2.2 子类简介</h3><p>​    <code>HttpRequestHandlerAdapter</code>适配的是<code>HttpRequestHandler</code>类型的处理器<code>SimpleServletHandlerAdapter</code>适配的是</p>
+<p><code>Servlet</code>类型的处理器，<code>SimpleControllerHandlerAdapter</code>适配的是<code>Controller</code>类型的处理器。</p>
+<p>​    它们的<code>handler</code>方法都是调用对应Handler中的方法。</p>
+<p>​    我们着重要看的是<code>RequestMappingHandlerAdapter</code>中关于handle方法的源码。</p>
+<h2 id="3-RequestMappingHandlerAdapter"><a href="#3-RequestMappingHandlerAdapter" class="headerlink" title="3. RequestMappingHandlerAdapter"></a>3. RequestMappingHandlerAdapter</h2><h3 id="3-1-AbstractHandlerMethodAdapter"><a href="#3-1-AbstractHandlerMethodAdapter" class="headerlink" title="3.1 AbstractHandlerMethodAdapter"></a>3.1 AbstractHandlerMethodAdapter</h3><p>​    <code>AbstractHandlerMethodAdapter</code>是<code>RequestMappingHandlerAdapter</code>的父类。它实现了HandlerAdapter接口，并重写了<code>supports</code>，<code>handle</code>以及<code>getLastModified</code>方法，其中又包含了三个模板方法<code>supportsInternal</code>，<code>handleInternal</code>和<code>getLastModifiedInternal</code>。另外它还实现了Ordered接口进行排序。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture56.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture57.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture58.png" alt=""></p>
+<p>​    </p>
+<blockquote>
+<p>总结：此处一目了然，<code>AbstractHandlerMethodAdapter</code>实现了<code>HandlerAdapter</code>接口的三个方法，其实不是完全的实现，而是又重新引进了三个模板方法，交给它的子类<code>RequestMappingHandlerAdapter</code>去真正实现。</p>
+</blockquote>
+<h3 id="3-2模板方法"><a href="#3-2模板方法" class="headerlink" title="3.2模板方法"></a>3.2模板方法</h3><p>我们来简单说一下三个模板方法。</p>
+<ul>
+<li><p><code>supportsInternal</code>方法简单粗暴，直接返回true</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture59.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><p><code>getLastModifiedInternal</code>同样简单直接，返回-1</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture60.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><code>handleInternal</code>比较复杂，着重看这一块</li>
+</ul>
+<p>  <code>handleInternal</code>就是使用<code>Handler</code>来处理请求的方法，具体处理流程有如下三步：</p>
+<ol>
+<li>准备好处理器需要的参数</li>
+</ol>
+<ol start="2">
+<li>使用处理器处理请求</li>
+</ol>
+<ol start="3">
+<li>处理返回值，将不同类型的返回值统一处理成<code>ModelAndView</code>类型</li>
+</ol>
+<blockquote>
+<p>在第一步的参数准备，还是比较复杂的，就是按照处理器的需求来提供参数。</p>
+</blockquote>
+<h3 id="3-3-参数相关"><a href="#3-3-参数相关" class="headerlink" title="3.3 参数相关"></a>3.3 参数相关</h3><h4 id="3-3-1-参数准备工作"><a href="#3-3-1-参数准备工作" class="headerlink" title="3.3.1 参数准备工作"></a>3.3.1 参数准备工作</h4><p>参数准备，其实就是把参数绑定给处理器的过程。</p>
+<p>参数准备，需要我们理解的有三个方面</p>
+<ul>
+<li>有哪些参数需要绑定给处理器</li>
+</ul>
+<p>  绑定的参数是根据方法来确定的，除了实际处理请求的处理器之外，还有两个方法的参数需要绑定，也就是跟当前处理器相对应的添加了@ModelAttribute和@InitBinder注解的方法。</p>
+<ul>
+<li><p>参数值的来源</p>
+<ol>
+<li>request请求中的相关参数</li>
+<li>cookie中的相关参数</li>
+<li>session中的参数</li>
+<li>设置到FlashMap中的参数，这种类型的参数，主要用于redirect的参数传递</li>
+<li>SessionAttributes传递的参数，这类参数主要通过@SessionAttributes注解来进行传递</li>
+<li>通过相应的注解了@ModelAttribute的方法进行设置的参数</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>具体进行参数绑定的方法是什么</li>
+</ul>
+<p>​    </p>
+<blockquote>
+<p>关于参数的解析，引用韩路彪书中的原话如下：</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture36.png" alt=""></p>
+<h4 id="3-3-2-InitBinder-ModelAttribute-ControllerAdvice"><a href="#3-3-2-InitBinder-ModelAttribute-ControllerAdvice" class="headerlink" title="3.3.2 @InitBinder,@ModelAttribute,@ControllerAdvice"></a>3.3.2 @InitBinder,@ModelAttribute,@ControllerAdvice</h4><ol>
+<li><p>@InitBinder</p>
+<p>用于初始化Binder</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@InitBinder</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initBinder</span><span class="params">(WebDataBinder binder)</span> </span>&#123;</span><br><span class="line">       SimpleDateFormat dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">       dateFormat.setLenient(<span class="keyword">false</span>);</span><br><span class="line">       binder.registerCustomEditor(Date.class, <span class="keyword">new</span> CustomDateEditor(dateFormat, <span class="keyword">true</span>));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li><p>@ModelAttribute</p>
+<ul>
+<li><p>设置在参数上</p>
+<p>要使用指定的ArgumentResolver来解析参数</p>
+</li>
+<li><p>设置在方法上</p>
+<p>将参数设置给Model</p>
+</li>
+</ul>
+</li>
+<li><p>ControllerAdvice</p>
+<p>用于全局异常处理（搭配<code>@ExceptionHandler</code>和<code>@ResponseStatus</code>）</p>
+</li>
+</ol>
+<blockquote>
+<p>写到此处，我的心得就是Spring MVC本身原理是不复杂的，复杂的是有着很多之前不熟悉的组件。</p>
+</blockquote>
+<h3 id="3-4-创建RequestMappingHandlerAdapter"><a href="#3-4-创建RequestMappingHandlerAdapter" class="headerlink" title="3.4 创建RequestMappingHandlerAdapter"></a>3.4 创建RequestMappingHandlerAdapter</h3><p><code>RequestMappingHandlerAdapter</code>的创建是在<code>aferPropertiesSet</code>()中完成的。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture37.png" alt=""></p>
+<ul>
+<li>initControllerAdviceCache()初始化添加了@ControllerAdvice注解的类的属性</li>
+</ul>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture38.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture39.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture40.png" alt=""></p>
+<ul>
+<li>接下来初始化了<code>argumentResolvers</code>，<code>initBinderArgumentResolvers</code>和<code>returnValueHandlers</code>属性</li>
+</ul>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture61.png" alt=""></p>
+<p><code>getDefaultArgumentResolvers()</code></p>
+<ul>
+<li>添加按<strong>注解</strong>解析参数的解析器</li>
+<li>添加按<strong>类型</strong>解析参数的解析器</li>
+<li>添加自定义参数解析器，主要用于解析<strong>自定义类型</strong></li>
+<li>添加两个可以解析<strong>任意类型</strong>参数的解析器</li>
+</ul>
+<blockquote>
+<p>小细节，我们自己自定义的参数解析器，只要在注解解析器和类型解析器解析不了参数的情况下才会起作用，这样的话，自定义也没有什么意义。</p>
+</blockquote>
+<h3 id="3-5-handleInternal"><a href="#3-5-handleInternal" class="headerlink" title="3.5 handleInternal()"></a>3.5 handleInternal()</h3><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture41.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture42.png" alt=""></p>
+<h4 id="3-5-1-checkRequest"><a href="#3-5-1-checkRequest" class="headerlink" title="3.5.1 checkRequest()"></a>3.5.1 checkRequest()</h4><p>​    <code>checkRequest()</code>来自<code>AbstractHandlerMethodAdapter</code>继承的父类<code>WebContentGenerator</code>中的方法。</p>
+<p>​    先看下WebContentGenerator的构造器</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture62.png" alt=""></p>
+<p>​    checkRequest的源码，一目了然，现在一看就明白了</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture44.png" alt=""></p>
+<h4 id="3-5-2-invokeHandlerMethod-request-response-handlerMethod"><a href="#3-5-2-invokeHandlerMethod-request-response-handlerMethod" class="headerlink" title="3.5.2 invokeHandlerMethod(request, response, handlerMethod)"></a>3.5.2 invokeHandlerMethod(request, response, handlerMethod)</h4><p>​    该方法是最核心的方法，它直接处理请求。先摘录下源码，然后再分析比较关键的流程。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture45.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture46.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture47.png" alt=""></p>
+<ol>
+<li><p><code>WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);</code></p>
+<p><code>WebDataBinderFactory</code>是用来创建 <code>WebDataBinder</code>对象的，<code>WebDataBinder</code>用于参数绑定，主要功能是参数跟String之间的类型转换。</p>
+<blockquote>
+<p>看一下getDataBinderFactory(handlerMethod)</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture48.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture49.png" alt=""></p>
+</li>
+</ol>
+<blockquote>
+<p>WebDataBinderFactory主要和相应的InitBinder注解的方法相关。</p>
+</blockquote>
+<ol start="2">
+<li><p><code>ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);</code></p>
+<p>ModelFactory主要是用来处理Model的，它主要做两件事：</p>
+</li>
+</ol>
+<ul>
+<li><p>在处理器具体处理之前对Model进行初始化</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture50.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture51.png" alt=""></p>
+</li>
+<li><p>在处理器处理之后对Model进行更新</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture52.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture53.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>​    getModelFacotry方法</p>
+</blockquote>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture54.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture55.png" alt=""></p>
+<ol start="3">
+<li><code>ServletInvocableHandlerMethod invocableMethod = createInvocableHandlerMethod(handlerMethod);</code></li>
+</ol>
+<p>   <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture63.png" alt=""></p>
+<p>  上面的构造器实质上是调用的HandlerMethod的构造器</p>
+<p>​    HandlerMethod的构造器<img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture64.png" alt=""></p>
+<p>实际处理请求是通过<code>ServletInvocableHandlerMethod</code> 来实现的。进一步地分析等后续的博客更新。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>​    <code>HandlerAdapter</code>主要就是使用处理器（<code>HandlerMethod</code>）来执行请求，主要步骤为：①绑定参数 ②执行</p>
+<p>请求 ③处理器返回值。其实主要逻辑并不复杂，难在有一些不熟悉的组件和注解，后续会慢慢熟悉它们，并输出到博客。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/23/Spring-AOP基本概念总结/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/23/Spring-AOP基本概念总结/" itemprop="url">Spring AOP基本概念总结</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-23T20:59:02+08:00">
+                2019-02-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Spring-面向切面编程基本概念"><a href="#Spring-面向切面编程基本概念" class="headerlink" title="Spring 面向切面编程基本概念"></a>Spring 面向切面编程基本概念</h1><p>​    在应用程序中，有些模块是很重要，但是却是重复的内容，比如说<strong>日志，安全和事务管理</strong>模块。我们不可能在每一个需要日志的模块去手动编写日志相关的代码，因为这样下来，就需要无数重复枯燥的编码。而且虽然日志等模块对当前的代码来说很重要，但是当前的代码应该更关注于自己的业务逻辑。</p>
+<p>​     所以说，根据以上背景，我们是否可以将日志，安全和事务管理等模块交给单独的类来实现，而我们之前的业务代码虽然需要用到这些模块的功能，但是却不要修改自己的内部代码，而是由这些单独的类来声明在适当的时机和情况下，给业务逻辑加上日志等模块。</p>
+<p> 说的专业点，就是将日志等模块提取为<strong>横切关注点</strong>的方式来编程，这就是AOP。</p>
+<ul>
+<li><p>横切关注点： 散布于应用中多处的功能</p>
+<blockquote>
+<p>面向切面编程所要解决的问题，就是将这些横切关注点与业务逻辑进行分离</p>
+</blockquote>
+</li>
+<li><p>通知（Advice）</p>
+<p>切面的工作被称为<strong>通知</strong>。通知定义了切面是什么，以及如何使用。它描述了切面需要完成的工作，以及何时执行这个工作。</p>
+<p>Spring切面可以引用5种类型的通知。</p>
+<ul>
+<li>前置通知（Before）：在目标方法被调用之前调用通知功能</li>
+<li>后置通知（After）：在目标方法完成之后调用该通知，此时不会关心方法的输出是什么</li>
+<li>返回通知（After-returning）：在目标方法成功执行之后调用此通知</li>
+<li>异常通知（After-throwing）：在目标方法抛出异常后调用此通知</li>
+<li>环绕通知（Around）：通知包裹了被通知的方法，在被通知的方法调用之前和调用之后执行自定义的行为。</li>
+</ul>
+</li>
+<li><p>连接点（Join Point）</p>
+<p>应用执行过程中能够插入切面的一个点。这个点可以是调用方法时、抛出异常时，甚至修改一个字段时。</p>
+<p>切面代码可以利用这些点插入到应用的正常流程中，并添加新的行为。</p>
+</li>
+<li><p>切点（Point Cut）</p>
+<p>切点的定义会匹配通知所要织入的一个或多个连接点（<strong>何处</strong>）</p>
+</li>
+<li><p>切面（Aspect）</p>
+<blockquote>
+<p>切面就是通知和切点的结合。通知和切点共同定义了切面的全部内容——它是什么，在何时和何处完成这些功能。</p>
+</blockquote>
+</li>
+<li><p>织入（Weaving）</p>
+<p>织入就是把切面应用到目标对象并创建新的代理对象的过程。切面在指定的连接点被织入到目标对象中。</p>
+</li>
+</ul>
+<p>总述：概念是帮助理解AOP的，真正需要掌握的是通过实际编码来实现AOP，《Spring实战》第四版的第四章的确给了很好的示例。具体应用好AOP的话，也需要一些技术和经验上的积累。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/11/Java核心-继承/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/11/Java核心-继承/" itemprop="url">继承</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-11T18:20:38+08:00">
+                2019-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="类、超类、子类"><a href="#类、超类、子类" class="headerlink" title="类、超类、子类"></a>类、超类、子类</h2><p>​    超类与子类是父与子的关系，甚至是更远的关系，我们在设计类的时候，可以把通用的东西放在超类中，然后子类中实现不同的功能。</p>
+<p>​    当然，如果子类不想继承父类的某些功能，可以重写父类的方法。</p>
+<h3 id="this和super关键字："><a href="#this和super关键字：" class="headerlink" title="this和super关键字："></a>this和super关键字：</h3><ol>
+<li><p>this可以引用隐式参数，调用本类中的其他构造器</p>
+<p><code>this.name=name;</code>     <code>this(name,age);</code></p>
+</li>
+<li><p>super可以调用父类的方法和父类的构造器</p>
+</li>
+</ol>
+<blockquote>
+<p>两者在调用构造器的时候，要写在本身构造器方法的第一行</p>
+</blockquote>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><ul>
+<li><p>一个对象变量可以指示多种实际类型的现象称为<strong>多态</strong>。</p>
+</li>
+<li><p>在运行时，能够自动地选择调用哪个方法的现象叫做<strong>动态绑定</strong>。</p>
+</li>
+</ul>
+<p><strong>注</strong>：Java正常是不支持多继承的，但是接口却可以继承多个接口。</p>
+<p>方法的签名：方法的名字和参数列表</p>
+<p>final类不能被继承，final修饰的方法不能被重写，final变量，一旦初始化，就不能修改它的值。</p>
+<h3 id="强制类型转换（对象）"><a href="#强制类型转换（对象）" class="headerlink" title="强制类型转换（对象）"></a>强制类型转换（对象）</h3><p>进行类型转换的唯一原因： 在暂时忽略对象的实际类型后，使用对象的全部功能。</p>
+<p><strong>注意</strong> ：在进行类型转换的时候，要先判断下该对象能不能转过来，否则，会报<code>ClassCastException</code>。</p>
+<p>​    </p>
+<p>​    写一个Spring源码中的实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(applicationContext instance of ConfigurableApplicationContext)&#123;</span><br><span class="line">    context=(ConfigurableApplicationContext)applicationContext;</span><br><span class="line">&#125;<span class="keyword">else</span>.....</span><br></pre></td></tr></table></figure>
+<p>​    上述代码判断了<code>applicationContext</code>是否引用了<code>ConfigurableApplicationContext</code>类型的对象，</p>
+<p>如果是，才可以进行类型转换</p>
+<blockquote>
+<p>综合一下：</p>
+<ol>
+<li>只能在继承层次内进行类型转换(子类转成父类)</li>
+<li>在进行类型转换时，应该使用<code>instance of</code> 进行检查</li>
+</ol>
+</blockquote>
+<p>不建议过多使用类型转换</p>
+<h3 id="抽象类（abstract-class"><a href="#抽象类（abstract-class" class="headerlink" title="抽象类（abstract class)"></a>抽象类（abstract class)</h3><p>只要包含一个以上抽象方法的类，就是抽象类。</p>
+<ul>
+<li><p>Person类有两个子类Student，Teacher。</p>
+</li>
+<li><p>Person类自身有name属性，和getName()方法</p>
+<blockquote>
+<p>我们说过这种通用的，就放在父类中</p>
+</blockquote>
+</li>
+<li><p>Person类中包含getDescritption()，但是Person类，不能实现这个方法，因为Person类中的属性太少，这个getDescription()方法实现了也没有意义，那么我们就将其设置成抽象方法，留给两个子类去重写</p>
+</li>
+</ul>
+<p>​    根据上面的描述，看下Person类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//这就是我在Spring MVC部分的源码中看到的模板方法，交给子类去实现的。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">getDescription</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们看源码的过程中，也是看到一个抽象类的子类，如果还是一个抽象类，那么就实现了父类的部分抽象方法；当然也可以全部实现，那自己就不是一个抽象类了。</p>
+</blockquote>
+<p>注意：</p>
+<ol>
+<li><p>抽象类是不能直接创建实例的，但是可以通过如下方式创建具体子类的对象</p>
+<p>Person person=new Student();</p>
+<p>这其实就是多态，多态必须得让子类重写父抽象类中的方法，person只能访问到子类中重写的方法；并且如果调用的方法，子类中没有重写的话，就会去父类中找，父类中找不到就会报错。</p>
+</li>
+<li><p>类就算没有抽象方法，也可以被声明为抽象类，这样别人就new不了了，好贱！</p>
+</li>
+</ol>
+<h3 id="受保护访问"><a href="#受保护访问" class="headerlink" title="受保护访问"></a>受保护访问</h3><p>​    </p>
+<p>​        <strong>对类中的域和方法：</strong> </p>
+<ol>
+<li>仅对本类可见——private</li>
+<li>对所有类可见——public</li>
+<li>对本包和所有子类可见——protected</li>
+<li>对本包可见——默认的，不要修饰符</li>
+</ol>
+<h2 id="Object类"><a href="#Object类" class="headerlink" title="Object类"></a>Object类</h2><p>Object类是所有类的超类，它是最大的。在Java中，每个类都是由Object类拓展而来。</p>
+<p>在Java中，除了基本数据类型外，其余都是对象，数组，集合。。。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object employee=new Employee();</span><br></pre></td></tr></table></figure>
+<p>如果需要进行具体操作，需要进行类型转换:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Employee e=(Employee) employee;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实这也是多态，因为employee引用变量只能访问到Employee这个Object子类中重写的方法。</p>
+</blockquote>
+<h3 id="equals"><a href="#equals" class="headerlink" title="equals()"></a>equals()</h3><p>比较的是两个对象是否相等，但是String等其他子类都对其进行了重写。</p>
+<p>两个引用变量指向同一个对象，返回true</p>
+<p>String中的equals()比较的是字符串的值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode"></a>hashCode</h3><p>两个引用变量指向同一变量时，hashcode一定相同。</p>
+<p><strong>其他内容查看API即可</strong></p>
+<h2 id="对象包装器与自动装箱"><a href="#对象包装器与自动装箱" class="headerlink" title="对象包装器与自动装箱"></a>对象包装器与自动装箱</h2><p>​    包装器指的是对基本数据类型的包装</p>
+<p>包装器类：Integer Byte Short Long   Double Float Boolean Character Void</p>
+<p>包装器类是由final修饰的</p>
+<ol>
+<li>自动装箱：int转成Integer</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer.valueOf(3)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>自动拆箱：反过来</p>
+<p><code>Integer.intValue()</code></p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      <span class="comment">//装箱</span></span><br><span class="line">    <span class="keyword">if</span>(Integer.valueOf(<span class="number">3</span>) <span class="keyword">instanceof</span> Integer)&#123;</span><br><span class="line">        System.out.println(<span class="number">111</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//拆箱</span></span><br><span class="line">    Integer initValue=<span class="number">3</span>;</span><br><span class="line">      <span class="keyword">int</span> a=initValue.intValue();</span><br><span class="line">      System.out.println(a);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="枚举类"><a href="#枚举类" class="headerlink" title="枚举类"></a>枚举类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一个四季的枚举类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> SeasonEmum &#123;</span><br><span class="line">    SPRING(<span class="number">1</span>), SUMMER(<span class="number">2</span>), FALL(<span class="number">3</span>), WINTER(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> value;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SeasonEmum</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>能够分析类能力的程序叫做<code>反射</code>。 </p>
+<blockquote>
+<p> 反射可以让程序员在运行阶段看到Filed，Method,Constructor等信息。</p>
+</blockquote>
+<h3 id="Class对象"><a href="#Class对象" class="headerlink" title="Class对象"></a>Class对象</h3><p>class.forName()会返回一个Class对象</p>
+<p>先获取Class对象，然后Class对象能够获取Filed，Method，Constructor对象，</p>
+<p><strong>具体使用查看API</strong></p>
+<h2 id="继承设计的技巧"><a href="#继承设计的技巧" class="headerlink" title="继承设计的技巧"></a>继承设计的技巧</h2><ol>
+<li><p>将公共操作和域放在超类</p>
+</li>
+<li><p>不要过多地使用反射</p>
+</li>
+<li><p>不要使用受保护的域</p>
+<blockquote>
+<p> 虽然protected修饰的变量，子类都能获取到，但是最好不要直接获取，这样会破坏封装性。</p>
+</blockquote>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/11/ArrayList分析/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/11/ArrayList分析/" itemprop="url">ArrayList分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-11T09:18:08+08:00">
+                2019-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="本文章基于JDK8"><a href="#本文章基于JDK8" class="headerlink" title="本文章基于JDK8"></a>本文章基于JDK8</h1><h2 id="ArrayList简介"><a href="#ArrayList简介" class="headerlink" title="ArrayList简介"></a>ArrayList简介</h2><p><code>ArrayList</code>是一个<strong>动态数组</strong>，也是我们最常用的集合。</p>
+<p>​    它允许任何符合规则的元素插入甚至包括null。</p>
+<p>​    每一个<code>ArrayList</code>都有一个<strong>初始容量</strong>（10），该容量代表了数组的大小。</p>
+<p>​    随着容器中的元素不断增加，容器的大小也会随着增加。在每次向容器中增加元素的同时都会进行<strong>容量检查</strong>，当快溢出时，就会进行<code>扩容</code>操作。</p>
+<blockquote>
+<p>所以如果我们明确所插入元素的多少，最好指定一个初始容量值，避免过多的进行扩容操作而浪费时间、效率。</p>
+</blockquote>
+<p><strong>注意 </strong>：<code>ArrayList</code>的<code>subList</code>结果，不能强转为<code>ArrayList</code>，否则会抛出<code>ClassCastException</code>异常。</p>
+<blockquote>
+<p><code>ArrayList</code>的底层是<strong>数组</strong>，所以<code>ArrayList</code>的操作，其实就是基于对数组的操作</p>
+</blockquote>
+<h2 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h2><ol>
+<li><p><code>ArrayList</code>定义了一个初始化容量10，如果我们不自定义初始化容量的话，那么它的默认容量就是10</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line">     * Default initial capacity.</span><br><span class="line">     */</span><br><span class="line">    private static final int DEFAULT_CAPACITY = 10;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>   <code>Object[] elementData</code>就是<code>ArrayList</code>容器，其中装着<code>ArrayList</code>元素，</p>
+<blockquote>
+<p>我们研究<code>ArrayList</code>的操作，就是对该容器进行各种操作</p>
+</blockquote>
+<p>   <code>size</code>表示的是当前<code>elementData</code>数组中的元素有多少，也就是<code>ArrayList</code>的元素有多少</p>
+   <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Shared empty array instance used for empty instances.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Shared empty array instance used for default sized empty instances. We</span></span><br><span class="line"><span class="comment"> * distinguish this from EMPTY_ELEMENTDATA to know how much to inflate when</span></span><br><span class="line"><span class="comment"> * first element is added.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = &#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">装ArrayList元素的数组</span></span><br><span class="line"><span class="comment"> * The array buffer into which the elements of the ArrayList are stored.</span></span><br><span class="line"><span class="comment"> * The capacity of the ArrayList is the length of this array buffer. Any</span></span><br><span class="line"><span class="comment"> * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA</span></span><br><span class="line"><span class="comment"> * will be expanded to DEFAULT_CAPACITY when the first element is added.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">transient</span> Object[] elementData; <span class="comment">// non-private to simplify nested class access</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * The size of the ArrayList (the number of elements it contains).</span></span><br><span class="line"><span class="comment"> * ArrayList元素的个数</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@serial</span></span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>三个构造方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//构造具有自定义的初始容量的空List </span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(<span class="keyword">int</span> initialCapacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (initialCapacity &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.elementData = <span class="keyword">new</span> Object[initialCapacity];</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (initialCapacity == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">this</span>.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"Illegal Capacity: "</span>+</span><br><span class="line">                                               initialCapacity);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//构造一个初始容量为10的空List</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//构造一个包含制定集合元素的List</span></span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="title">ArrayList</span><span class="params">(Collection&lt;? extends E&gt; c)</span> </span>&#123;</span><br><span class="line">        elementData = c.toArray();</span><br><span class="line">        <span class="keyword">if</span> ((size = elementData.length) != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// c.toArray might (incorrectly) not return Object[] (see 6260652)</span></span><br><span class="line">            <span class="keyword">if</span> (elementData.getClass() != Object[].class)</span><br><span class="line">                elementData = Arrays.copyOf(elementData, size, Object[].class);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// replace with empty array.</span></span><br><span class="line">            <span class="keyword">this</span>.elementData = EMPTY_ELEMENTDATA;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture33.png" alt=""></p>
+<p>简单实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; stringList=<span class="keyword">new</span> ArrayList&lt;String&gt;(<span class="number">30</span>);</span><br><span class="line">       stringList.add(<span class="string">"老马"</span>);</span><br><span class="line">       stringList.add(<span class="string">"老弟"</span>);</span><br><span class="line">       <span class="keyword">for</span>(String string:stringList)&#123;</span><br><span class="line">           System.out.println(string);</span><br><span class="line">       &#125;</span><br></pre></td></tr></table></figure>
+<p>结果：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">老马</span><br><span class="line">老弟</span><br></pre></td></tr></table></figure>
+<h2 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">transient</span> Object[] elementData;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size;</span><br></pre></td></tr></table></figure>
+<p>首先<code>elementData</code>就是<code>ArrayList</code>的容器，然后<code>size</code>就是元素的个数，一系列的操作就是围绕着两个变量进行的。</p>
+<h3 id="add"><a href="#add" class="headerlink" title="add"></a>add</h3><p>该方法是将元素添加到<code>ArrayList</code>的末尾</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">    elementData[size++] = e;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>add</code>方法会首先调用 <code>ensureCapacityInternal(size + 1);</code></p>
+<blockquote>
+<p>该方法确保数组容量是足够的</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureCapacityInternal</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       ensureExplicitCapacity(calculateCapacity(elementData, minCapacity));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p><code>calculateCapacity(elementData, minCapacity)</code>：</p>
+<p>该方法判断数组是否是空的，如果是空的，则返回默认的容量10，否则返回新增元素后元素的个数</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">calculateCapacity</span><span class="params">(Object[] elementData, <span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) &#123;</span><br><span class="line">            <span class="keyword">return</span> Math.max(DEFAULT_CAPACITY, minCapacity);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> minCapacity;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>该方法是调用<code>ensureExplicitCapacity</code>完成的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">ensureExplicitCapacity</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">        modCount++;<span class="comment">//记录修改次数</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// overflow-conscious code</span></span><br><span class="line">        <span class="keyword">if</span> (minCapacity - elementData.length &gt; <span class="number">0</span>)</span><br><span class="line">            grow(minCapacity);<span class="comment">//扩容操作</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">grow</span><span class="params">(<span class="keyword">int</span> minCapacity)</span> </span>&#123;</span><br><span class="line">       <span class="comment">// overflow-conscious code</span></span><br><span class="line">       <span class="keyword">int</span> oldCapacity = elementData.length;</span><br><span class="line">       <span class="keyword">int</span> newCapacity = oldCapacity + (oldCapacity &gt;&gt; <span class="number">1</span>);</span><br><span class="line">       <span class="keyword">if</span> (newCapacity - minCapacity &lt; <span class="number">0</span>)</span><br><span class="line">           newCapacity = minCapacity;</span><br><span class="line">       <span class="keyword">if</span> (newCapacity - MAX_ARRAY_SIZE &gt; <span class="number">0</span>)</span><br><span class="line">           newCapacity = hugeCapacity(minCapacity);</span><br><span class="line">       <span class="comment">// minCapacity is usually close to size, so this is a win:</span></span><br><span class="line">       elementData = Arrays.copyOf(elementData, newCapacity);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>计算机编程的一个思想：封装复杂操作，提供简化接口</p>
+</blockquote>
+<h2 id="迭代"><a href="#迭代" class="headerlink" title="迭代"></a>迭代</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(String string:stringList)&#123;</span><br><span class="line">          System.out.println(string);</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>对于我们上述的<code>foreach</code>语句，会被编译器转化为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Iterator&lt;String&gt; iterator =stringList.iterator();</span><br><span class="line">      <span class="keyword">while</span> (iterator.hasNext())&#123;<span class="comment">//判断是否有元素没有访问</span></span><br><span class="line">          System.out.println(iterator.next());<span class="comment">//输出下一个元素</span></span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p><code>ArrayList</code>实现了<code>List</code>接口，<code>List</code>接口实现了<code>Collection</code>接口，而<code>Collection</code>接口实现了<code>Iterable</code>接口。</p>
+<p>看一下<code>Iterable</code>接口的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterable</span>&lt;<span class="title">T</span>&gt; </span>&#123;</span><br><span class="line">   </span><br><span class="line">    <span class="function">Iterator&lt;T&gt; <span class="title">iterator</span><span class="params">()</span></span>;</span><br><span class="line">    ......</span><br><span class="line">        </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function">E <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">"remove"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">     <span class="function"><span class="keyword">default</span> <span class="keyword">void</span> <span class="title">forEachRemaining</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> E&gt; action)</span> </span>&#123;</span><br><span class="line">        Objects.requireNonNull(action);</span><br><span class="line">        <span class="keyword">while</span> (hasNext())</span><br><span class="line">            action.accept(next());</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Iterable表示对象可以被迭代，iterator()获取迭代器，利用迭代器来完成迭代工作</p>
+</blockquote>
+<p>那么我们的<code>ArrayList</code>实现了<code>Iterable</code>接口，就要实现 <code>Iterator&lt;T&gt; iterator();</code>方法，具体实现是通过内部类private class Itr来实现的。看源码一看就知道。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterator&lt;E&gt; <span class="title">iterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Itr();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>只要对象实现了<code>Iterable</code>接口，就可以使用<code>for-each</code>，编译器会自动将<code>for-each</code>转化为<code>Iterable</code>的方式</p>
+</blockquote>
+<h3 id="listIterator"><a href="#listIterator" class="headerlink" title="listIterator"></a>listIterator</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> ListIterator&lt;E&gt; <span class="title">listIterator</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (index &lt; <span class="number">0</span> || index &gt; size)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(<span class="string">"Index: "</span>+index);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ListItr(index);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> ListIterator&lt;E&gt; <span class="title">listIterator</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ListItr(<span class="number">0</span>);</span><br></pre></td></tr></table></figure>
+<p><code>ArrayList</code>还提供了两个返回<code>Iterable</code>接口的方法</p>
+<blockquote>
+<p>看下<code>ListIterator</code>接口的方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ListIterator</span>&lt;<span class="title">E</span>&gt; <span class="keyword">extends</span> <span class="title">Iterator</span>&lt;<span class="title">E</span>&gt; </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasNext</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">     <span class="function">E <span class="title">next</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">boolean</span> <span class="title">hasPrevious</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function">E <span class="title">previous</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">nextIndex</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">previousIndex</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(E e)</span></span>;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">add</span><span class="params">(E e)</span></span>;</span><br></pre></td></tr></table></figure>
+<h2 id="其他方法"><a href="#其他方法" class="headerlink" title="其他方法"></a>其他方法</h2><blockquote>
+<p>ArrayList可以将集合元素转化成数组返回：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回Object数组</span></span><br><span class="line"><span class="keyword">public</span> Object[] toArray() &#123;</span><br><span class="line">        <span class="keyword">return</span> Arrays.copyOf(elementData, size);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">//返回具体类型的数组</span></span><br><span class="line"> <span class="keyword">public</span> &lt;T&gt; T[] toArray(T[] a) &#123;</span><br><span class="line">        <span class="keyword">if</span> (a.length &lt; size)</span><br><span class="line">            <span class="comment">// Make a new array of a's runtime type, but my contents:</span></span><br><span class="line">            <span class="keyword">return</span> (T[]) Arrays.copyOf(elementData, size, a.getClass());</span><br><span class="line">        System.arraycopy(elementData, <span class="number">0</span>, a, <span class="number">0</span>, size);</span><br><span class="line">        <span class="keyword">if</span> (a.length &gt; size)</span><br><span class="line">            a[size] = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>​    </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list=<span class="keyword">new</span> List&lt;String&gt;();</span><br><span class="line">list.add(<span class="string">"1"</span>);</span><br><span class="line">...</span><br><span class="line">String[] array=<span class="keyword">new</span> String[<span class="number">3</span>];</span><br><span class="line">list.toArray(array);</span><br></pre></td></tr></table></figure>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p><code>ArrayList</code>不是<strong>线程安全</strong>的，并且它插入，删除的效率比较低。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/10/对象与类/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/10/对象与类/" itemprop="url">对象与类</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-10T18:48:58+08:00">
+                2019-02-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h2><p>​    封装的关键在于绝对不能让类中的方法直接访问其他类的实例域（属性），程序仅通过对象的方法与对象数据进行交互。</p>
+<p>​    关于这一点，最明显的事例：</p>
+<p>​        Java中实体类，只有通过get set方法才能访问其属性，不能直接通过对象的属性直接访问</p>
+<p>​    有了封装，我的get set 方法不变，但是对于属性，我可以做一些操作和变化，但是其他类的方法还是会通过get方法来访问属性。无论我对属性做了什么变化，它们都无需关心。</p>
+<p>​    1. 封装，外部只能通过方法来访问到属性，但是却不能对属性做任何修改，这个也是对类的一种保护；</p>
+<p>​    2. 而且封装可以对get set方法做一些处理，但是外界只管调用即可，不用关心内部get、get方法的细节</p>
+<h2 id="对象"><a href="#对象" class="headerlink" title="对象"></a>对象</h2><p>​    </p>
+<p>​    对象的三个主要特性：</p>
+<ul>
+<li>对象的行为——可以对对象施加哪些操作或方法</li>
+<li>对象的状态——当施加那些方法时，对象如何响应</li>
+<li>对象标识——如何辨别具有相同行为和状态的不同对象</li>
+</ul>
+<h2 id="类之间的关系"><a href="#类之间的关系" class="headerlink" title="类之间的关系"></a>类之间的关系</h2><ul>
+<li><p>依赖         “<code>uses-a</code>“</p>
+<p>​    如果一个类的方法操纵另一个类的对象，则说明一个类依赖于另一个类</p>
+<blockquote>
+<p>​    应该尽可能让相互依赖的类减少到最少，也就是说，让类之间的耦合减少到最小；</p>
+<p>​    因为如果A类依赖于B类，那么如果B类变化，产生了bug，那么对A类也会产生影响</p>
+</blockquote>
+</li>
+<li><p>聚合       “<code>has-a</code>“</p>
+<p>​    类A的对象包含类B的对象</p>
+</li>
+<li><p>继承      “<code>is-a</code>“</p>
+<p>​    VipOrder类继承自Order类，那么VipOrder类除了拥有Order类的特性，还拥有其他自身的特性</p>
+</li>
+</ul>
+<h2 id="构造器"><a href="#构造器" class="headerlink" title="构造器"></a>构造器</h2><p>​    在Java中，我们通常用构造器创建新的对象实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">1. 构造器与类名相同</span><br><span class="line">2. 每个类有一个以上的构造器</span><br><span class="line">3. 构造器可以没有参数，也可以有任意多个参数</span><br><span class="line">4. 构造器是没有返回值的</span><br><span class="line">5. 构造器总是随着new 一起调用的</span><br></pre></td></tr></table></figure>
+<ol start="6">
+<li>千万不要再构造器中定义与实例域重名的局部变量</li>
+</ol>
+<h3 id="无参构造器"><a href="#无参构造器" class="headerlink" title="无参构造器"></a>无参构造器</h3><p>​    如果不显式声明无参构造器，那么系统会提供一个无参构造器。</p>
+<blockquote>
+<p>对于默认构造器的话，没有参数的初始化，那么数据类型就是0，对象类型就是null，布尔类型就是false</p>
+</blockquote>
+<p>​    1. 如果类中有一个有参构造器，但是没有无参构造器，则在构造对象时，如果没有提供参数，就会被视为不合法。</p>
+<p>​    如：</p>
+<p>​    Employee(String name,double salary){</p>
+<p>​        …}</p>
+<p>​    new Employee()会报错</p>
+<ol start="2">
+<li><p>我们发现构造器多个的时候，也会发生重载</p>
+</li>
+<li><p>构造器里面的操作，主要是初始化</p>
+</li>
+<li><p>一个构造器可以调用另一个构造器</p>
+<p><code>this(,.....);</code></p>
+</li>
+</ol>
+<h2 id="对象与对象变量"><a href="#对象与对象变量" class="headerlink" title="对象与对象变量"></a>对象与对象变量</h2><p>​    对象变量就是引用变量的意思，</p>
+<p>​    Date presentTime=new Date().toString();</p>
+<p>​    引用变量可以让对象被重复使用</p>
+<blockquote>
+<p>我们说引用变量不是对象，它就是一个变量，它可以引用一个某类型的对象</p>
+</blockquote>
+<h2 id="final修饰的变量"><a href="#final修饰的变量" class="headerlink" title="final修饰的变量"></a>final修饰的变量</h2><p>​        final修饰的实例域，在new 构造器创建一个对象实例后，必须给这个实例域进行设置值，</p>
+<p>​    并且在后面的操作过程中，对其不再修改。  这样的值，是不用给其设置set方法的，因为它本身就不能被修改.</p>
+<blockquote>
+<p>如果尝试对其进行修改，IDE会直接报错</p>
+</blockquote>
+<p>举例子：</p>
+<p>private static final String  ALL_USE_VAR=”……”;</p>
+<p>private static final Logger logger=LoggerFactory.getLogger(UserInfo.class);</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span>  <span class="keyword">final</span> String A_VAR;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">A</span><span class="params">(String a)</span> </span>&#123;</span><br><span class="line">        A_VAR=a;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>由我的实践得出结论：</p>
+<ol>
+<li><p>可以通过构造器中去给final修饰的变量进行赋值，完成初始化</p>
+</li>
+<li><p>也可以直接给其赋值</p>
+<p><code>private  final String A_VAR=&quot;1111&quot;;</code></p>
+</li>
+</ol>
+<h2 id="static关键字"><a href="#static关键字" class="headerlink" title="static关键字"></a>static关键字</h2><ol>
+<li><p>static修饰的变量属于整个类，所有该类的实例对象共享该变量。（静态变量）</p>
+</li>
+<li><p>静态方法（static修饰的方法）：静态方法也属于整个类，而不是属于哪个对象；然后静态方法只能访问静态变量，不能访问类中的非静态变量。</p>
+</li>
+</ol>
+<p>   可以使用类名来访问静态方法：</p>
+<p>   例如：</p>
+<p>   <code>Aclass.staticMethod()</code> </p>
+<p>   同样地，也可以通过类名来访问静态变量</p>
+<p>   <code>Aclass.staticVar</code></p>
+<p>   引申一下，如果是非静态变量或者是非静态方法，那么我们可以通过先new一个<strong>对象</strong>出来，然后用对象实例去访问非静态变量和非静态方法</p>
+<h2 id="方法参数"><a href="#方法参数" class="headerlink" title="方法参数"></a>方法参数</h2><p>   在Java当中，方法得到的参数，是所有参数值的一个拷贝，方法不会改变原参数的值，它只是将原参数的值拿过来用一下。</p>
+<p>   double percent=10;</p>
+<p>   harry.raiseSalary(percent);</p>
+<blockquote>
+<p>这个方法无论如何实现，内部逻辑是什么，percent参数的值始终不会发生改变</p>
+</blockquote>
+<p>​    方法参数有两种类型：</p>
+<ol>
+<li><p>基本数据类型</p>
+</li>
+<li><p>对象引用类型</p>
+</li>
+</ol>
+<p>   Java中方法参数的使用情况：</p>
+<ol>
+<li>一个方法不能修改一个基本数据类型的参数</li>
+<li><p>一个方法可以改变一个对象参数的状态</p>
+<blockquote>
+<p>Java采取的是值调用，对于对象引用来说，方法获取的参数，不是对象，而是对象对应的引用变量。</p>
+</blockquote>
+</li>
+<li><p>一个方法不可以让一个对象参数引用一个新的对象</p>
+</li>
+</ol>
+<h2 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h2><p>多个方法，方法名相同，参数不同（不考虑方法的返回值类型是否一致），这就产生了重载，overloading。</p>
+<blockquote>
+<p>注：此处的参数不同，是两个方面：</p>
+<ol>
+<li>参数个数不同</li>
+<li>参数类型不同</li>
+</ol>
+</blockquote>
+<p>重载解析：编译器根据参数个数和参数类型来判断，具体调用哪个方法；如果找不到方法，就会报编译错误。</p>
+<h2 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h2><p>Java有自动的垃圾回收器，所以不需要人工回收内存</p>
+<h2 id="包"><a href="#包" class="headerlink" title="包"></a>包</h2><p>​    我们在Java项目中，会有多个不同的包，使用包的主要原因，就是确保类名的唯一性。</p>
+<p>​    例如：我们在两个包中新建名为Employee类，没有任何问题</p>
+<p>​    import导入包</p>
+<p>​    <code>import java.util.List;</code></p>
+<blockquote>
+<p>Java中private、protected、public和default的区别</p>
+</blockquote>
+<ol>
+<li><p>public：</p>
+<p>具有<code>最大的访问权限</code>，可以访问任何一个在classpath下的类、接口、异常等。它往往用于对外的情况，也就是对象或类对外的一种接口的形式。</p>
+</li>
+<li><p>protected：</p>
+<p>主要的作用就是用来保护<code>子类</code>的。它的含义在于子类可以用它修饰的成员，其他的不可以，它相当于传递给子类的一种继承的东西</p>
+</li>
+<li><p>default：</p>
+<p>有时候也称为friendly，它是针对本包访问而设计的，任何处于本包下的类、接口、异常等，都可以相互访问，即使是父类没有用protected修饰的成员也可以。</p>
+</li>
+<li><p>private：</p>
+<p>访问权限仅限于类的内部，是一种封装的体现，例如，大多数成员变量都是修饰符为private的，它们不希望被其他任何外部的类访问。</p>
+</li>
+</ol>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/690292-20160923095944481-1758567758.png" alt=""></p>
+<h2 id="类设计技巧"><a href="#类设计技巧" class="headerlink" title="类设计技巧"></a>类设计技巧</h2><ul>
+<li><p>一定要保证数据私有</p>
+<p>绝对不要破坏封装性！</p>
+<blockquote>
+<p>数据的表示形式可能会改变，但是数据的使用方式却不会经常发生变化。</p>
+</blockquote>
+<p>当数据保持私有的时候，它们的表示形式变化不会对类的使用者产生影响，即使产生bug也容易检测</p>
+</li>
+</ul>
+<ul>
+<li><p>一定要对数据进行初始化</p>
+<p>Java语言不会对局部变量进行初始化，但是会对实例域进行初始化。但是就算是这样，我们对Java中用到的变量，都要显示地初始化所有数据。</p>
+<p>初始化，可以通过提供默认值地方式，也可以在构造器中设置默认值。</p>
+</li>
+</ul>
+<ul>
+<li><p>不要在类中使用过多的基本类型</p>
+<p>我们可以用其他类来代替这些基本类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String street,city,province;</span><br></pre></td></tr></table></figure>
+<p>替换成Address类</p>
+</li>
+</ul>
+<ul>
+<li><p>不是所有的域都需要get和set方法</p>
+<p>在开发过程中，我们的实体类，get,set随便写，</p>
+<p>但是有些属性，我们不希望被修改，那么就可以不设置set方法；</p>
+<p>并且有的属性，不希望被获取，那么就可以不设置get方法。</p>
+</li>
+</ul>
+<ul>
+<li>将职责过多的类进行分解</li>
+</ul>
+<ul>
+<li><p>类名和方法名要体现出它们的职责</p>
+<p>变量名也要体现出它们的职责，不要乱命名</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" itemprop="url">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-09T13:14:24+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-​概述"><a href="#1-​概述" class="headerlink" title="1.​概述"></a>1.​概述</h1><p>​    我们今天来看<code>AbstractHandlerMethodMapping</code>体系，这是<code>AbstractHandlerMapping</code>的第二个体系，又是用的最多的一个体系。该体系包括：<code>AbstractHandlerMethodMapping</code>、<code>RequestMap pingInfoHandlerMapping</code>和<code>RequestMappingHandlerMapping</code>。</p>
+<p>​    虽然该体系结构简单，一目了然，但是丝毫没有简单的感觉，这个体系理解下来还是比较吃力的。本系列目前遇到的最难啃的，就是这个体系。但是最难啃，不代表就回避这一体系的源码，这个体系啃下来就代表我们的<code>HandlerMapping</code>大的体系就完整地啃下来了。看完这一部分，就要开始进军<code>HandlerAdapter</code>了。</p>
+<p>​    <code>AbstractHandlerMethodMapping</code> 系列是将<code>Method</code>作为<code>Handler</code>来使用的，这其实是我们最熟悉的关于<code>Spring MVC</code>的内容，例如<code>@RequestMapping</code>所注释的方法就是这种<code>Handler</code>，它专门有一个类型<code>HandlerMethod</code>，也就是<code>Method</code>类型的<code>Handler</code>    。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/phones"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">   </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>如图，这是<code>AbstractHandlerMethodMapping</code>体系的类图：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture27.png" alt=""></p>
+<h1 id="2-AbstractHandlerMethodMapping"><a href="#2-AbstractHandlerMethodMapping" class="headerlink" title="2. AbstractHandlerMethodMapping"></a>2. AbstractHandlerMethodMapping</h1><p>​        鉴于这个体系实在是有难度，当时看了一天，现在写也比较吃力，所以就会有所省略，也算是能力所限吧。</p>
+<h2 id="2-1-getHandlerInternal"><a href="#2-1-getHandlerInternal" class="headerlink" title="2.1  getHandlerInternal"></a>2.1  getHandlerInternal</h2><p>​        我们先从<code>getHandlerInternal</code>方法来开始看，前面<code>AbstractHandlerMapping</code> 中的<code>getHandlerInternal</code>方法是一个模板方法，交给两个子类分支实现，<code>AbstractUrlHandlerMapping</code>体系中实现了该方法，那么我们现在看一下<code>AbstractHandlerMethodMapping</code>体系中的<code>getHandlerInternal</code>方法。</p>
+<p>​        </p>
+<p>​        <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture28.png" alt=""></p>
+<h3 id="2-1-1-lookupHandlerMethod"><a href="#2-1-1-lookupHandlerMethod" class="headerlink" title="2.1.1 lookupHandlerMethod"></a>2.1.1 lookupHandlerMethod</h3><p>​    我们再看一下第三步的<code>lookupHandlerMethod</code>的详细代码。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture29.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture30.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture31.png" alt=""></p>
+<p>看一下<code>addMatchingMappings</code>方法。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture32.png" alt=""></p>
+<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h1><p>​        这篇实在写不下去了，就一个<code>AbstractHandlerMethodMapping</code>类中的各种内部类和Map已经很复杂了，留着坑，目前先凑一篇吧，或者有可能以后再补充吧。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/" itemprop="url">Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2019-02-09T09:22:19+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-​简介"><a href="#1-​简介" class="headerlink" title="1. ​简介"></a>1. ​简介</h1><p>​    今天这篇博客，我们来看一下<code>AbstractHandlerMapping</code>的一个分支：<code>AbstarctUrlHandlerMapping</code>。我们发现其实<code>HandlerMapping</code>的接口，就是定义了一个获取<code>HandlerExecutionChain</code>对象的方法，该对象可以获取Handler处理器和一系列的拦截器<code>Inteceptors</code>。而这个方法就是交给抽象类<code>AbstractHandlerMapping</code>来具体实现的，但是该方中使用的<code>getHandlerInternal</code>方法是交给子类去实现的。</p>
+<p>​    如图是<code>AbstractHandlerMapping</code>的<code>getHandlerInternal</code>方法，是留给子类实现的。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture155.png" alt=""></p>
+<p>​    <code>AbstractUrlHandlerMapping</code>有两个子类：<code>SimpleUrlHandlerMapping</code>、<code>AbstractDetectingUrlHandlerMapping</code>；<code>AbstractDetectingUrlHandlerMapping</code>有一个子类：<code>BeanNameUrlHandlerMapping</code>。</p>
+<p>​    接下来，我们先看一下<code>AbstractUrlHandlerMapping</code>本身，再去看几个子类。</p>
+<h1 id="2-AbstractUrlHandlerMapping"><a href="#2-AbstractUrlHandlerMapping" class="headerlink" title="2. AbstractUrlHandlerMapping"></a>2. AbstractUrlHandlerMapping</h1><h2 id="2-1-getHandlerInternal"><a href="#2-1-getHandlerInternal" class="headerlink" title="2.1 getHandlerInternal"></a>2.1 getHandlerInternal</h2><p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture9.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture10.png" alt=""></p>
+<p>​    该方法是对<code>AbstractUrlHandlerMapping</code>的重写，是通过<code>request</code>请求获取<code>Handler</code>对象。</p>
+<ul>
+<li><p>首先从<code>Map</code>中查找<code>Handler</code></p>
+</li>
+<li><p>如果<code>Map</code>中没有<code>Handler</code>，说明<code>Map</code>中没存<code>Handler</code>，则分为如下三种情况去获取<code>Handler</code></p>
+</li>
+</ul>
+<ol>
+<li><p>如果lookupPath为/，就去获取原始的处理器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="string">"/"</span>.equals(lookupPath)) &#123;</span><br><span class="line">   rawHandler = getRootHandler();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getRootHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.rootHandler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//处理"/"请求的处理器</span></span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="keyword">private</span> Object rootHandler;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样就很清楚了</p>
+</blockquote>
+</li>
+</ol>
+<p>​        2. 如果不是第1种情况，就去获得默认的处理器</p>
+<p>​        <code>rawHandler = getDefaultHandler();</code>    </p>
+<p>​            </p>
+<p>​            </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Nullable</span><br><span class="line">public Object getDefaultHandler() &#123;</span><br><span class="line">	return this.defaultHandler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    下面的<code>defalutHandler</code>是在父类<code>AbstractHandlerMapping</code>中定义的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="keyword">private</span> Object defaultHandler;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>经过上面的步骤，应该获取到处理器<code>Handler</code>了，如果处理器是String类型，就根据字符串获取真正的处理器</p>
+</li>
+<li><p>接着就是校验请求和处理器是否匹配，这里调用了一个模板方法来完成校验，但是这个模板方法子类也没有给它实现，所以这是个空操作</p>
+</li>
+<li><p>然后就是给<code>rawHandler</code>注册两个拦截器，返回一个<code>HandlerExecution</code>对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//给查询到Handler注册两个拦截器(<span class="doctag">TODO:</span>拦截器的作用暂时不明白）</span></span><br><span class="line">handler = buildPathExposingHandler(rawHandler, lookupPath, lookupPath,</span><br><span class="line">      <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>​    详细看一下<code>buildPathExposingHandler</code>方法：</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture11.png" alt=""></p>
+<blockquote>
+<p>​    这是添加两个内部拦截器的具体过程：</p>
+<p>​    这俩内部拦截器的主要作用是将与当前url实际匹配的Pattern、匹配条件（后面介绍）和url模板参数等设置到request的属性里，这样在后面的处理过程中就可以直接从request属性中获取，而不需要再重新查找一遍了</p>
+</blockquote>
+<h3 id="2-1-1-lookupHandler"><a href="#2-1-1-lookupHandler" class="headerlink" title="2.1.1 lookupHandler"></a>2.1.1 lookupHandler</h3><p>​    我们重点看下<code>getHandlerInternal</code>方法中的<code>lookupHandler</code>方法，该方法是从map中获取处理器的过程</p>
+<p>​    首先map的定义如下：</p>
+<p>​        </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//保存url与handler</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; handlerMap = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p>​    <code>lookupHandler</code>：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture13.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture14.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture15.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture16.png" alt=""></p>
+<blockquote>
+<p>如果是精确的url，就直接从map中获取处理器，并且给其添加拦截器；</p>
+<p>如果是book/*/u这类url，比较模糊的，也要进行处理</p>
+</blockquote>
+<h2 id="2-2-registerHandler-1"><a href="#2-2-registerHandler-1" class="headerlink" title="2.2   registerHandler 1"></a>2.2   registerHandler 1</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture17.png" alt=""></p>
+<h2 id="2-3-registerHandler-2"><a href="#2-3-registerHandler-2" class="headerlink" title="2.3  registerHandler 2"></a>2.3  registerHandler 2</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture18.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture19.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture20.png" alt=""></p>
+<blockquote>
+<p>注册处理器的目的，就是将urlPath交给处理器处理，一个url交给一个处理器去处理，就是这么一个过程。</p>
+</blockquote>
+<ul>
+<li><p>先获取处理器</p>
+</li>
+<li><p>判断处理器是否为空</p>
+<ol>
+<li><p>处理器不为空的时候：</p>
+<p>​    如果处理器和根据url查找到的处理器不一致，说明异常，因为一个url只能给一个处理器处理，出现多个就是不正常，出异常了</p>
+</li>
+<li><p>处理为空，需要分情况处理，看<code>else</code>部分的代码就理解了</p>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="3-SimpleUrlHandlerMapping"><a href="#3-SimpleUrlHandlerMapping" class="headerlink" title="3. SimpleUrlHandlerMapping"></a>3. SimpleUrlHandlerMapping</h1><p>接着我们来看下<code>AbstractUrlHandlerMapping</code>的子类<code>SimpleUrlHandlerMapping</code> </p>
+<h2 id="3-1-initApplicationContext"><a href="#3-1-initApplicationContext" class="headerlink" title="3.1  initApplicationContext"></a>3.1  initApplicationContext</h2><p>​    <code>SimpleUrlHandlerMapping</code> 在<code>AbstractHandlerMapping</code>的基础上进行了重写，原有方法只是初始化了一些拦截器，但是没有初始化处理器，重写后的<code>initApplicationContext</code>开始注册了一系列的处理器。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture21.png" alt=""></p>
+<p>​    注册多个<code>Hanlder</code>方法我们在3.2看下</p>
+<h2 id="3-2-registerHandlers"><a href="#3-2-registerHandlers" class="headerlink" title="3.2  registerHandlers"></a>3.2  registerHandlers</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture22.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture23.png" alt=""></p>
+<blockquote>
+<p>注册<code>Handler</code>方法，核心是调用的<code>AbstractUrlHandlerMapping</code>的<code>registerHandler2</code>方法。</p>
+</blockquote>
+<h1 id="4-AbstractDetectingUrlHandlerMapping"><a href="#4-AbstractDetectingUrlHandlerMapping" class="headerlink" title="4.  AbstractDetectingUrlHandlerMapping"></a>4.  AbstractDetectingUrlHandlerMapping</h1><p>​        该类也是AbstractUrlHandlerMapping的子类，我们主要看一下它的<code>detectHandlers</code>方法</p>
+<p>​        <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture24.png" alt=""></p>
+<blockquote>
+<p>​    其中的2.3步，是调用的父类AbstractUrlHandlerMapping的registerHandler方法来注册处理器，</p>
+<p>​    我认为，注册处理器就是让一个处理器处理一个url</p>
+</blockquote>
+<ul>
+<li>获取整个容器中所有的<code>beanName</code></li>
+<li>遍历<code>beanName</code>，对每个<code>beanName</code>，解析出它的<code>url</code>，将<code>url</code>和<code>beanName</code>进行处理器的注册</li>
+</ul>
+<blockquote>
+<p>​    其中<code>determineUrlsForHandler</code>方法，是模板方法，交给子类去操作的。</p>
+</blockquote>
+<h3 id="4-1-BeanNameUrlHandlerMapping"><a href="#4-1-BeanNameUrlHandlerMapping" class="headerlink" title="4.1 BeanNameUrlHandlerMapping"></a>4.1 BeanNameUrlHandlerMapping</h3><p>​    <code>BeanNameUrlHandlerMapping</code>重写了<code>determineUrlsForHandler</code>方法，我们来看一下代码：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture26.png" alt=""></p>
+<blockquote>
+<p>  这边我不太明白，beanName为什么会以”/“开头，先留个疑问吧。</p>
+</blockquote>
+<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture25.png" alt=""></p>
+<p>类图一看，宏观体系一目了然，下一篇我们接着看<code>AbstractHandlerMapping</code>的第二个体系：<code>AbstractHandlerMethodMapping</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
-</header>
 
-    <main class="app-body">
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/04/07/Shiro入门/">Shiro入门</a>
-      </h2>
-      <p class="article-date">2019年4月7日</p>
-      
-        
-  <a href="/tags#Shiro">
-    <span class="tag-code">Shiro</span>
-  </a>
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
 
       
-      <div class="article-summary">
-        
-          Shiro认证
-创建Security Manager
-主体提交认证到Security Manager
-Security Manager认证
-Authenticator认证
-Realm验证
 
-123456789101112131415161718192021222324252627282930 ...
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
         
       </div>
-      <a class="more" href="/2019/04/07/Shiro入门/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/03/17/Spring-MVC源码初探（九）-ViewResolver/">Spring MVC源码初探（九） ViewResolver</a>
-      </h2>
-      <p class="article-date">2019年3月17日</p>
-      
-        
-  <a href="/tags#Spring MVC">
-    <span class="tag-code">Spring MVC</span>
-  </a>
+    </main>
 
-      
-      <div class="article-summary">
-        
-          1. 概述​    ViewResolver的作用是根据视图名和Locale对象解析出视图；
-​    解析过程主要做两件事：
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
 
-解析使用的模板
-
-解析视图的类型
-
-
-下面这是ViewResolver接口的代码，看了就一目了然
-
-ViewResolver体系中主要包含AbstractCach ...
-        
-      </div>
-      <a class="more" href="/2019/03/17/Spring-MVC源码初探（九）-ViewResolver/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/03/16/Spring-MVC源码初探（八）HandlerAdapter-二）组件/">Spring MVC源码初探（八）HandlerAdapter(二）组件</a>
-      </h2>
-      <p class="article-date">2019年3月16日</p>
-      
-        
-  <a href="/tags#Spring MVC">
-    <span class="tag-code">Spring MVC</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1. 概述​    
-​    上面一篇文章，我们看了HandlerAdapter体系的核心源码，其中涉及到了一些不熟悉的组件，这篇博客就来了
-解一下这些组件。
-2. ModelAndViewContainerModelAndViewContainer，它不仅保存了Model和View的信息 ...
-        
-      </div>
-      <a class="more" href="/2019/03/16/Spring-MVC源码初探（八）HandlerAdapter-二）组件/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/03/15/Spring-MVC源码初探（七）HandlerAdapter（一）/">Spring MVC源码初探（七） HandlerAdapter（一）</a>
-      </h2>
-      <p class="article-date">2019年3月15日</p>
-      
-        
-  <a href="/tags#Spring MVC">
-    <span class="tag-code">Spring MVC</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1. 前言​    
-​    前面我们看了HandlerMapping体系，HandlerMapping就是根据request获取HandlerExecutionChain的这么一个组件。那么拿到了HandlerExecutionChain中的处理器和拦截器以后，我们需要用HandlerA ...
-        
-      </div>
-      <a class="more" href="/2019/03/15/Spring-MVC源码初探（七）HandlerAdapter（一）/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/23/Spring-AOP基本概念总结/">Spring AOP基本概念总结</a>
-      </h2>
-      <p class="article-date">2019年2月23日</p>
-      
-        
-  <a href="/tags#Spring">
-    <span class="tag-code">Spring</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          Spring 面向切面编程基本概念​    在应用程序中，有些模块是很重要，但是却是重复的内容，比如说日志，安全和事务管理模块。我们不可能在每一个需要日志的模块去手动编写日志相关的代码，因为这样下来，就需要无数重复枯燥的编码。而且虽然日志等模块对当前的代码来说很重要，但是当前的代码应该更关注 ...
-        
-      </div>
-      <a class="more" href="/2019/02/23/Spring-AOP基本概念总结/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/11/Java核心-继承/">继承</a>
-      </h2>
-      <p class="article-date">2019年2月11日</p>
-      
-        
-  <a href="/tags#Java">
-    <span class="tag-code">Java</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          类、超类、子类​    超类与子类是父与子的关系，甚至是更远的关系，我们在设计类的时候，可以把通用的东西放在超类中，然后子类中实现不同的功能。
-​    当然，如果子类不想继承父类的某些功能，可以重写父类的方法。
-this和super关键字：
-this可以引用隐式参数，调用本类中的其他构造器 ...
-        
-      </div>
-      <a class="more" href="/2019/02/11/Java核心-继承/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/11/ArrayList分析/">ArrayList分析</a>
-      </h2>
-      <p class="article-date">2019年2月11日</p>
-      
-        
-  <a href="/tags#Java">
-    <span class="tag-code">Java</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          本文章基于JDK8ArrayList简介ArrayList是一个动态数组，也是我们最常用的集合。
-​    它允许任何符合规则的元素插入甚至包括null。
-​    每一个ArrayList都有一个初始容量（10），该容量代表了数组的大小。
-​    随着容器中的元素不断增加，容器的大小也会 ...
-        
-      </div>
-      <a class="more" href="/2019/02/11/ArrayList分析/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/10/对象与类/">对象与类</a>
-      </h2>
-      <p class="article-date">2019年2月10日</p>
-      
-        
-  <a href="/tags#Java">
-    <span class="tag-code">Java</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          封装​    封装的关键在于绝对不能让类中的方法直接访问其他类的实例域（属性），程序仅通过对象的方法与对象数据进行交互。
-​    关于这一点，最明显的事例：
-​        Java中实体类，只有通过get set方法才能访问其属性，不能直接通过对象的属性直接访问
-​    有了封装，我 ...
-        
-      </div>
-      <a class="more" href="/2019/02/10/对象与类/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a>
-      </h2>
-      <p class="article-date">2019年2月9日</p>
-      
-        
-  <a href="/tags#Spring MVC">
-    <span class="tag-code">Spring MVC</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1.​概述​    我们今天来看AbstractHandlerMethodMapping体系，这是AbstractHandlerMapping的第二个体系，又是用的最多的一个体系。该体系包括：AbstractHandlerMethodMapping、RequestMap pingInfoHa ...
-        
-      </div>
-      <a class="more" href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/">Read more</a>
-    </article>
-  
-    <article class="article-card">
-      <h2 class="article-head">
-        <a href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/">Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping</a>
-      </h2>
-      <p class="article-date">2019年2月9日</p>
-      
-        
-  <a href="/tags#Spring MVC">
-    <span class="tag-code">Spring MVC</span>
-  </a>
-
-      
-      <div class="article-summary">
-        
-          1. ​简介​    今天这篇博客，我们来看一下AbstractHandlerMapping的一个分支：AbstarctUrlHandlerMapping。我们发现其实HandlerMapping的接口，就是定义了一个获取HandlerExecutionChain对象的方法，该对象可以获取H ...
-        
-      </div>
-      <a class="more" href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/">Read more</a>
-    </article>
-  
-
-  
-    <div class="guide-pager">
-  
-    <a href="/page/3/"><span class="page-arrow">← </span>Prev</a>
-  
-  
-    <a href="/page/5/">Next<span class="page-arrow"> →</span></a>
   
 </div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
   
-</main>
 
-
-    <div class="scroll-top">
-  <span class="arrow-icon"></span>
-</div>
-    <footer class="app-footer">
-  <p class="copyright">
-    &copy; 2019 | Proudly powered by <a href="https://hexo.io" target="_blank">Hexo</a>
-    <br>
-    Theme by <a href="https://github.com/yanm1ng">yanm1ng</a>
-  </p>
-</footer>
-
-<script>
-  function async(u, c) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
   }
 </script>
-<script>
-  async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-    FastClick.attach(document.body);
-  })
-</script>
 
-<script>
-  var hasLine = 'true';
-  async("//cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js", function(){
-    $('figure pre').each(function(i, block) {
-      var figure = $(this).parents('figure');
-      if (hasLine === 'false') {
-        figure.find('.gutter').hide();
-      }
-      var lang = figure.attr('class').split(' ')[1] || 'code';
-      var codeHtml = $(this).html();
-      var codeTag = document.createElement('code');
-      codeTag.className = lang;
-      codeTag.innerHTML = codeHtml;
-      $(this).attr('class', '').empty().html(codeTag);
-      figure.attr('data-lang', lang.toUpperCase());
-      hljs.highlightBlock(block);
-    });
-  })
-</script>
-<!-- Baidu Tongji -->
 
-<script src="/js/script.js"></script>
-  </body>
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
 </html>
