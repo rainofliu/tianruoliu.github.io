@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring MVC,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="概述MultipartResolver是用来处理上传请求的一个接口，我们看下接口中的方法：  它有两个子类：StandardServletMultipartResolver和CommonsMultipartResolver，前者采用Servlet的 标准上传方式，后者采用的是Apache的commons-fileupload，我们接着就看一下这两个子类 StandardServletMultipa">
+<meta name="keywords" content="Spring MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC源码初探（十一） MultipartResolver">
+<meta property="og:url" content="https://www.liutianruo.com/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="概述MultipartResolver是用来处理上传请求的一个接口，我们看下接口中的方法：  它有两个子类：StandardServletMultipartResolver和CommonsMultipartResolver，前者采用Servlet的 标准上传方式，后者采用的是Apache的commons-fileupload，我们接着就看一下这两个子类 StandardServletMultipa">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture306.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture307.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture308.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture309.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture312.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture313.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture314.png">
+<meta property="og:updated_time" content="2019-04-12T01:53:16.591Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC源码初探（十一） MultipartResolver">
+<meta name="twitter:description" content="概述MultipartResolver是用来处理上传请求的一个接口，我们看下接口中的方法：  它有两个子类：StandardServletMultipartResolver和CommonsMultipartResolver，前者采用Servlet的 标准上传方式，后者采用的是Apache的commons-fileupload，我们接着就看一下这两个子类 StandardServletMultipa">
+<meta name="twitter:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture306.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/">
+
+
+
+
+
+  <title>Spring MVC源码初探（十一） MultipartResolver | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring MVC源码初探（十一） MultipartResolver</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-11T16:13:49+08:00">
+                2019-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><code>MultipartResolver</code>是用来处理上传请求的一个接口，我们看下接口中的方法：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture306.png" alt=""></p>
+<p>它有两个子类：<code>StandardServletMultipartResolver</code>和<code>CommonsMultipartResolver</code>，前者采用Servlet的</p>
+<p>标准上传方式，后者采用的是Apache的commons-fileupload，我们接着就看一下这两个子类</p>
+<h1 id="StandardServletMultipartResolver"><a href="#StandardServletMultipartResolver" class="headerlink" title="StandardServletMultipartResolver"></a>StandardServletMultipartResolver</h1><h2 id="isMultipart"><a href="#isMultipart" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> StringUtils.startsWithIgnoreCase(request.getContentType(), <span class="string">"multipart/"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里判断是否是上传请求的方式，很简单，判断<code>contentType</code>是不是以<code>multipart/</code>开头</p>
+</blockquote>
+<h2 id="resolveMultipart"><a href="#resolveMultipart" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>该方法是将<code>HttpServletRequest</code>转化成<code>MultipartHttpServletRequest</code>这样的一个上传请求，这个类</p>
+<p>就是直接new了一个<code>StandardMultipartHttpServletRequest</code>对象，实现的比较简单。</p>
+<h2 id="cleanupMultipart"><a href="#cleanupMultipart" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>该方法是在处理完上传请求后将<strong>缓存</strong>进行清除，相对来说逻辑也比较简单容易理解。</p>
+<blockquote>
+<p>我们需要留意一下StandardMultipartHttpServletRequest#parseRequest方法，它主要是根据请求获取不同的<code>Part</code>（也就是上传部分的集合），然后使用它们来创建File并设置属性。</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture307.png" alt=""></p>
+<p>​    根据我对上述三个方法的理解，真正去处理上传请求，是在解析出的上传请求对象中的方法中来完成的，比如<code>parseRequest()</code>方法进行了文件的创建。</p>
+<h1 id="CommonsMultipartResolver"><a href="#CommonsMultipartResolver" class="headerlink" title="CommonsMultipartResolver"></a>CommonsMultipartResolver</h1><p><code>CommonsMultipartResolver</code>是采用的Apache的<code>commons-fileupload</code>来进行文件上传的，这个类主要是依赖</p>
+<p>于<code>commons-fileupload</code>来完成一些具体的操作。</p>
+<h2 id="isMultipart-1"><a href="#isMultipart-1" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><p>它是通过<code>commons-fileupload</code>中的<code>ServletFileUpload#isMultipartContent()</code>来判断是否是上传请求</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> ServletFileUpload.isMultipartContent(request);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture308.png" alt=""></p>
+<p>首先它会判断是不是POST请求，不是直接返回false；如果是POST请求，则去调用下一个方法来判断是否是上传请求。</p>
+<h2 id="resolveMultipart-1"><a href="#resolveMultipart-1" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>它是根据<code>resolveLazily</code>来分类来返回一个上传请求对象， 默认<code>resolveLazily</code>是false</p>
+<p>两种逻辑不变的是都采用 <code>parseRequest(request)</code>方法来返回<code>MultipartParsingResult</code>对象，</p>
+<blockquote>
+<p>不同的是resolveLazily==true，是不将MultipartParsingResult中的属性封装给MultipartHttpServletRequest返回</p>
+<p>的；而另一种情况是需要将MultipartParsingResult的属性封装给MultipartHttpServletRequest并且返回。</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture309.png" alt=""></p>
+<h2 id="cleanupMultipart-1"><a href="#cleanupMultipart-1" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>这个是清理处理请求过程中产生的<code>MultiValueMap&lt;String, MultipartFile&gt;</code>对象</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
+<blockquote>
+<p><code>#cleanupFileIterms()</code></p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
+<blockquote>
+<p>这个就很容易理解，类似于ffmpeg处理音视频的时候，处理完了，就会将一些内存碎片给清除了，一样的道理。</p>
+</blockquote>
+<h2 id="parseRequest"><a href="#parseRequest" class="headerlink" title="parseRequest()"></a>parseRequest()</h2><p>这个是具体进行文件上传逻辑的代码，主要是通过<code>commons-uploadfile</code>中的<code>FileUpload</code>组件解析出</p>
+<p><code>fileItems</code>，然后再调用<code>parseFileItems</code>方法将<code>fileItems</code>分为文件和参数两类，并设置到对应的三个</p>
+<p>Map中。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture312.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture313.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture314.png" alt=""></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    其实MultipartResolver的话，本身的设计就是为了将上传请求封装成可以直接获取File的request，然后再进行文件的上传处理。</p>
+<p>​    我们到这里对于Spring MVC的大部分源码进行了基本的分析和总结，所以有了Spring MVC源码初探系列的11篇博客，这个过程有收获，也有不足的地方，没有进行更深入的探讨；但是到这里，我觉得整个系列的目的已经达到了，那就是先入门一个优秀框架的源码，适当做一些理解，并根据参考书去领悟源码设计的精妙。希望以后可以更深入得对其他更多优秀框架的源码做一些更深入的理解。</p>
+<p>​    总之，Time Walker始终在路上前进，继续看美丽的代码风景。很喜欢比较酷的一个结尾，是吴承恩《西游记》的第100回，“至此，西游记完”。此时，我也想说，至此，该系列完结，继续加油！</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-MVC/" rel="tag"># Spring MVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/10/Spring-MVC源码初探（十）-HandlerExceptionResolver/" rel="next" title="Spring MVC源码初探（十） HandlerExceptionResolver">
+                <i class="fa fa-chevron-left"></i> Spring MVC源码初探（十） HandlerExceptionResolver
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/11/JVM——JVM内存结构/" rel="prev" title="JVM——JVM内存结构">
+                JVM——JVM内存结构 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#StandardServletMultipartResolver"><span class="nav-number">2.</span> <span class="nav-text">StandardServletMultipartResolver</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#isMultipart"><span class="nav-number">2.1.</span> <span class="nav-text">isMultipart()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolveMultipart"><span class="nav-number">2.2.</span> <span class="nav-text">resolveMultipart()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cleanupMultipart"><span class="nav-number">2.3.</span> <span class="nav-text">cleanupMultipart()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#CommonsMultipartResolver"><span class="nav-number">3.</span> <span class="nav-text">CommonsMultipartResolver</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#isMultipart-1"><span class="nav-number">3.1.</span> <span class="nav-text">isMultipart()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#resolveMultipart-1"><span class="nav-number">3.2.</span> <span class="nav-text">resolveMultipart()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cleanupMultipart-1"><span class="nav-number">3.3.</span> <span class="nav-text">cleanupMultipart()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#parseRequest"><span class="nav-number">3.4.</span> <span class="nav-text">parseRequest()</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kafka,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="消费者与消费者组生产者发送消息到Kafka Broker节点，而我们的消费者就订阅了Kafka的主题，从订阅的主题中拉取消息。 而每一个消费者都对应一个消费者组。当消息被发布到主题后，只会被投递给订阅它的消费者组中的一个消费者。 每一个分区只能被一个消费者所消费。 对于消息中间件而言 ， 一般有两种消息投递模式： 点对点 （ P2P, Point-to-Point）模式和发布／订阅（ Pub/Su">
+<meta name="keywords" content="Kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="3.消费者">
+<meta property="og:url" content="https://www.liutianruo.com/2019/04/29/3-消费者/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="消费者与消费者组生产者发送消息到Kafka Broker节点，而我们的消费者就订阅了Kafka的主题，从订阅的主题中拉取消息。 而每一个消费者都对应一个消费者组。当消息被发布到主题后，只会被投递给订阅它的消费者组中的一个消费者。 每一个分区只能被一个消费者所消费。 对于消息中间件而言 ， 一般有两种消息投递模式： 点对点 （ P2P, Point-to-Point）模式和发布／订阅（ Pub/Su">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-05-21T13:19:55.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3.消费者">
+<meta name="twitter:description" content="消费者与消费者组生产者发送消息到Kafka Broker节点，而我们的消费者就订阅了Kafka的主题，从订阅的主题中拉取消息。 而每一个消费者都对应一个消费者组。当消息被发布到主题后，只会被投递给订阅它的消费者组中的一个消费者。 每一个分区只能被一个消费者所消费。 对于消息中间件而言 ， 一般有两种消息投递模式： 点对点 （ P2P, Point-to-Point）模式和发布／订阅（ Pub/Su">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/04/29/3-消费者/">
+
+
+
+
+
+  <title>3.消费者 | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/29/3-消费者/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">3.消费者</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-29T20:21:21+08:00">
+                2019-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="消费者与消费者组"><a href="#消费者与消费者组" class="headerlink" title="消费者与消费者组"></a>消费者与消费者组</h1><p>生产者发送消息到Kafka Broker节点，而我们的消费者就订阅了Kafka的主题，从订阅的主题中拉取消息。</p>
+<p>而每一个消费者都对应一个消费者组。当消息被发布到主题后，只会被投递给订阅它的消费者组中的一个消费者。</p>
+<p>每一个分区只能被一个消费者所消费。</p>
+<p>对于消息中间件而言 ， 一般有两种消息投递模式：</p>
+<p><strong>点对点 （ P2P, Point-to-Point）模式和发布／订阅（ Pub/Sub ）模式</strong> 。</p>
+<p> 点对点模式是基于队列的，消息生产者发送消息到队列，消息消费者从队列中接收消息。</p>
+<p>发布订阅模式定义了如何向一个内容节点发布和订阅消息，这个内容节点称为主题（ Topic ），主题可以认为是消息传递的中介，消息发布者将消息发布到某个主题，而消息订阅者从主题中订阅消息。</p>
+<p>主题使得消息的订阅者和发布者互相保持独立，不需要进行接触即可保证消息的传递，发布／订阅模式在消息的一对多广播时采用 。</p>
+<p> Kafka 同时支持两种消息投递模式，而这正是得益于消费者与消费组模型的契合：</p>
+<p>如果所有的消费者都隶属于同一个消费组，那么所有的消息都会被均衡地投递给每一个消费者，即每条消息只会被一个消费者处理，这就相当于点对点模式的应用 。</p>
+<p>如果所有的消费者都隶属于不同的消费组，那么所有的消息都会被广播给所有的消费者，即每条消息会被所有的消费者处理，这就相当于发布／订阅模式的应用 。 </p>
+<blockquote>
+<p>消费者组是一个逻辑概念，而消费者是一个实际存在的应用。</p>
+</blockquote>
+<h1 id="消费者客户端开发"><a href="#消费者客户端开发" class="headerlink" title="消费者客户端开发"></a>消费者客户端开发</h1><ol>
+<li>配置消费者客户端参数及创建相应的消费者实例</li>
+<li>订阅主题</li>
+<li>拉取消息并消费</li>
+<li>提交消费位移</li>
+<li>关闭消费者实例</li>
+</ol>
+<h2 id="问题处理"><a href="#问题处理" class="headerlink" title="问题处理"></a>问题处理</h2><p><strong>一个注意点</strong></p>
+<p>zk启动（下面这种方式是不正确的，要自己去安装zk，用kafka自带zk会出错）</p>
+<p><code>bin\windows\zookeeper-server-start.bat config\zookeeper.properties</code></p>
+<p>kafka启动</p>
+<p><code>bin\windows\kafka-server-start.bat config\server.properties</code></p>
+<blockquote>
+<p>我发现一个问题，在windows平台使用kafka_2.12-2.1.0的时候，不能使用kafka自带的zookeeper，需要自行安装zk并启动。</p>
+</blockquote>
+<p>为什么突然间kafka就不能正常地进行消息的生产与消费？</p>
+<p>我决定重装zookeeper和Kafka，创建了一个新的Topic “test”</p>
+<p><code>bin\windows\kafka-topics.bat --create --zookeeper localhost:2181/kafka --replication-factor 1 --partitions 1 --topic test</code></p>
+<blockquote>
+<p>zookeeperh后面的地址是Kafka在bin/server.properties中配置的。这里多了 /kafka，一定要注意。</p>
+</blockquote>
+<p>接下来就使用了命令行测试是否能够正常的生产和消费消息。==It’s OK==</p>
+<p>==<a href="https://blog.csdn.net/tianmanchn/article/details/78943147" target="_blank" rel="noopener">Kafka安装详细过程，无错误</a>==</p>
+<h2 id="消费者客户端代码"><a href="#消费者客户端代码" class="headerlink" title="消费者客户端代码"></a>消费者客户端代码</h2><p>现在测试客户端，依然可以正常的收发消息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">topic =test, partition = <span class="number">0</span>, offset =<span class="number">17</span></span><br><span class="line">key =<span class="keyword">null</span>,value =Hello,Kafka</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ConsumerFastStart</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String brokerList = <span class="string">"127.0.0.1:9092"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String topic = <span class="string">"test"</span>;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String groupId = <span class="string">"group.demo"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Properties <span class="title">initConfig</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Properties properties = <span class="keyword">new</span> Properties();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//Kafka的配置参数很多，根据业务需要灵活调整</span></span><br><span class="line">        properties.put(<span class="string">"key.deserializer"</span>,</span><br><span class="line">                <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">        properties.put(<span class="string">"value.deserializer"</span>,</span><br><span class="line">                <span class="string">"org.apache.kafka.common.serialization.StringDeserializer"</span>);</span><br><span class="line">        <span class="comment">// 设置要连接到Kafka集群的broker清单，一般建议设置2个，防止其中一个broker宕机后，消费者仍然能够连接到Kafka集群</span></span><br><span class="line">        properties.put(<span class="string">"bootstrap.servers"</span>, brokerList);</span><br><span class="line">        <span class="comment">//设置消费组的名称 ,一般要表明业务</span></span><br><span class="line">        properties.put(<span class="string">"group.id"</span>, groupId);</span><br><span class="line">        properties.put(<span class="string">"client.id"</span>, <span class="string">"consumer.client.id.demo"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> properties;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        Properties props = initConfig();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//创建消费者实例</span></span><br><span class="line">        KafkaConsumer&lt;String, String&gt; consumer = <span class="keyword">new</span> KafkaConsumer&lt;String, String&gt;(props);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 订阅一个主题</span></span><br><span class="line">        consumer.subscribe(Arrays.asList(topic));</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 循环消费信息</span></span><br><span class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line"></span><br><span class="line">            ConsumerRecords&lt;String, String&gt; records = consumer.poll(<span class="number">1000</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span> (ConsumerRecord&lt;String, String&gt; record : records) &#123;</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"topic ="</span> + record.topic() +</span><br><span class="line">                        <span class="string">", partition = "</span> + record.partition() +</span><br><span class="line">                        <span class="string">", offset ="</span> + record.offset());</span><br><span class="line"></span><br><span class="line">                System.out.println(<span class="string">"key ="</span> + record.key() +</span><br><span class="line">                        <span class="string">",value ="</span> + record.value());</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="订阅某些主题的特定分区"><a href="#订阅某些主题的特定分区" class="headerlink" title="订阅某些主题的特定分区"></a>订阅某些主题的特定分区</h2><p>API : <code>KafkaConsumer#assign(Collection&lt;TopicPartition&gt; partitions)</code></p>
+<h3 id="TopicPartition"><a href="#TopicPartition" class="headerlink" title="TopicPartition"></a>TopicPartition</h3><p>看下方法的成员变量中的<code>TopicPartition</code>,它在客户端表示分区。重点在于主题与分区之间的映射关系</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">TopicPartition</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> hash = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> partition;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String topic;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TopicPartition</span><span class="params">(String topic, <span class="keyword">int</span> partition)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.partition = partition;</span><br><span class="line">        <span class="keyword">this</span>.topic = topic;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> partition;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">topic</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> topic;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略hashCode(),equals(),toString()方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><code>TopicPartition</code>让我们看到了主题topic和分区partition之间的映射关系</p>
+</blockquote>
+<p><code>consumer.assign(Arrays.asList(new TopicPartition(&quot;test&quot;, 0)));</code></p>
+<blockquote>
+<p>订阅test主题下的0分区</p>
+</blockquote>
+<p><code>Arrays.asList()</code>就是将多个对象放进一个新的ArrayList中。相当于：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;TopicPartition&gt; list=<span class="keyword">new</span> ArrayList();</span><br><span class="line">list.add(<span class="keyword">new</span> TopicPartition(<span class="string">"test"</span>, <span class="number">0</span>));</span><br></pre></td></tr></table></figure>
+<h3 id="PartitionInfo"><a href="#PartitionInfo" class="headerlink" title="PartitionInfo"></a>PartitionInfo</h3><p>但是实际场景，我们可能不清楚某个主题到底有多少个分区。那么我们可以通过如下方法来获取某个主题下的分区</p>
+<p> <code>List&lt;PartitionInfo&gt; partitionInfoList =consumer.partitionsFor(&quot;test&quot;);</code></p>
+<p><code>PartitionInfo</code>为主题的分区元数据信息。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PartitionInfo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String topic; <span class="comment">//主题名称</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> partition; <span class="comment">// 分区编号</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Node leader; <span class="comment">// 分区的leader副本所在位置</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Node[] replicas; </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> Node[] inSyncReplicas;</span><br><span class="line">	<span class="comment">// 省略了方法   </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>Node</code>类主要参数如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Node</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Node NO_NODE = <span class="keyword">new</span> Node(-<span class="number">1</span>, <span class="string">""</span>, -<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String idString;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String host;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> port;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String rack;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="订阅某主题下所有分区"><a href="#订阅某主题下所有分区" class="headerlink" title="订阅某主题下所有分区"></a>订阅某主题下所有分区</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">		       </span><br><span class="line">List&lt;TopicPartition&gt; topicPartitionList = <span class="keyword">new</span> ArrayList&lt;TopicPartition&gt;();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取某主题下所有分区的信息</span></span><br><span class="line">      List&lt;PartitionInfo&gt; partitionInfoList = consumer.partitionsFor(topic);</span><br><span class="line"><span class="keyword">if</span> (partitionInfoList == <span class="keyword">null</span> || partitionInfoList.size()==<span class="number">0</span>) &#123;</span><br><span class="line">          <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">for</span> (PartitionInfo partitionInfo : partitionInfoList) &#123;</span><br><span class="line"></span><br><span class="line">          topicPartitionList.add(<span class="keyword">new</span> TopicPartition(partitionInfo.topic(), 			              partitionInfo.partition()));</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="comment">// 订阅主题的全部分区</span></span><br><span class="line">      consumer.assign(topicPartitionList);</span><br></pre></td></tr></table></figure>
+<h2 id="取消订阅"><a href="#取消订阅" class="headerlink" title="取消订阅"></a>取消订阅</h2><p>取消订阅，就是在之前订阅的基础上取消订阅关系。就是清空订阅关系。</p>
+<p><code>consumer.unsubscribe()</code></p>
+<p><code>consumer.unsubscribe()</code></p>
+<p>其实取消订阅就相当于订阅了空的主题。</p>
+<p><code>consumer.subscribe(new ArraList&lt;String&gt;())</code></p>
+<h2 id="订阅总结"><a href="#订阅总结" class="headerlink" title="订阅总结"></a>订阅总结</h2><p>其实我们<code>subscribe()</code>订阅一个主题，而不是某个主题的特定分区时，Kafka集群会分配消费者与分区之间的关系。这是一个动态的过程。有点类似于负载均衡。</p>
+<p>而<code>align()</code>方法时没有这个功能的，它本身也不需要这个功能。</p>
+<h1 id="反序列化"><a href="#反序列化" class="headerlink" title="反序列化"></a>反序列化</h1><p>我们收到的消息，只有经过反序列化才能正确读取。</p>
+<p>先实现之前的序列化器</p>
+<ol>
+<li><p>需要传递的对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ajin.domain;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 生产者传递到消费者的消息</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: ajin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Company</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">4606513799375884096L</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String companyName;</span><br><span class="line">    <span class="keyword">private</span> String position;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Company</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Company</span><span class="params">(String companyName, String position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.companyName = companyName;</span><br><span class="line">        <span class="keyword">this</span>.position = position;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getCompanyName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> companyName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setCompanyName</span><span class="params">(String companyName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.companyName = companyName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getPosition</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> position;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPosition</span><span class="params">(String position)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.position = position;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li><p>序列化器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ajin.serilaizer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ajin.domain.Company;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.common.serialization.Serializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义序列化器 &#123;<span class="doctag">@link</span> org.apache.kafka.common.serialization.Serializer&#125;</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: ajin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompanySerializer</span> <span class="keyword">implements</span> <span class="title">Serializer</span>&lt;<span class="title">Company</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(Map&lt;String, ?&gt; configs, <span class="keyword">boolean</span> isKey)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">byte</span>[] serialize(String topic, Company data) &#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">byte</span>[] name, position;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (data.getCompanyName() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                name = data.getCompanyName().getBytes();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                name = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">0</span>];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (data.getPosition() != <span class="keyword">null</span>) &#123;</span><br><span class="line">                position = data.getPosition().getBytes();</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                position = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">0</span>];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            ByteBuffer buffer = ByteBuffer.allocate(<span class="number">4</span> + <span class="number">4</span> +</span><br><span class="line">                    name.length + position.length);</span><br><span class="line"></span><br><span class="line">            buffer.putInt(name.length);</span><br><span class="line">            buffer.put(name);</span><br><span class="line"></span><br><span class="line">            buffer.putInt(position.length);</span><br><span class="line">            buffer.put(position);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">return</span> buffer.array();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">0</span>];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>ByteBuffer ：字节缓冲区</p>
+</blockquote>
+</li>
+<li><p>反序列化器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.ajin.deserilaizer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> com.ajin.domain.Company;</span><br><span class="line"><span class="keyword">import</span> org.apache.kafka.common.serialization.Deserializer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 自定义的反序列化器 &#123;<span class="doctag">@link</span> org.apache.kafka.common.serialization.Deserializer&#125;</span></span><br><span class="line"><span class="comment"> * &lt;p&gt;</span></span><br><span class="line"><span class="comment"> * 与序列化器 &#123;<span class="doctag">@link</span> com.ajin.serilaizer.CompanySerializer&#125;对应</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@author</span>: ajin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CompanyDeSerializer</span> <span class="keyword">implements</span> <span class="title">Deserializer</span>&lt;<span class="title">Company</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> String ENCODING = <span class="string">"UTF-8"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configure</span><span class="params">(Map&lt;String, ?&gt; configs, <span class="keyword">boolean</span> isKey)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Company <span class="title">deserialize</span><span class="params">(String topic, <span class="keyword">byte</span>[] data)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (data == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (data.length &lt; <span class="number">8</span>) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> RuntimeException(<span class="string">"data is not expected"</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        ByteBuffer buffer = ByteBuffer.wrap(data);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 准备好接收参数</span></span><br><span class="line">        <span class="keyword">int</span> nameLen, positionLen;</span><br><span class="line">        String name, position;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 在此缓冲区的当前位置读取接下来的四个字节</span></span><br><span class="line">        nameLen = buffer.getInt();</span><br><span class="line">        <span class="keyword">byte</span>[] nameBytes = <span class="keyword">new</span> <span class="keyword">byte</span>[nameLen];</span><br><span class="line">        <span class="comment">//字节从此缓冲区传输到给定的目标数组</span></span><br><span class="line">        buffer.get(nameBytes);</span><br><span class="line"></span><br><span class="line">        positionLen = buffer.getInt();</span><br><span class="line">        <span class="keyword">byte</span>[] positionBytes = <span class="keyword">new</span> <span class="keyword">byte</span>[positionLen];</span><br><span class="line">        buffer.get(positionBytes);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            name = <span class="keyword">new</span> String(nameBytes, ENCODING);</span><br><span class="line">            position = <span class="keyword">new</span> String(positionBytes, ENCODING);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException(<span class="string">""</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Company(name, position);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">()</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<blockquote>
+<p>厮大的建议：不要使用自定义的序列化或反序列化器。这样会增加生产者与消费者之间的耦合。</p>
+<p>如果需要自定义，可以使用fastjson等工具来辅助编码。</p>
+</blockquote>
+<h1 id="消息消费模式"><a href="#消息消费模式" class="headerlink" title="消息消费模式"></a>消息消费模式</h1><p>Kafka中的消息消费，是消费者主动从服务端拉取消息，属于拉模式。</p>
+<p>我们每次消费，需要根据上一次消费的位移来继续消费消息。就相当于看书一样，从上一次看过的地方往后继续看。这个消费位移不能直接存在内存中，需要做持久化处理。</p>
+<blockquote>
+<p>在旧消费者客户端中，消费位移是存储在 ZooKeeper 中的 。 而在新消费者客户端中，消费<br>位移存储在 Kafka 内部的主题 consumer offsets 中 。 这里把将消费位移存储起来（持久化）的<br>动作称为“提交“，消费者在消费完消息之后需要执行消费位移的提交。 </p>
+</blockquote>
+<p>消费者提交的位移是下一次需要消费的信息的位置。</p>
+<h1 id="位移提交"><a href="#位移提交" class="headerlink" title="位移提交"></a>位移提交</h1><p>自动的位移提交是在poll方法拉取消息之后进行的，拉取完消息后，如果消费者挂了，那么它重启后会消费下面的消息，而不会继续消费上次宕机时没处理完的消息。这就是消息丢失的情形。</p>
+<p>我们需要设置为手动提交位移，这样更能保证消息消费的完整性与准确性。</p>
+<h1 id="再均衡"><a href="#再均衡" class="headerlink" title="再均衡"></a>再均衡</h1><blockquote>
+<p>再均衡是指分区的所属权从一个消费者转移到另一消费者的行为，它为消费组具备高可用性和伸缩性提供保障，使我们可以既方便又安全地删除消费组内的消费者或往消费组内添加消费者。</p>
+</blockquote>
+<p>不过在再均衡发生期间，消费组内的消费者是无法读取消息的。 也就是说，在再均衡发生期间的这一小段时间 内，消费组会变得不可用 。</p>
+<p>另外，当一个分区被重新分配给另一个消费者时， 消费者当前的状态也会丢失。比如消费者消费完某个分区中的一部分消息时还没有来得及提交消费位移就发生了再均衡操作 ，之后这个分区又被分配给了消费组内的另一个消费者，原来被消费完的那部分消息又被重新消费一遍，也就是发生了重复消费。一般情况下，应尽量避免不必要的再均衡的发生。</p>
+<h2 id="ConsumerRebalanceListener"><a href="#ConsumerRebalanceListener" class="headerlink" title="ConsumerRebalanceListener"></a>ConsumerRebalanceListener</h2><p><strong>再均衡监听器</strong></p>
+<p>我们<code>asign</code>方法直接订阅的某个Topic下的分区，那么它不适用于<code>ConsumerRebalanceListener</code> 。</p>
+<p>在<code>subscribe()</code>方法中可以看到<code>ConsumerRebalanceListener</code> 的影子</p>
+<blockquote>
+<p>再均衡监昕器用来设定发生再均衡动作前后的一些准备或收尾的动作。 </p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(Collection&lt;String&gt; topics, ConsumerRebalanceListener listener)</span> </span>&#123;</span><br><span class="line">    acquire();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (topics.isEmpty()) &#123;</span><br><span class="line">            <span class="comment">// treat subscribing to empty topic list as the same as unsubscribing</span></span><br><span class="line">            <span class="keyword">this</span>.unsubscribe();</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            log.debug(<span class="string">"Subscribed to topic(s): &#123;&#125;"</span>, Utils.join(topics, <span class="string">", "</span>));</span><br><span class="line">            <span class="keyword">this</span>.subscriptions.subscribe(topics, listener);</span><br><span class="line">            metadata.setTopics(subscriptions.groupSubscription());</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        release();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">	<span class="comment">// 这个是正则表达式实现的模糊主题的匹配</span></span><br><span class="line">  <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">subscribe</span><span class="params">(Pattern pattern, ConsumerRebalanceListener listener)</span> </span>&#123;</span><br><span class="line">        acquire();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            log.debug(<span class="string">"Subscribed to pattern: &#123;&#125;"</span>, pattern);</span><br><span class="line">            <span class="keyword">this</span>.subscriptions.subscribe(pattern, listener);</span><br><span class="line">            <span class="keyword">this</span>.metadata.needMetadataForAllTopics(<span class="keyword">true</span>);</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            release();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>我们看一下<code>ConsumerRebalanceListener</code> 接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ConsumerRebalanceListener</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> 这个方法会在再均衡开始之前和消费者停止读取消息之后被调用。可以通过这个回调方法</span></span><br><span class="line"><span class="comment"> 来处理消费位移的提交，以此来避免一些不必要的重复消费现象的发生。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	参数 partitions 表示再均衡前所分配到的分区。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPartitionsRevoked</span><span class="params">(Collection&lt;TopicPartition&gt; partitions)</span></span>;</span><br><span class="line"><span class="comment">/**  </span></span><br><span class="line"><span class="comment">这个方法会在重新分配分区之后和消费者开始读取消费之前被调用。</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">	参数partitions表示再均衡后所分配到的分区 。</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPartitionsAssigned</span><span class="params">(Collection&lt;TopicPartition&gt; partitions)</span></span>;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">// 定义主题分区与该消费者应用程序对应的提交位移的映射关系</span></span><br><span class="line">      <span class="keyword">final</span> Map&lt;TopicPartition, OffsetAndMetadata&gt; currentOffSets = <span class="keyword">new</span> HashMap&lt;TopicPartition, OffsetAndMetadata&gt;();</span><br><span class="line">      consumer.subscribe(Collections.singletonList(topic),</span><br><span class="line">              <span class="keyword">new</span> ConsumerRebalanceListener() &#123;</span><br><span class="line">                  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPartitionsRevoked</span><span class="params">(Collection&lt;TopicPartition&gt; partitions)</span> </span>&#123;			</span><br><span class="line">                      <span class="comment">// 发生再均衡的时候，提交当前消费者的位移</span></span><br><span class="line">                      consumer.commitSync(currentOffSets);</span><br><span class="line">                      <span class="comment">// 清空映射关系 ，因为已经取做再均衡了</span></span><br><span class="line">                      currentOffSets.clear();</span><br><span class="line">                  &#125;</span><br><span class="line"></span><br><span class="line">                  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onPartitionsAssigned</span><span class="params">(Collection&lt;TopicPartition&gt; partitions)</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">                  &#125;</span><br><span class="line">              &#125;);</span><br><span class="line"></span><br><span class="line">     		 <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line"></span><br><span class="line">          ConsumerRecords&lt;String, Company&gt; records = consumer.poll(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">          <span class="keyword">for</span> (ConsumerRecord&lt;String, Company&gt; record : records) &#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">              currentOffSets.put(</span><br><span class="line">                      <span class="keyword">new</span> TopicPartition(</span><br><span class="line">                              record.topic(), record.partition()</span><br><span class="line">                      ), <span class="keyword">new</span> OffsetAndMetadata(record.offset() + <span class="number">1</span>)</span><br><span class="line">              );</span><br><span class="line">              System.out.println(<span class="string">"topic ="</span> + record.topic() +</span><br><span class="line">                      <span class="string">", partition ="</span> + record.partition() +</span><br><span class="line">                      <span class="string">", offset ="</span> + record.offset());</span><br><span class="line"></span><br><span class="line">              System.out.println(<span class="string">"key ="</span> + record.key() +</span><br><span class="line">                      <span class="string">",value ="</span> + record.value());</span><br><span class="line">		</span><br><span class="line"></span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="多线程实现"><a href="#多线程实现" class="headerlink" title="多线程实现"></a>多线程实现</h1><p>消费者每次拉取消息的时候，会判断是否只有一个线程在操作。如果有多个线程就会抛出异常。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ConsumerRecords&lt;K, V&gt; <span class="title">poll</span><span class="params">(<span class="keyword">long</span> timeout)</span> </span>&#123;</span><br><span class="line">    acquire();</span><br><span class="line">    <span class="comment">// 省略其他方法</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Kafka是非线程安全的。</p>
+<p>我们可以开启多个线程增强一个消费者客户端的消费能力。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/29/Ribbon源码学习/" rel="next" title="Ribbon源码学习">
+                <i class="fa fa-chevron-left"></i> Ribbon源码学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/10/Kafka的主题与分区/" rel="prev" title="Kafka的主题与分区">
+                Kafka的主题与分区 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#消费者与消费者组"><span class="nav-number">1.</span> <span class="nav-text">消费者与消费者组</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消费者客户端开发"><span class="nav-number">2.</span> <span class="nav-text">消费者客户端开发</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题处理"><span class="nav-number">2.1.</span> <span class="nav-text">问题处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#消费者客户端代码"><span class="nav-number">2.2.</span> <span class="nav-text">消费者客户端代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#订阅某些主题的特定分区"><span class="nav-number">2.3.</span> <span class="nav-text">订阅某些主题的特定分区</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#TopicPartition"><span class="nav-number">2.3.1.</span> <span class="nav-text">TopicPartition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PartitionInfo"><span class="nav-number">2.3.2.</span> <span class="nav-text">PartitionInfo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#订阅某主题下所有分区"><span class="nav-number">2.3.3.</span> <span class="nav-text">订阅某主题下所有分区</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#取消订阅"><span class="nav-number">2.4.</span> <span class="nav-text">取消订阅</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#订阅总结"><span class="nav-number">2.5.</span> <span class="nav-text">订阅总结</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#反序列化"><span class="nav-number">3.</span> <span class="nav-text">反序列化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#消息消费模式"><span class="nav-number">4.</span> <span class="nav-text">消息消费模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#位移提交"><span class="nav-number">5.</span> <span class="nav-text">位移提交</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#再均衡"><span class="nav-number">6.</span> <span class="nav-text">再均衡</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ConsumerRebalanceListener"><span class="nav-number">6.1.</span> <span class="nav-text">ConsumerRebalanceListener</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多线程实现"><span class="nav-number">7.</span> <span class="nav-text">多线程实现</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

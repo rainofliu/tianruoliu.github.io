@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Kafka,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="Kafka的基本知识 Kafka是一个多分区，多副本且基于Zookeeper协调的分布式消息系统。  消息系统一个消息系统负责将消息从一个应用传递到另一个应用，应用只需要关注数据，而不需要关注数据在两个应用之间如何传递。  点对点消息系统  消息发布者往消息队列中写入消息，消息接收者不停从消息队列中取消息   发布订阅消息系统  消息被持久化到一个Topic当中，消费者可以订阅一个或多个Topic">
+<meta name="keywords" content="Kafka">
+<meta property="og:type" content="article">
+<meta property="og:title" content="1.入门Kafka">
+<meta property="og:url" content="https://www.liutianruo.com/2019/04/25/1.入门Kafka/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="Kafka的基本知识 Kafka是一个多分区，多副本且基于Zookeeper协调的分布式消息系统。  消息系统一个消息系统负责将消息从一个应用传递到另一个应用，应用只需要关注数据，而不需要关注数据在两个应用之间如何传递。  点对点消息系统  消息发布者往消息队列中写入消息，消息接收者不停从消息队列中取消息   发布订阅消息系统  消息被持久化到一个Topic当中，消费者可以订阅一个或多个Topic">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture325.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture326.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture328.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture329.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture330.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture327.png">
+<meta property="og:updated_time" content="2019-04-26T01:14:19.973Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="1.入门Kafka">
+<meta name="twitter:description" content="Kafka的基本知识 Kafka是一个多分区，多副本且基于Zookeeper协调的分布式消息系统。  消息系统一个消息系统负责将消息从一个应用传递到另一个应用，应用只需要关注数据，而不需要关注数据在两个应用之间如何传递。  点对点消息系统  消息发布者往消息队列中写入消息，消息接收者不停从消息队列中取消息   发布订阅消息系统  消息被持久化到一个Topic当中，消费者可以订阅一个或多个Topic">
+<meta name="twitter:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture325.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/04/25/1.入门Kafka/">
+
+
+
+
+
+  <title>1.入门Kafka | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/25/1.入门Kafka/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">1.入门Kafka</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-25T12:20:56+08:00">
+                2019-04-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Kafka的基本知识"><a href="#Kafka的基本知识" class="headerlink" title="Kafka的基本知识"></a>Kafka的基本知识</h1><blockquote>
+<p>Kafka是一个多分区，多副本且基于Zookeeper协调的分布式消息系统。</p>
+</blockquote>
+<h2 id="消息系统"><a href="#消息系统" class="headerlink" title="消息系统"></a>消息系统</h2><p>一个消息系统负责将消息从一个应用传递到另一个应用，应用只需要关注数据，而不需要关注数据在两个应用之间如何传递。</p>
+<ul>
+<li><p>点对点消息系统</p>
+<blockquote>
+<p>消息发布者往消息队列中写入消息，消息接收者不停从消息队列中取消息</p>
+</blockquote>
+</li>
+<li><p>发布订阅消息系统</p>
+<blockquote>
+<p>消息被持久化到一个<code>Topic</code>当中，消费者可以订阅一个或多个<code>Topic</code>;</p>
+<p>消息被消费后不会立马被删除</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture325.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>消息系统具有系统解耦，冗余存储，流量削峰，缓冲，异步通信，扩展性，可恢复性等功能。</p>
+</blockquote>
+<h2 id="存储系统"><a href="#存储系统" class="headerlink" title="存储系统"></a>存储系统</h2><p>Kafka把消息持久化到磁盘，相较于基于内存存储的系统，降低了数据丢失的风险。</p>
+<h2 id="Kafka基本概念"><a href="#Kafka基本概念" class="headerlink" title="Kafka基本概念"></a>Kafka基本概念</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture326.png" alt=""></p>
+<p>producer往Topics中写入消息，consumer从Brokers中拿取producer写的消息副本数据。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture328.png" alt=""></p>
+<p>​                                                        <strong>[ Kafka体系结构 ]</strong></p>
+<p>​    一个典型的Kafka架构包括若干个<code>Producer</code>,若干个<code>Broker</code>,若干<code>Consumer</code>和一个<code>ZooKeeper</code>集群。</p>
+<ul>
+<li><code>Producer</code>将消息发送给<code>Broker</code></li>
+<li><code>Broker</code>负责将收到的消息保存到磁盘</li>
+<li><code>Consumer</code>负责从<code>Broker</code>订阅并消费信息</li>
+</ul>
+<p><strong>详细解释</strong></p>
+<h3 id="Broker：服务代理节点。"><a href="#Broker：服务代理节点。" class="headerlink" title="Broker：服务代理节点。"></a><code>Broker</code>：服务代理节点。</h3><blockquote>
+<p>Broker 可以简单地看作一个独立的 Kafka服务节点或 Kafka 服务实例。</p>
+<p>大多数情况下也可以将 Broker 看作一台 Kafka 服务器，前提是这台服务器上只部署了一个 Kafka 实例。</p>
+<p>一个或多个 Broker 组成了 一个 Kafka 集群。</p>
+<p>一般而言，我们更习惯使用首字母小写的 broker 来表示服务代理节点 。 </p>
+</blockquote>
+<h3 id="主题"><a href="#主题" class="headerlink" title="主题"></a>主题</h3><p><code>Topic</code></p>
+<p>Kafka中的消息以主题为单位进行归类，生产者负责将消息发送到特定的主题，而消费者负责订阅主题并消费消息。</p>
+<blockquote>
+<p>发送到Kafka集群中的每一条消息都要指定主题</p>
+</blockquote>
+<h3 id="分区"><a href="#分区" class="headerlink" title="分区"></a>分区</h3><p><code>Partition</code></p>
+<p>主题是一个逻辑上的概念，它可以细分为多个分区。这样来说，一个分区只属于一个主题。</p>
+<p>同一个主题下面的不同分区包含的消息是不同的。</p>
+<blockquote>
+<p>分区在存储层面可以看作一个可追加的日志（ Log ）文件，消息在被追加到分区日志、文件的时<br>候都会分配一个特定的偏移量（ offset ）。offset 是消息在分区中的唯一标识， Kafka 通过它来保证消息在分区内的顺序性，不过 offset 并不跨越分区，也就是说， Kafka 保证的是分区有序而不 是主题有序。 </p>
+</blockquote>
+<p>我们跟着图理一下：</p>
+<blockquote>
+<p>主题中有 4 个分区，消息被顺序追加到每个分区日志文件的尾部。</p>
+<p> Kafka中的分区可以分布在不同的服务器 （ broker）上，也就是说，一个主题可以横跨多个 broker，以<br>此来提供比单个 broker 更强大的性能 。 </p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture329.png" alt=""></p>
+<p>每一条消息被发送到 <code>broker</code>之前，会根据<strong>分区规则</strong>选择存储到哪个具体的分区 。 如果分区规则设定得合理，所有的消息都可以均匀地分配到不同的分区中 。 如果一个主题只对应一个文<br>件，那么这个文件所在的机器 I/O 将会成为这个主题的性能瓶颈，而分区解决了这个问题 。 在创建主题的时候可以通过指定的参数来设置分区的个数，当然也可以在主题创建完成之后去修改分区的数量，通过增加分区的数量可以实现水平扩展。</p>
+<h4 id="多副本机制"><a href="#多副本机制" class="headerlink" title="多副本机制"></a>多副本机制</h4><p>Kafka为了分区引入了多副本机制 ,通过增加副本数量来提升容灾能力。同一分区的不同副本中保存的是相同的消息（在同一时刻，副本之间并非完全一样），副本之间是“ 一主多从”的关系，其中 leader 副本负 责处理读写请求 ， follower 副本只负 责与 lead er 副本的消息同步。副本处于不同的 broker 中 ，当 leader 副本出现故障时，从 follower 副本中重新选举新的 leader 副本对外提供服务。 Kafka 通过多副本机制实现了故障的自动转移，当 Kafka 集群中某个 broker 失效时仍然能保证服务可用 。 </p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture330.png" alt=""></p>
+<blockquote>
+<p>就是保存副本，使得有一个Broker宕机，也不会影响整个Kafka集群丢失消息。</p>
+</blockquote>
+<p>该Kafka 集群中有 4 个 broker，某个主题中有 3 个分区，且副本因子（即副本个数〉也为 3 ，如此每个分区便有 l 个 leader 副本和 2 个 follower 副本。生产者和消费者只与 leader副本进行交互，而 follow 副本只负责消息的同步，很多时候 follower 副本中的消息相对 leader副本而言会有一定的滞后。 </p>
+<h3 id="Kafka消费端的容灾"><a href="#Kafka消费端的容灾" class="headerlink" title="Kafka消费端的容灾"></a>Kafka消费端的容灾</h3><p>Consumer采用<code>pull</code>的方式从服务端拉取消息，并且保存消费的具体位置。当消费者宕机后恢复上线了，可以根据之前保存的消费的具体位置重新拉取需要的消息进行消费，这样就不会造出消息的丢失。</p>
+<blockquote>
+<p>消费端宕机重启后，仍能从上一次消费位置开始继续消费。</p>
+</blockquote>
+<h3 id="AR-ISR"><a href="#AR-ISR" class="headerlink" title="AR ISR"></a>AR ISR</h3><p>分区中 的所有副本统称为 AR ( Assigned Replicas ） 。 所有与 leader 副本保持一定程度同步<br>的副本（包括 leader 副本在内〕组成 ISR On-Sync Replicas ) , ISR 集合是 AR 集合中 的一个子集 。<br>消息会先发送到 <code>leader</code> 副本，然后<code>follower</code> 副本才能从 leader 副本中拉取消息进行同步，同步期间内 <code>follower</code>副本相对于<code>leader</code> 副本而言会有一定程度的滞后 。 前面所说的“一定程度的同步”是指可忍受的滞后范围，这个范围可以通过参数进行配置 。 与 leader 副本同步滞后过多的副本（不包括 leader 副本）组成 OSR ( Out-of-Sync Replicas ），由此可见， AR=ISR+OSR 。在正常情况下， 所有的 follower 副本都应该与 leader 副本保持一定程度 的同步，即 AR=ISR,OSR 集合为空。 </p>
+<p><code>leader</code> 副本负责维护和跟踪 <code>ISR</code>集合中所有<code>followe</code> 副 本 的滞后状态， 当 <code>follower</code> 副本落后太多或失效时， leader 副本会把它从 ISR 集合中剔除 。 如果 OSR 集合中有 <code>follower</code>副本 “追上“了 leader 副本，那么 leader 副本会把它从 OSR 集合转移至 ISR 集合 。默认情况下， 当 <code>leader</code> 副本发生故障时，只 有在 ISR 集合中的副本才有资格被选举为新的<code>leader</code>， 而在 OSR 集合中的副本则没有任何机会（不过这个原则也可以通过修改相应的参数配置来改变） 。 </p>
+<h1 id="Kafka的安装与配置"><a href="#Kafka的安装与配置" class="headerlink" title="Kafka的安装与配置"></a>Kafka的安装与配置</h1><h2 id="JDK"><a href="#JDK" class="headerlink" title="JDK"></a>JDK</h2><p>首先需要安装JDK，配置环境变量。我们选择的是JDK8。安装过程略去。</p>
+<h2 id="ZooKeeper"><a href="#ZooKeeper" class="headerlink" title="ZooKeeper"></a>ZooKeeper</h2><p><code>ZooKeeper</code>集群中有三个角色，<code>leader</code>,<code>follower</code>和<code>observer</code>。一个<code>leader</code>，其他的都是 <code>follower</code> 和 <code>obsever</code>。</p>
+<h2 id="Kafka"><a href="#Kafka" class="headerlink" title="Kafka"></a>Kafka</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">#broker的编号，如果集群中有多个broker，则每个broker的编号需要设置的不同</span><br><span class="line">broker.id=0</span><br><span class="line">#broker对外提供的服务入口地址</span><br><span class="line">listeners=PLAINTEXT://localhost：9092 </span><br><span class="line">#存放消息日志文件的地址</span><br><span class="line">log.dirs=/tmp/kafka-logs</span><br><span class="line">#Kafka所需的ZooKeeper集群地址，为了方便演示，我们假设Kafka和ZooKeeper都安装在本机	</span><br><span class="line">zookeeper.connect=localhost：2181/kafka</span><br></pre></td></tr></table></figure>
+<h1 id="Kafka的运行"><a href="#Kafka的运行" class="headerlink" title="Kafka的运行"></a>Kafka的运行</h1><p>这里主要介绍Windows平台的命令行启动和创建Topic等指令。</p>
+<p>1、启动zookeeper</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">bin</span>\<span class="selector-tag">windows</span>\<span class="selector-tag">zookeeper-server-start</span><span class="selector-class">.bat</span> <span class="selector-tag">config</span>\<span class="selector-tag">zookeeper</span><span class="selector-class">.properties</span></span><br></pre></td></tr></table></figure>
+<p>​      2、启动kafka</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">bin</span>\<span class="selector-tag">windows</span>\<span class="selector-tag">kafka-server-start</span><span class="selector-class">.bat</span> <span class="selector-tag">config</span>\<span class="selector-tag">server</span><span class="selector-class">.properties</span></span><br></pre></td></tr></table></figure>
+<p>​      3、创建主题topic，topic = test</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">bin</span>\<span class="selector-tag">windows</span>\<span class="selector-tag">kafka-topics</span><span class="selector-class">.bat</span> <span class="selector-tag">--create</span> <span class="selector-tag">--zookeeper</span> <span class="selector-tag">localhost</span><span class="selector-pseudo">:2181</span> <span class="selector-tag">--replication-factor</span> 1 <span class="selector-tag">--partitions</span> 1 <span class="selector-tag">--topic</span> <span class="selector-tag">test</span></span><br></pre></td></tr></table></figure>
+<p>– 查看创建的topic</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">bin</span>\<span class="selector-tag">windows</span>\<span class="selector-tag">kafka-topics</span><span class="selector-class">.bat</span> <span class="selector-tag">--list</span> <span class="selector-tag">--zookeeper</span> <span class="selector-tag">localhost</span><span class="selector-pseudo">:2181</span></span><br></pre></td></tr></table></figure>
+<p>​      4、启动生产者 producer</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">bin</span>\<span class="selector-tag">windows</span>\<span class="selector-tag">kafka-console-producer</span><span class="selector-class">.bat</span> <span class="selector-tag">--broker-list</span> <span class="selector-tag">localhost</span><span class="selector-pseudo">:9092</span> <span class="selector-tag">--topic</span> <span class="selector-tag">test</span></span><br></pre></td></tr></table></figure>
+<p>启动生产者之后进入编辑页面，发送了 “nihao”，</p>
+<p>​       5、启动消费者 customer</p>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">bin</span>\<span class="selector-tag">windows</span>\<span class="selector-tag">kafka-console-consumer</span><span class="selector-class">.bat</span> <span class="selector-tag">--bootstrap-server</span> <span class="selector-tag">localhost</span><span class="selector-pseudo">:9092</span> <span class="selector-tag">--topic</span> <span class="selector-tag">test</span> <span class="selector-tag">--from-beginning</span></span><br></pre></td></tr></table></figure>
+<p>当消费者启动之后，收到了之前生产者发送的 “nihao”。</p>
+<p>PS: 这里附上Kafka的一些常用命令。（Linux)</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture327.png" alt=""></p>
+<p>​    </p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/17/MySQL-Binlog/" rel="next" title="MySQL Binlog">
+                <i class="fa fa-chevron-left"></i> MySQL Binlog
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/25/2.生产者/" rel="prev" title="2.生产者">
+                2.生产者 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka的基本知识"><span class="nav-number">1.</span> <span class="nav-text">Kafka的基本知识</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#消息系统"><span class="nav-number">1.1.</span> <span class="nav-text">消息系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#存储系统"><span class="nav-number">1.2.</span> <span class="nav-text">存储系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka基本概念"><span class="nav-number">1.3.</span> <span class="nav-text">Kafka基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Broker：服务代理节点。"><span class="nav-number">1.3.1.</span> <span class="nav-text">Broker：服务代理节点。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主题"><span class="nav-number">1.3.2.</span> <span class="nav-text">主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分区"><span class="nav-number">1.3.3.</span> <span class="nav-text">分区</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#多副本机制"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">多副本机制</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kafka消费端的容灾"><span class="nav-number">1.3.4.</span> <span class="nav-text">Kafka消费端的容灾</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AR-ISR"><span class="nav-number">1.3.5.</span> <span class="nav-text">AR ISR</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka的安装与配置"><span class="nav-number">2.</span> <span class="nav-text">Kafka的安装与配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK"><span class="nav-number">2.1.</span> <span class="nav-text">JDK</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ZooKeeper"><span class="nav-number">2.2.</span> <span class="nav-text">ZooKeeper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kafka"><span class="nav-number">2.3.</span> <span class="nav-text">Kafka</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Kafka的运行"><span class="nav-number">3.</span> <span class="nav-text">Kafka的运行</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

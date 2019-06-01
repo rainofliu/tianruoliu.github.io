@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="事务的介绍Spring默认的声明式事务，在遇到checked异常的情况下，还是会提交的，当遇到uncheckedException也就是RuntimeException体系中的异常，就会自动回滚事务，保证事务的原子性，完整性等特性。 事务的四个特性：  原子性             要么全部成功，要么全部回滚 一致性            转账用户之间金额总数在事务过程中不发生变化 隔离性">
+<meta name="keywords" content="Spring">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring事务处理机制">
+<meta property="og:url" content="https://www.liutianruo.com/2019/04/12/Spring事务处理机制/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="事务的介绍Spring默认的声明式事务，在遇到checked异常的情况下，还是会提交的，当遇到uncheckedException也就是RuntimeException体系中的异常，就会自动回滚事务，保证事务的原子性，完整性等特性。 事务的四个特性：  原子性             要么全部成功，要么全部回滚 一致性            转账用户之间金额总数在事务过程中不发生变化 隔离性">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-12T11:08:38.096Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring事务处理机制">
+<meta name="twitter:description" content="事务的介绍Spring默认的声明式事务，在遇到checked异常的情况下，还是会提交的，当遇到uncheckedException也就是RuntimeException体系中的异常，就会自动回滚事务，保证事务的原子性，完整性等特性。 事务的四个特性：  原子性             要么全部成功，要么全部回滚 一致性            转账用户之间金额总数在事务过程中不发生变化 隔离性">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/04/12/Spring事务处理机制/">
+
+
+
+
+
+  <title>Spring事务处理机制 | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/12/Spring事务处理机制/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring事务处理机制</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-12T17:07:25+08:00">
+                2019-04-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="事务的介绍"><a href="#事务的介绍" class="headerlink" title="事务的介绍"></a>事务的介绍</h1><p>Spring默认的声明式事务，在遇到checked异常的情况下，还是会提交的，当遇到uncheckedException也就是<code>RuntimeException</code>体系中的异常，就会自动回滚事务，保证事务的原子性，完整性等特性。</p>
+<p><strong>事务的四个特性</strong>：</p>
+<ul>
+<li>原子性             要么全部成功，要么全部回滚</li>
+<li>一致性            转账用户之间金额总数在事务过程中不发生变化</li>
+<li>隔离性         各个并发事务之间是独立的</li>
+<li>持久性           事务提交后对数据库的改变要持久化到磁盘</li>
+</ul>
+<h1 id="Spring事务的属性和使用入口"><a href="#Spring事务的属性和使用入口" class="headerlink" title="Spring事务的属性和使用入口"></a>Spring事务的属性和使用入口</h1><h2 id="事务属性"><a href="#事务属性" class="headerlink" title="事务属性"></a>事务属性</h2><p>传播行为，隔离级别，事务超时，只读事务，回滚规则</p>
+<blockquote>
+<p>通常在使用Spring事务处理机制的时候，我们不会采用编程式事务，通常采用<strong>声明式事务</strong></p>
+</blockquote>
+<p><strong>传播行为</strong>：</p>
+<p><code>Propagation propagation() default Propagation.REQUIRED;</code><br>事务默认的传播行为是<code>REQUIRED</code>，也就是方法中只存在一个事务，会有事务合并的一个过程<br>（支持当前事务，如果不存在则创建新事务。 类似于同名的EJB事务属性。 这是声明式事务的默认设置）</p>
+<p><strong>隔离级别</strong>：</p>
+<p><code>Isolation isolation() default Isolation.DEFAULT;</code><br>默认情况下，Spring采用的是连接的数据库的隔离级别</p>
+<p><strong>事务超时</strong></p>
+<p><code>int timeout() default TransactionDefinition.TIMEOUT_DEFAULT;</code><br>默认情况下，事务超时的时间和连接的数据库保持一致</p>
+<p><strong>只读事务</strong></p>
+<p><code>boolean readOnly() default false;</code><br>默认情况下，事务不是只读的。<br>但是如果是一些查询，我们可以定义该事务为只读事务，这样数据库会对只读事务做一些优化</p>
+<p><strong>回滚规则</strong></p>
+<p><code>Class&lt;? extends Throwable&gt;[] rollbackFor() default {};</code><br> 抛出指定异常的时候，事务会回滚</p>
+<p><code>String[] rollbackForClassName() default {};</code> <strong>不推荐使用</strong></p>
+<blockquote>
+<p>设置需要回滚的异常类（数组) </p>
+</blockquote>
+<p><code>Class&lt;? extends Throwable&gt;[] noRollbackFor() default {};</code><br><code>String[] noRollbackForClassName() default {};</code> <strong>不推荐使用</strong><br>设置不需要进行回滚的异常类</p>
+<h2 id="使用入口"><a href="#使用入口" class="headerlink" title="使用入口"></a>使用入口</h2><p><strong><code>@Transactional</code></strong></p>
+<ul>
+<li>该注解只有应用到<code>public</code>方法才有效，</li>
+<li>在Spring的默认事务处理机制中，只会将抛出<code>RuntimeException</code>的事务进行回滚</li>
+</ul>
+<h1 id="Spring事务管理接口"><a href="#Spring事务管理接口" class="headerlink" title="Spring事务管理接口"></a>Spring事务管理接口</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">PlatformTransactionManager</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function">TransactionStatus <span class="title">getTransaction</span><span class="params">(@Nullable TransactionDefinition definition)</span> <span class="keyword">throws</span> TransactionException</span>; <span class="comment">// 获取事务的状态信息</span></span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">commit</span><span class="params">(TransactionStatus status)</span> <span class="keyword">throws</span> TransactionException</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">void</span> <span class="title">rollback</span><span class="params">(TransactionStatus status)</span> <span class="keyword">throws</span> TransactionException</span>;</span><br></pre></td></tr></table></figure>
+<p>Spring只是提供了事务管理的接口，具体的实现，交给持久化框架来实现</p>
+<h1 id="Spring事务机制的验证"><a href="#Spring事务机制的验证" class="headerlink" title="Spring事务机制的验证"></a>Spring事务机制的验证</h1><p><strong>总结</strong></p>
+<ul>
+<li>Spring的声明式事务中，如果<strong>主动捕获异常</strong>，默认不会回滚事务，所以捕获异常的操作，我们最好放在controller层进行捕获异常</li>
+<li>如果抛出的不是<code>RuntimeException</code>，事务也不会回滚</li>
+</ul>
+<p><strong>Spring事务对指定异常和rollBackOnly异常的处理</strong></p>
+<ul>
+<li><p>抛出<code>RuntimeException</code>,事务可以回滚</p>
+</li>
+<li><p>指定异常，事务可以回滚<br><code>@Transactional(rollbackFor={AExcetion.class})</code></p>
+</li>
+<li><p><code>RollbackOnly</code> 事务可以回滚</p>
+</li>
+</ul>
+<blockquote>
+<p><strong>当一个没有开启事务的方法去调用一个开启事务的方法，事务是否能够回滚？</strong></p>
+</blockquote>
+<p>  <strong>同一个类中</strong>，一个不标注事务的方法去调用标注了事务的方法，事务会失效，不会发生回滚</p>
+<p>  <strong>在不同的类中</strong>，一个不标注事务的方法去调用标注了事务的方法，事务会发生回滚</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    实际使用事务的时候，一定要记得抛出<code>RuntimeException</code>，这样事务才可以回滚。我觉得，这是最稳健的做法。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"># Spring</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/12/JVM——垃圾回收/" rel="next" title="JVM——垃圾回收">
+                <i class="fa fa-chevron-left"></i> JVM——垃圾回收
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/12/数据结构基本总结/" rel="prev" title="数据结构基本总结">
+                数据结构基本总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#事务的介绍"><span class="nav-number">1.</span> <span class="nav-text">事务的介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring事务的属性和使用入口"><span class="nav-number">2.</span> <span class="nav-text">Spring事务的属性和使用入口</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#事务属性"><span class="nav-number">2.1.</span> <span class="nav-text">事务属性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用入口"><span class="nav-number">2.2.</span> <span class="nav-text">使用入口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring事务管理接口"><span class="nav-number">3.</span> <span class="nav-text">Spring事务管理接口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Spring事务机制的验证"><span class="nav-number">4.</span> <span class="nav-text">Spring事务机制的验证</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

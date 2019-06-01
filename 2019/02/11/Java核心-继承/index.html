@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="类、超类、子类​    超类与子类是父与子的关系，甚至是更远的关系，我们在设计类的时候，可以把通用的东西放在超类中，然后子类中实现不同的功能。 ​    当然，如果子类不想继承父类的某些功能，可以重写父类的方法。 this和super关键字： this可以引用隐式参数，调用本类中的其他构造器 this.name=name;     this(name,age);  super可以调用父类的方法和父">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="继承">
+<meta property="og:url" content="https://www.liutianruo.com/2019/02/11/Java核心-继承/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="类、超类、子类​    超类与子类是父与子的关系，甚至是更远的关系，我们在设计类的时候，可以把通用的东西放在超类中，然后子类中实现不同的功能。 ​    当然，如果子类不想继承父类的某些功能，可以重写父类的方法。 this和super关键字： this可以引用隐式参数，调用本类中的其他构造器 this.name=name;     this(name,age);  super可以调用父类的方法和父">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-02-11T10:22:15.485Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="继承">
+<meta name="twitter:description" content="类、超类、子类​    超类与子类是父与子的关系，甚至是更远的关系，我们在设计类的时候，可以把通用的东西放在超类中，然后子类中实现不同的功能。 ​    当然，如果子类不想继承父类的某些功能，可以重写父类的方法。 this和super关键字： this可以引用隐式参数，调用本类中的其他构造器 this.name=name;     this(name,age);  super可以调用父类的方法和父">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/02/11/Java核心-继承/">
+
+
+
+
+
+  <title>继承 | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/11/Java核心-继承/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">继承</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-11T18:20:38+08:00">
+                2019-02-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="类、超类、子类"><a href="#类、超类、子类" class="headerlink" title="类、超类、子类"></a>类、超类、子类</h2><p>​    超类与子类是父与子的关系，甚至是更远的关系，我们在设计类的时候，可以把通用的东西放在超类中，然后子类中实现不同的功能。</p>
+<p>​    当然，如果子类不想继承父类的某些功能，可以重写父类的方法。</p>
+<h3 id="this和super关键字："><a href="#this和super关键字：" class="headerlink" title="this和super关键字："></a>this和super关键字：</h3><ol>
+<li><p>this可以引用隐式参数，调用本类中的其他构造器</p>
+<p><code>this.name=name;</code>     <code>this(name,age);</code></p>
+</li>
+<li><p>super可以调用父类的方法和父类的构造器</p>
+</li>
+</ol>
+<blockquote>
+<p>两者在调用构造器的时候，要写在本身构造器方法的第一行</p>
+</blockquote>
+<h3 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h3><ul>
+<li><p>一个对象变量可以指示多种实际类型的现象称为<strong>多态</strong>。</p>
+</li>
+<li><p>在运行时，能够自动地选择调用哪个方法的现象叫做<strong>动态绑定</strong>。</p>
+</li>
+</ul>
+<p><strong>注</strong>：Java正常是不支持多继承的，但是接口却可以继承多个接口。</p>
+<p>方法的签名：方法的名字和参数列表</p>
+<p>final类不能被继承，final修饰的方法不能被重写，final变量，一旦初始化，就不能修改它的值。</p>
+<h3 id="强制类型转换（对象）"><a href="#强制类型转换（对象）" class="headerlink" title="强制类型转换（对象）"></a>强制类型转换（对象）</h3><p>进行类型转换的唯一原因： 在暂时忽略对象的实际类型后，使用对象的全部功能。</p>
+<p><strong>注意</strong> ：在进行类型转换的时候，要先判断下该对象能不能转过来，否则，会报<code>ClassCastException</code>。</p>
+<p>​    </p>
+<p>​    写一个Spring源码中的实例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(applicationContext instance of ConfigurableApplicationContext)&#123;</span><br><span class="line">    context=(ConfigurableApplicationContext)applicationContext;</span><br><span class="line">&#125;<span class="keyword">else</span>.....</span><br></pre></td></tr></table></figure>
+<p>​    上述代码判断了<code>applicationContext</code>是否引用了<code>ConfigurableApplicationContext</code>类型的对象，</p>
+<p>如果是，才可以进行类型转换</p>
+<blockquote>
+<p>综合一下：</p>
+<ol>
+<li>只能在继承层次内进行类型转换(子类转成父类)</li>
+<li>在进行类型转换时，应该使用<code>instance of</code> 进行检查</li>
+</ol>
+</blockquote>
+<p>不建议过多使用类型转换</p>
+<h3 id="抽象类（abstract-class"><a href="#抽象类（abstract-class" class="headerlink" title="抽象类（abstract class)"></a>抽象类（abstract class)</h3><p>只要包含一个以上抽象方法的类，就是抽象类。</p>
+<ul>
+<li><p>Person类有两个子类Student，Teacher。</p>
+</li>
+<li><p>Person类自身有name属性，和getName()方法</p>
+<blockquote>
+<p>我们说过这种通用的，就放在父类中</p>
+</blockquote>
+</li>
+<li><p>Person类中包含getDescritption()，但是Person类，不能实现这个方法，因为Person类中的属性太少，这个getDescription()方法实现了也没有意义，那么我们就将其设置成抽象方法，留给两个子类去重写</p>
+</li>
+</ul>
+<p>​    根据上面的描述，看下Person类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    <span class="comment">//这就是我在Spring MVC部分的源码中看到的模板方法，交给子类去实现的。</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">abstract</span> String <span class="title">getDescription</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>我们看源码的过程中，也是看到一个抽象类的子类，如果还是一个抽象类，那么就实现了父类的部分抽象方法；当然也可以全部实现，那自己就不是一个抽象类了。</p>
+</blockquote>
+<p>注意：</p>
+<ol>
+<li><p>抽象类是不能直接创建实例的，但是可以通过如下方式创建具体子类的对象</p>
+<p>Person person=new Student();</p>
+<p>这其实就是多态，多态必须得让子类重写父抽象类中的方法，person只能访问到子类中重写的方法；并且如果调用的方法，子类中没有重写的话，就会去父类中找，父类中找不到就会报错。</p>
+</li>
+<li><p>类就算没有抽象方法，也可以被声明为抽象类，这样别人就new不了了，好贱！</p>
+</li>
+</ol>
+<h3 id="受保护访问"><a href="#受保护访问" class="headerlink" title="受保护访问"></a>受保护访问</h3><p>​    </p>
+<p>​        <strong>对类中的域和方法：</strong> </p>
+<ol>
+<li>仅对本类可见——private</li>
+<li>对所有类可见——public</li>
+<li>对本包和所有子类可见——protected</li>
+<li>对本包可见——默认的，不要修饰符</li>
+</ol>
+<h2 id="Object类"><a href="#Object类" class="headerlink" title="Object类"></a>Object类</h2><p>Object类是所有类的超类，它是最大的。在Java中，每个类都是由Object类拓展而来。</p>
+<p>在Java中，除了基本数据类型外，其余都是对象，数组，集合。。。。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object employee=new Employee();</span><br></pre></td></tr></table></figure>
+<p>如果需要进行具体操作，需要进行类型转换:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Employee e=(Employee) employee;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>其实这也是多态，因为employee引用变量只能访问到Employee这个Object子类中重写的方法。</p>
+</blockquote>
+<h3 id="equals"><a href="#equals" class="headerlink" title="equals()"></a>equals()</h3><p>比较的是两个对象是否相等，但是String等其他子类都对其进行了重写。</p>
+<p>两个引用变量指向同一个对象，返回true</p>
+<p>String中的equals()比较的是字符串的值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="hashCode"><a href="#hashCode" class="headerlink" title="hashCode"></a>hashCode</h3><p>两个引用变量指向同一变量时，hashcode一定相同。</p>
+<p><strong>其他内容查看API即可</strong></p>
+<h2 id="对象包装器与自动装箱"><a href="#对象包装器与自动装箱" class="headerlink" title="对象包装器与自动装箱"></a>对象包装器与自动装箱</h2><p>​    包装器指的是对基本数据类型的包装</p>
+<p>包装器类：Integer Byte Short Long   Double Float Boolean Character Void</p>
+<p>包装器类是由final修饰的</p>
+<ol>
+<li>自动装箱：int转成Integer</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Integer.valueOf(3)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>自动拆箱：反过来</p>
+<p><code>Integer.intValue()</code></p>
+</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">      <span class="comment">//装箱</span></span><br><span class="line">    <span class="keyword">if</span>(Integer.valueOf(<span class="number">3</span>) <span class="keyword">instanceof</span> Integer)&#123;</span><br><span class="line">        System.out.println(<span class="number">111</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//拆箱</span></span><br><span class="line">    Integer initValue=<span class="number">3</span>;</span><br><span class="line">      <span class="keyword">int</span> a=initValue.intValue();</span><br><span class="line">      System.out.println(a);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="枚举类"><a href="#枚举类" class="headerlink" title="枚举类"></a>枚举类</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//一个四季的枚举类</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">enum</span> SeasonEmum &#123;</span><br><span class="line">    SPRING(<span class="number">1</span>), SUMMER(<span class="number">2</span>), FALL(<span class="number">3</span>), WINTER(<span class="number">4</span>);</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> value;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">SeasonEmum</span><span class="params">(<span class="keyword">int</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = value;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="反射"><a href="#反射" class="headerlink" title="反射"></a>反射</h2><p>能够分析类能力的程序叫做<code>反射</code>。 </p>
+<blockquote>
+<p> 反射可以让程序员在运行阶段看到Filed，Method,Constructor等信息。</p>
+</blockquote>
+<h3 id="Class对象"><a href="#Class对象" class="headerlink" title="Class对象"></a>Class对象</h3><p>class.forName()会返回一个Class对象</p>
+<p>先获取Class对象，然后Class对象能够获取Filed，Method，Constructor对象，</p>
+<p><strong>具体使用查看API</strong></p>
+<h2 id="继承设计的技巧"><a href="#继承设计的技巧" class="headerlink" title="继承设计的技巧"></a>继承设计的技巧</h2><ol>
+<li><p>将公共操作和域放在超类</p>
+</li>
+<li><p>不要过多地使用反射</p>
+</li>
+<li><p>不要使用受保护的域</p>
+<blockquote>
+<p> 虽然protected修饰的变量，子类都能获取到，但是最好不要直接获取，这样会破坏封装性。</p>
+</blockquote>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/11/ArrayList分析/" rel="next" title="ArrayList分析">
+                <i class="fa fa-chevron-left"></i> ArrayList分析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/02/23/Spring-AOP基本概念总结/" rel="prev" title="Spring AOP基本概念总结">
+                Spring AOP基本概念总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#类、超类、子类"><span class="nav-number">1.</span> <span class="nav-text">类、超类、子类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#this和super关键字："><span class="nav-number">1.1.</span> <span class="nav-text">this和super关键字：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多态"><span class="nav-number">1.2.</span> <span class="nav-text">多态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#强制类型转换（对象）"><span class="nav-number">1.3.</span> <span class="nav-text">强制类型转换（对象）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#抽象类（abstract-class"><span class="nav-number">1.4.</span> <span class="nav-text">抽象类（abstract class)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#受保护访问"><span class="nav-number">1.5.</span> <span class="nav-text">受保护访问</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Object类"><span class="nav-number">2.</span> <span class="nav-text">Object类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#equals"><span class="nav-number">2.1.</span> <span class="nav-text">equals()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hashCode"><span class="nav-number">2.2.</span> <span class="nav-text">hashCode</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对象包装器与自动装箱"><span class="nav-number">3.</span> <span class="nav-text">对象包装器与自动装箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#枚举类"><span class="nav-number">4.</span> <span class="nav-text">枚举类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#反射"><span class="nav-number">5.</span> <span class="nav-text">反射</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Class对象"><span class="nav-number">5.1.</span> <span class="nav-text">Class对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#继承设计的技巧"><span class="nav-number">6.</span> <span class="nav-text">继承设计的技巧</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

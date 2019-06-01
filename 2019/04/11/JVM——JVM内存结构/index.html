@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JVM,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="JVM相关简介 JDK: Java Development ToolKit Java开发工具包，是Java的核心，包括Java运行时环境(JRE)，一堆Java工具（java/javac..)和Java基础的 ​    一些类库（Java API 包括rt.jar）  Java API就是前辈设计好的一些类，比如说我们的IO操作等等   JRE Java Runtime Enviromental(">
+<meta name="keywords" content="JVM">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JVM——JVM内存结构">
+<meta property="og:url" content="https://www.liutianruo.com/2019/04/11/JVM——JVM内存结构/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="JVM相关简介 JDK: Java Development ToolKit Java开发工具包，是Java的核心，包括Java运行时环境(JRE)，一堆Java工具（java/javac..)和Java基础的 ​    一些类库（Java API 包括rt.jar）  Java API就是前辈设计好的一些类，比如说我们的IO操作等等   JRE Java Runtime Enviromental(">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture191.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture192.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture193.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture194.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture195.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/v2-622b2ed9e429e2d65a9def2ef5a23f1e_hd.jpg">
+<meta property="og:updated_time" content="2019-04-11T11:03:22.336Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JVM——JVM内存结构">
+<meta name="twitter:description" content="JVM相关简介 JDK: Java Development ToolKit Java开发工具包，是Java的核心，包括Java运行时环境(JRE)，一堆Java工具（java/javac..)和Java基础的 ​    一些类库（Java API 包括rt.jar）  Java API就是前辈设计好的一些类，比如说我们的IO操作等等   JRE Java Runtime Enviromental(">
+<meta name="twitter:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture191.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/04/11/JVM——JVM内存结构/">
+
+
+
+
+
+  <title>JVM——JVM内存结构 | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/11/JVM——JVM内存结构/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JVM——JVM内存结构</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-11T18:59:27+08:00">
+                2019-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="JVM相关简介"><a href="#JVM相关简介" class="headerlink" title="JVM相关简介"></a>JVM相关简介</h1><ul>
+<li><p>JDK: Java Development ToolKit</p>
+<p>Java开发工具包，是Java的核心，包括Java运行时环境(JRE)，一堆Java工具（java/javac..)和Java基础的</p>
+<p>​    一些类库（Java API 包括rt.jar）</p>
+<blockquote>
+<p>Java API就是前辈设计好的一些类，比如说我们的IO操作等等</p>
+</blockquote>
+</li>
+<li><p>JRE</p>
+<p><code>Java Runtime Enviromental</code>(java运行时环境)，所有的Java程序都要在JRE下才能运行。包括JVM和JAVA核心类库和支持文件。<strong>与JDK相比，它不包含开发工具——编译器、调试器和其它工具。</strong></p>
+</li>
+<li><p>JVM</p>
+<p><code>Java Virtual Mechinal</code>(JAVA虚拟机)。JVM是JRE的一部分，它是一个虚构出来的计算机，是通过在实际的计算机上仿真模拟各种计算机功能来实现的。JVM有自己完善的硬件架构，如处理器、堆栈、寄存器等，还具有相应的指令系统。JVM 的主要工作是解释自己的指令集（即字节码）并映射到本地的 CPU 的指令集或 OS 的系统调用。Java语言是跨平台运行的，其实就是不同的操作系统，使用不同的JVM映射规则，让其与操作系统无关，完成了跨平台性。JVM 对上层的 Java 源文件是不关心的，它关注的只是由源文件生成的类文件（ class file ）。类文件的组成包括 JVM 指令集，符号表以及一些补助信息。</p>
+</li>
+</ul>
+<h1 id="JVM内存结构"><a href="#JVM内存结构" class="headerlink" title="JVM内存结构"></a>JVM内存结构</h1><h2 id="JVM内存组成"><a href="#JVM内存组成" class="headerlink" title="JVM内存组成"></a>JVM内存组成</h2><p><code>堆(Heap)</code>和<code>非堆(Non-heap)</code>内存</p>
+<p>按照官方的说法：“Java 虚拟机具有一个堆，堆是运行时数据区域，所有类实例和数组的内存均从此处分配。堆是在 Java 虚拟机启动时创建的。”“在JVM中堆之外的内存称为非堆内存(Non-heap memory)”。可以看出<strong>JVM主要管理两种类型的内存：堆和非堆</strong>。简单来说堆就是Java代码可及的内存，是留给开发人员使用的；非堆就是JVM留给 自己用的，所以方法区、JVM内部处理或优化所需的内存(如JIT编译后的代码缓存)、每个类结构(如运行时常数池、字段和方法数据)以及方法和构造方法 的代码都在非堆内存中。</p>
+<h2 id="JVM内存区域模型"><a href="#JVM内存区域模型" class="headerlink" title="JVM内存区域模型"></a>JVM内存区域模型</h2><p>我们接下来的内容，尽可能地统一为Java 8</p>
+<blockquote>
+<p>首先要注意Java 8是没有永久代的，是被官方移除了</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture191.png" alt=""></p>
+<p>看了上图瞬间一目了然</p>
+<h3 id="线程私有"><a href="#线程私有" class="headerlink" title="线程私有"></a>线程私有</h3><h4 id="程序计数器（Program-Center-Register"><a href="#程序计数器（Program-Center-Register" class="headerlink" title="程序计数器（Program Center Register)"></a>程序计数器（Program Center Register)</h4><ul>
+<li><p>当前线程所执行的字节码行号指示器（逻辑）</p>
+<blockquote>
+<p>程序计数器，是逻辑计数器，不是物理计数器</p>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li>改变计数器的值来选取下一条需要执行的字节码指令</li>
+</ul>
+<ul>
+<li>和线程是一对一的关系，即线程私有</li>
+</ul>
+<blockquote>
+<p>每一个线程拥有一个独立的程序计数器；每个线程的程序计数器都是独立的，即互不影响</p>
+</blockquote>
+<ul>
+<li>只对Java方法计数，如果是Native方法则计数值则为Undefined</li>
+<li>不会发生内存泄漏</li>
+</ul>
+<h4 id="Java虚拟机栈-Stack"><a href="#Java虚拟机栈-Stack" class="headerlink" title="Java虚拟机栈(Stack)"></a>Java虚拟机栈(Stack)</h4><ul>
+<li><p>Java方法执行的内存模型</p>
+</li>
+<li><p>包含多个帧栈</p>
+<blockquote>
+<p>每个方法执行时，都会创建一个栈帧</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture192.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>局部变量表和操作数栈</p>
+</blockquote>
+<ul>
+<li>局部变量表：包含方法执行过程中的所有变量</li>
+<li>操作数栈：入栈，出栈，复制，交换，产生消费变量</li>
+</ul>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture193.png" alt=""></p>
+<blockquote>
+<p>递归为什么会引发Java.lang.StackOverflowError错误</p>
+</blockquote>
+<p>递归过深，栈帧数超出虚拟机深度</p>
+<blockquote>
+<p>虚拟机栈过多会引发Java.lang.OutOfMemeroyError错误</p>
+</blockquote>
+<blockquote>
+<p>Java方法执行的时候，会生成一个栈帧，方法执行完了会回收这个栈帧，这个回收过程是自动的，无需GC来操作</p>
+</blockquote>
+<h4 id="本地方法栈"><a href="#本地方法栈" class="headerlink" title="本地方法栈"></a>本地方法栈</h4><ul>
+<li>与虚拟机栈类似，主要作用于标注了native的方法</li>
+</ul>
+<h3 id="线程共享"><a href="#线程共享" class="headerlink" title="线程共享"></a>线程共享</h3><h4 id="MetaSpace元空间"><a href="#MetaSpace元空间" class="headerlink" title="MetaSpace元空间"></a>MetaSpace元空间</h4><ol>
+<li><p>元空间(MetaSpace)与永久代(PermGen)的区别</p>
+<blockquote>
+<p>元空间使用本地内存，而永久代使用的是JVM的内存</p>
+</blockquote>
+</li>
+<li><p>MetaSpace相对于PermGen的优势</p>
+<ul>
+<li>字符串常量池存在永久代中，容易出现性能问题和内存溢出</li>
+<li>类和方法的信息大小难以确定，给永久代的大小指定带来困难</li>
+<li>永久代会为GC带来不必要的复杂性</li>
+<li>方便HotSpot与其他JVM如Jrockit的集成</li>
+</ul>
+</li>
+</ol>
+<h4 id="Java堆（Heap）"><a href="#Java堆（Heap）" class="headerlink" title="Java堆（Heap）"></a>Java堆（Heap）</h4><ul>
+<li><p>对象实例的分配区域</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture194.png" alt=""></p>
+</li>
+<li><p>GC管理的主要区域</p>
+</li>
+</ul>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture195.png" alt=""></p>
+<blockquote>
+<p>这里我们再补充一张图来加深理解</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/v2-622b2ed9e429e2d65a9def2ef5a23f1e_hd.jpg" alt=""></p>
+<ul>
+<li><p>方法区：存储已经被虚拟机加载的类信息、常量、静态变量、即时编译器编译后的代码等数据。(线程共享)</p>
+</li>
+<li><p>栈区：</p>
+<ol>
+<li><p><strong>每个线程包含一个栈区</strong>，栈中只保存方法中（不包括对象的成员变量）的<strong>基础数据类型和自定义对象的引用(不是对象)</strong>，对象都存放在堆区中</p>
+</li>
+<li><p>每个栈中的数据(原始类型和对象引用)都是私有的，其他栈不能访问。</p>
+</li>
+<li><p>栈分为3个部分：基本类型变量区、执行环境上下文、操作指令区(存放操作指令)</p>
+</li>
+</ol>
+</li>
+<li><p>堆区:</p>
+<ol>
+<li>存储的全部是对象实例，每个对象都包含一个与之对应的class的信息(class信息存放在方法区)。</li>
+<li><strong>jvm只有一个堆区(heap)被所有线程共享</strong>，堆中不存放基本类型和对象引用，只存放对象本身，几乎所有的<strong>对象实例和数组</strong>都在堆中分配。</li>
+</ol>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JVM/" rel="tag"># JVM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/" rel="next" title="Spring MVC源码初探（十一） MultipartResolver">
+                <i class="fa fa-chevron-left"></i> Spring MVC源码初探（十一） MultipartResolver
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/12/JVM——Java内存模型/" rel="prev" title="JVM——Java内存模型">
+                JVM——Java内存模型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM相关简介"><span class="nav-number">1.</span> <span class="nav-text">JVM相关简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#JVM内存结构"><span class="nav-number">2.</span> <span class="nav-text">JVM内存结构</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM内存组成"><span class="nav-number">2.1.</span> <span class="nav-text">JVM内存组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JVM内存区域模型"><span class="nav-number">2.2.</span> <span class="nav-text">JVM内存区域模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#线程私有"><span class="nav-number">2.2.1.</span> <span class="nav-text">线程私有</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#程序计数器（Program-Center-Register"><span class="nav-number">2.2.1.1.</span> <span class="nav-text">程序计数器（Program Center Register)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java虚拟机栈-Stack"><span class="nav-number">2.2.1.2.</span> <span class="nav-text">Java虚拟机栈(Stack)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本地方法栈"><span class="nav-number">2.2.1.3.</span> <span class="nav-text">本地方法栈</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#线程共享"><span class="nav-number">2.2.2.</span> <span class="nav-text">线程共享</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MetaSpace元空间"><span class="nav-number">2.2.2.1.</span> <span class="nav-text">MetaSpace元空间</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java堆（Heap）"><span class="nav-number">2.2.2.2.</span> <span class="nav-text">Java堆（Heap）</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

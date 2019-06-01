@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Java,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="前言机智的我，又在知识星球找到了IO的干货，那就跟着干货深入整理一下IO的全面知识点。 基本概念 什么是流，什么是比特，什么是字节，什么是字符   流：流是一串连续不断的数据集合，可以一段一段的写入长的数据流，读取数据流的时候是不知道流的分段 情况的，只能从前往后读取数据流 比特：是二进制的最小单位，0或者1 字节：是计算机操作数据的最小单位，8位bit，（-128~ 字符：用户可读写的最小单位，">
+<meta name="keywords" content="Java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深入Java IO">
+<meta property="og:url" content="https://www.liutianruo.com/2019/04/14/深入Java-IO/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="前言机智的我，又在知识星球找到了IO的干货，那就跟着干货深入整理一下IO的全面知识点。 基本概念 什么是流，什么是比特，什么是字节，什么是字符   流：流是一串连续不断的数据集合，可以一段一段的写入长的数据流，读取数据流的时候是不知道流的分段 情况的，只能从前往后读取数据流 比特：是二进制的最小单位，0或者1 字节：是计算机操作数据的最小单位，8位bit，（-128~ 字符：用户可读写的最小单位，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-15T01:11:54.108Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="深入Java IO">
+<meta name="twitter:description" content="前言机智的我，又在知识星球找到了IO的干货，那就跟着干货深入整理一下IO的全面知识点。 基本概念 什么是流，什么是比特，什么是字节，什么是字符   流：流是一串连续不断的数据集合，可以一段一段的写入长的数据流，读取数据流的时候是不知道流的分段 情况的，只能从前往后读取数据流 比特：是二进制的最小单位，0或者1 字节：是计算机操作数据的最小单位，8位bit，（-128~ 字符：用户可读写的最小单位，">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/04/14/深入Java-IO/">
+
+
+
+
+
+  <title>深入Java IO | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/14/深入Java-IO/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">深入Java IO</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T21:34:59+08:00">
+                2019-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>机智的我，又在知识星球找到了IO的干货，那就跟着干货深入整理一下IO的全面知识点。</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><ol>
+<li><p>什么是流，什么是比特，什么是字节，什么是字符 </p>
+<ul>
+<li>流：流是一串连续不断的数据集合，可以一段一段的写入长的数据流，读取数据流的时候是不知道流的分段 情况的，只能从前往后读取数据流</li>
+<li>比特：是二进制的最小单位，0或者1</li>
+<li>字节：是计算机操作数据的最小单位，8位bit，（-128~</li>
+<li>字符：用户可读写的最小单位，16位bit，（0~65535） </li>
+</ul>
+</li>
+<li><p>什么是IO，包含哪几种流 </p>
+<blockquote>
+<p>它是指计算机与外部世界或者一个程序与计算机的其余部分的之间的接口。它对于任何计算机系统都非常关键，因而所有 I/O 的主体实际上是内置在操作系统中的。单独的程序一般是让系统为它们完成大部分的工作。 在 Java 编程中，直到最近一直使用 流 的方式完成 I/O。所有 I/O 都被视为单个的字节的移动，通过一个称为 Stream 的对象一次移动一个字节。流 I/O 用于与外部世界接触。它也在内部使用，用于将对象转换为字节，然后再转换回对象 </p>
+</blockquote>
+<p>字节流，字符流，输入流，输出流 </p>
+</li>
+<li><p>什么是字节流和字符流，区别，之间如何转换 </p>
+<ul>
+<li><p>字节流：操作的是byte类型的数据，直接对文件本身进行操作，主要操作类是<code>OutputStream</code>、<code>InputStream</code>的子类</p>
+</li>
+<li><p>字符流：操作的是字符类型的数据，使用<strong>缓冲区</strong>缓冲字符，不关闭流就不会输出任何内容，主要操作类是 Reader、Writer的子类</p>
+</li>
+</ul>
+</li>
+<li><p>什么是输入流和输出流</p>
+<ul>
+<li>输入流：把数据写入存储介质的操作</li>
+<li>输出流：从存储介质中读取数据的操作</li>
+</ul>
+</li>
+</ol>
+<h1 id="NIO-BIO-AIO"><a href="#NIO-BIO-AIO" class="headerlink" title="NIO,BIO,AIO"></a>NIO,BIO,AIO</h1><ol>
+<li><p>什么是<code>NIO</code></p>
+<p>NIO与IO的作用和目的是相同的，都是计算机与外部世界或者一个程序与计算机的其余部分的之间的接口，只<br>不过，IO是以流的方式处理数据，而NIO是以块的方式处理数据<br>IO：流式数据创建过滤器很容易，面向流的IO慢<br>NIO：按照块处理比按照流处理的快，但是缺少优雅性和简单性 </p>
+</li>
+<li><p>什么是<code>AIO</code></p>
+<p>Java AIO即Async非阻塞，是异步非阻塞的IO。 </p>
+</li>
+<li><p>什么是<code>BIO</code></p>
+<p>Java BIO即Block I/O ， 同步并阻塞的IO。</p>
+</li>
+</ol>
+<ol start="4">
+<li><p>NIO,BIO,AIO之间的区别与联系 </p>
+<p>BIO：同步阻塞IO模式，必须等待这件事情做完了才去做下一件事情<br>AIO：异步非阻塞IO模式，不用等待这件事情做完了才去做下一件事，这件事情做完了就会自动告诉我他做完<br>了<br>NIO：同时支持阻塞与非阻塞模式 </p>
+</li>
+</ol>
+<ol start="5">
+<li><p>Java中BIO、NIO、AIO分别适用哪些场景 </p>
+<p><code>BIO</code>：适用于连接数较小且固定的架构，这种方式对服务器资源要求比较高，并发局限于应用中，JDK1.4以前<br>的唯一选择，但程序直观简单易理解</p>
+<p><code>NIO</code>方式适用于连接数目多且连接比较短（轻操作）的架构，比如聊天服务器，并发局限于应用中，编程比较<br>复杂，JDK1.4开始支持。</p>
+<p><code>AIO</code>方式适用于连接数目多且连接比较长（重操作）的架构，比如相册服务器，充分调用OS参与并发操作，<br>编程比较复杂，JDK7开始支持 </p>
+</li>
+<li><p>IO流需不需要关闭,如果关闭的话应该如何关闭。需要注意什么 </p>
+<ul>
+<li>IO流一定要关闭，不然会内存泄漏，进而导致内存溢出</li>
+<li>一般在finally块中关闭，并且关闭流的操作可能会抛出异常，要对其进行捕获 </li>
+</ul>
+</li>
+<li><p>什么是同步，什么是异步</p>
+<p>A调用B<br>同步：A调用B后，B马上去执行，执行完成会告诉A，A本次调用会得到结果<br>异步：A调用B后，B并不会马上执行，但是一定会执行，执行完成会告诉A，A本次调用不会得到结 果</p>
+</li>
+<li><p>什么是阻塞？什么是非阻塞？ </p>
+<p>A调用B</p>
+<p>阻塞：A调用B之后一直等待B的结果，等不到就不做别的事情<br>非阻塞：A调用B之后就去做自己事情了，不需要等待B完成 </p>
+</li>
+<li><p>同步，异步 和 阻塞，非阻塞之间的区别？ </p>
+<p>同步，异步，是描述被调用方的。 阻塞，非阻塞，是描述调用方的。 同步不一定阻塞，异步也不一定非阻塞。没有必然关系。 </p>
+</li>
+</ol>
+<h1 id="IO模型"><a href="#IO模型" class="headerlink" title="IO模型"></a>IO模型</h1><ol>
+<li>IO模型有哪5种？ </li>
+</ol>
+<ul>
+<li>阻塞式IO模型</li>
+<li>非阻塞IO模型</li>
+<li>IO复用模型</li>
+<li>信号驱动IO模型</li>
+<li>异步IO模型 </li>
+</ul>
+<ol start="2">
+<li><p>阻塞IO</p>
+<p>当用户线程发出IO请求之后，内核会去查看数据是否就绪，如果没有就绪就会等待数据就绪，而用户线程就<br>会处于阻塞状态，用户线程交出CPU。当数据就绪之后，内核会将数据拷贝到用户线程，并返回结果给用户<br>线程，用户线程才解除block状态。 </p>
+</li>
+<li><p>非阻塞IO</p>
+<p>当用户线程发起一个read操作后，并不需要等待，而是马上就得到了一个结果。如果结果是一个error时，它<br>就知道数据还没有准备好，于是它可以再次发送read操作。一旦内核中的数据准备好了，并且又再次收到了<br>用户线程的请求，那么它马上就将数据拷贝到了用户线程，然后返回。 </p>
+</li>
+<li><p>什么是多路复用IO模型 </p>
+<blockquote>
+<p>不断去轮询多个<code>socket</code>的状态，只有当<code>socket</code>真正有读写事件时，才真正调用实际的IO读写操作。<br>多路复用IO比较适合连接数比较多的情况。<br>多路复用IO为何比非阻塞IO模型的效率高是因为在非阻塞IO中，不断地询问socket状态时通过用户线程去进行的，而在多路复用IO中，轮询每个socket状态是内核在进行的，这个效率要比用户线程要高的多。 </p>
+</blockquote>
+</li>
+<li><p>什么是信号驱动IO模型 </p>
+<p>在信号驱动IO模型中，当用户线程发起一个IO请求操作，会给对应的socket注册一个信号函数，然后用户线<br>程会继续执行，当内核数据就绪时会发送一个信号给用户线程，用户线程接收到信号之后，便在信号函数中<br>调用IO读写操作来进行实际的IO请求操作。</p>
+</li>
+<li><p>什么是异步IO模型 </p>
+<p>当进程发起一个 IO 操作，进程返回（不阻塞），但也不能返回结果；内核 把整个 IO 处理完后，会通知进程<br>结果。如果 IO 操作成功则进程直接获取到数据。 </p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/14/单例模式/" rel="next" title="单例模式">
+                <i class="fa fa-chevron-left"></i> 单例模式
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/15/Java泛型/" rel="prev" title="Java泛型">
+                Java泛型 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本概念"><span class="nav-number">2.</span> <span class="nav-text">基本概念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#NIO-BIO-AIO"><span class="nav-number">3.</span> <span class="nav-text">NIO,BIO,AIO</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#IO模型"><span class="nav-number">4.</span> <span class="nav-text">IO模型</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

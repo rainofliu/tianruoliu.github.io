@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Spring MVC,">
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="时间旅行者" type="application/atom+xml">
+
+
+
+
+
+
+<meta name="description" content="1. 前言​     ​    前面我们看了HandlerMapping体系，HandlerMapping就是根据request获取HandlerExecutionChain的这么一个组件。那么拿到了HandlerExecutionChain中的处理器和拦截器以后，我们需要用HandlerAdapter来调用Handler来完成处理器的操作。 ​     ​    我们首先看下HandlerMap">
+<meta name="keywords" content="Spring MVC">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring MVC源码初探（七） HandlerAdapter（一）">
+<meta property="og:url" content="https://www.liutianruo.com/2019/03/15/Spring-MVC源码初探（七）HandlerAdapter（一）/index.html">
+<meta property="og:site_name" content="时间旅行者">
+<meta property="og:description" content="1. 前言​     ​    前面我们看了HandlerMapping体系，HandlerMapping就是根据request获取HandlerExecutionChain的这么一个组件。那么拿到了HandlerExecutionChain中的处理器和拦截器以后，我们需要用HandlerAdapter来调用Handler来完成处理器的操作。 ​     ​    我们首先看下HandlerMap">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture34.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture35.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture56.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture57.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture58.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture59.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture60.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture36.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture37.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture38.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture39.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture40.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture61.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture41.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture42.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture62.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture44.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture45.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture46.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture47.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture48.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture49.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture50.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture51.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture52.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture53.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture54.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture55.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture63.png">
+<meta property="og:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture64.png">
+<meta property="og:updated_time" content="2019-03-15T10:07:32.528Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring MVC源码初探（七） HandlerAdapter（一）">
+<meta name="twitter:description" content="1. 前言​     ​    前面我们看了HandlerMapping体系，HandlerMapping就是根据request获取HandlerExecutionChain的这么一个组件。那么拿到了HandlerExecutionChain中的处理器和拦截器以后，我们需要用HandlerAdapter来调用Handler来完成处理器的操作。 ​     ​    我们首先看下HandlerMap">
+<meta name="twitter:image" content="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture34.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://www.liutianruo.com/2019/03/15/Spring-MVC源码初探（七）HandlerAdapter（一）/">
+
+
+
+
+
+  <title>Spring MVC源码初探（七） HandlerAdapter（一） | 时间旅行者</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">时间旅行者</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-something">
+          <a href="/something/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-something"></i> <br>
+            
+            有料
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/03/15/Spring-MVC源码初探（七）HandlerAdapter（一）/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring MVC源码初探（七） HandlerAdapter（一）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-03-15T10:59:02+08:00">
+                2019-03-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="1-前言"><a href="#1-前言" class="headerlink" title="1. 前言"></a>1. 前言</h2><p>​    </p>
+<p>​    前面我们看了<code>HandlerMapping</code>体系，<code>HandlerMapping</code>就是根据request获取<code>HandlerExecutionChain</code>的这么一个组件。那么拿到了<code>HandlerExecutionChain</code>中的处理器和拦截器以后，我们需要用<code>HandlerAdapter</code>来调用Handler来完成处理器的操作。</p>
+<p>​    </p>
+<p>​    我们首先看下HandlerMapping的继承体系</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture34.png" alt=""></p>
+<p>​                （上图来自《看透Spring MVC：源代码分析与实践》）</p>
+<h2 id="2-HandlerAdapter简介"><a href="#2-HandlerAdapter简介" class="headerlink" title="2. HandlerAdapter简介"></a>2. HandlerAdapter简介</h2><h3 id="2-1-概述"><a href="#2-1-概述" class="headerlink" title="2.1 概述"></a>2.1 概述</h3><p>​        HandlerAdapter是一个接口，首先来看下接口本身的源码</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture35.png" alt=""></p>
+<p>我们发现，该接口的核心方法是<code>handle</code>方法，就是指挥Handler处理器干活的方法。</p>
+<h3 id="2-2-子类简介"><a href="#2-2-子类简介" class="headerlink" title="2.2 子类简介"></a>2.2 子类简介</h3><p>​    <code>HttpRequestHandlerAdapter</code>适配的是<code>HttpRequestHandler</code>类型的处理器<code>SimpleServletHandlerAdapter</code>适配的是</p>
+<p><code>Servlet</code>类型的处理器，<code>SimpleControllerHandlerAdapter</code>适配的是<code>Controller</code>类型的处理器。</p>
+<p>​    它们的<code>handler</code>方法都是调用对应Handler中的方法。</p>
+<p>​    我们着重要看的是<code>RequestMappingHandlerAdapter</code>中关于handle方法的源码。</p>
+<h2 id="3-RequestMappingHandlerAdapter"><a href="#3-RequestMappingHandlerAdapter" class="headerlink" title="3. RequestMappingHandlerAdapter"></a>3. RequestMappingHandlerAdapter</h2><h3 id="3-1-AbstractHandlerMethodAdapter"><a href="#3-1-AbstractHandlerMethodAdapter" class="headerlink" title="3.1 AbstractHandlerMethodAdapter"></a>3.1 AbstractHandlerMethodAdapter</h3><p>​    <code>AbstractHandlerMethodAdapter</code>是<code>RequestMappingHandlerAdapter</code>的父类。它实现了HandlerAdapter接口，并重写了<code>supports</code>，<code>handle</code>以及<code>getLastModified</code>方法，其中又包含了三个模板方法<code>supportsInternal</code>，<code>handleInternal</code>和<code>getLastModifiedInternal</code>。另外它还实现了Ordered接口进行排序。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture56.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture57.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture58.png" alt=""></p>
+<p>​    </p>
+<blockquote>
+<p>总结：此处一目了然，<code>AbstractHandlerMethodAdapter</code>实现了<code>HandlerAdapter</code>接口的三个方法，其实不是完全的实现，而是又重新引进了三个模板方法，交给它的子类<code>RequestMappingHandlerAdapter</code>去真正实现。</p>
+</blockquote>
+<h3 id="3-2模板方法"><a href="#3-2模板方法" class="headerlink" title="3.2模板方法"></a>3.2模板方法</h3><p>我们来简单说一下三个模板方法。</p>
+<ul>
+<li><p><code>supportsInternal</code>方法简单粗暴，直接返回true</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture59.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><p><code>getLastModifiedInternal</code>同样简单直接，返回-1</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture60.png" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><code>handleInternal</code>比较复杂，着重看这一块</li>
+</ul>
+<p>  <code>handleInternal</code>就是使用<code>Handler</code>来处理请求的方法，具体处理流程有如下三步：</p>
+<ol>
+<li>准备好处理器需要的参数</li>
+</ol>
+<ol start="2">
+<li>使用处理器处理请求</li>
+</ol>
+<ol start="3">
+<li>处理返回值，将不同类型的返回值统一处理成<code>ModelAndView</code>类型</li>
+</ol>
+<blockquote>
+<p>在第一步的参数准备，还是比较复杂的，就是按照处理器的需求来提供参数。</p>
+</blockquote>
+<h3 id="3-3-参数相关"><a href="#3-3-参数相关" class="headerlink" title="3.3 参数相关"></a>3.3 参数相关</h3><h4 id="3-3-1-参数准备工作"><a href="#3-3-1-参数准备工作" class="headerlink" title="3.3.1 参数准备工作"></a>3.3.1 参数准备工作</h4><p>参数准备，其实就是把参数绑定给处理器的过程。</p>
+<p>参数准备，需要我们理解的有三个方面</p>
+<ul>
+<li>有哪些参数需要绑定给处理器</li>
+</ul>
+<p>  绑定的参数是根据方法来确定的，除了实际处理请求的处理器之外，还有两个方法的参数需要绑定，也就是跟当前处理器相对应的添加了@ModelAttribute和@InitBinder注解的方法。</p>
+<ul>
+<li><p>参数值的来源</p>
+<ol>
+<li>request请求中的相关参数</li>
+<li>cookie中的相关参数</li>
+<li>session中的参数</li>
+<li>设置到FlashMap中的参数，这种类型的参数，主要用于redirect的参数传递</li>
+<li>SessionAttributes传递的参数，这类参数主要通过@SessionAttributes注解来进行传递</li>
+<li>通过相应的注解了@ModelAttribute的方法进行设置的参数</li>
+</ol>
+</li>
+</ul>
+<ul>
+<li>具体进行参数绑定的方法是什么</li>
+</ul>
+<p>​    </p>
+<blockquote>
+<p>关于参数的解析，引用韩路彪书中的原话如下：</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture36.png" alt=""></p>
+<h4 id="3-3-2-InitBinder-ModelAttribute-ControllerAdvice"><a href="#3-3-2-InitBinder-ModelAttribute-ControllerAdvice" class="headerlink" title="3.3.2 @InitBinder,@ModelAttribute,@ControllerAdvice"></a>3.3.2 @InitBinder,@ModelAttribute,@ControllerAdvice</h4><ol>
+<li><p>@InitBinder</p>
+<p>用于初始化Binder</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@InitBinder</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">initBinder</span><span class="params">(WebDataBinder binder)</span> </span>&#123;</span><br><span class="line">       SimpleDateFormat dateFormat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd"</span>);</span><br><span class="line">       dateFormat.setLenient(<span class="keyword">false</span>);</span><br><span class="line">       binder.registerCustomEditor(Date.class, <span class="keyword">new</span> CustomDateEditor(dateFormat, <span class="keyword">true</span>));</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol start="2">
+<li><p>@ModelAttribute</p>
+<ul>
+<li><p>设置在参数上</p>
+<p>要使用指定的ArgumentResolver来解析参数</p>
+</li>
+<li><p>设置在方法上</p>
+<p>将参数设置给Model</p>
+</li>
+</ul>
+</li>
+<li><p>ControllerAdvice</p>
+<p>用于全局异常处理（搭配<code>@ExceptionHandler</code>和<code>@ResponseStatus</code>）</p>
+</li>
+</ol>
+<blockquote>
+<p>写到此处，我的心得就是Spring MVC本身原理是不复杂的，复杂的是有着很多之前不熟悉的组件。</p>
+</blockquote>
+<h3 id="3-4-创建RequestMappingHandlerAdapter"><a href="#3-4-创建RequestMappingHandlerAdapter" class="headerlink" title="3.4 创建RequestMappingHandlerAdapter"></a>3.4 创建RequestMappingHandlerAdapter</h3><p><code>RequestMappingHandlerAdapter</code>的创建是在<code>aferPropertiesSet</code>()中完成的。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture37.png" alt=""></p>
+<ul>
+<li>initControllerAdviceCache()初始化添加了@ControllerAdvice注解的类的属性</li>
+</ul>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture38.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture39.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture40.png" alt=""></p>
+<ul>
+<li>接下来初始化了<code>argumentResolvers</code>，<code>initBinderArgumentResolvers</code>和<code>returnValueHandlers</code>属性</li>
+</ul>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture61.png" alt=""></p>
+<p><code>getDefaultArgumentResolvers()</code></p>
+<ul>
+<li>添加按<strong>注解</strong>解析参数的解析器</li>
+<li>添加按<strong>类型</strong>解析参数的解析器</li>
+<li>添加自定义参数解析器，主要用于解析<strong>自定义类型</strong></li>
+<li>添加两个可以解析<strong>任意类型</strong>参数的解析器</li>
+</ul>
+<blockquote>
+<p>小细节，我们自己自定义的参数解析器，只要在注解解析器和类型解析器解析不了参数的情况下才会起作用，这样的话，自定义也没有什么意义。</p>
+</blockquote>
+<h3 id="3-5-handleInternal"><a href="#3-5-handleInternal" class="headerlink" title="3.5 handleInternal()"></a>3.5 handleInternal()</h3><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture41.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture42.png" alt=""></p>
+<h4 id="3-5-1-checkRequest"><a href="#3-5-1-checkRequest" class="headerlink" title="3.5.1 checkRequest()"></a>3.5.1 checkRequest()</h4><p>​    <code>checkRequest()</code>来自<code>AbstractHandlerMethodAdapter</code>继承的父类<code>WebContentGenerator</code>中的方法。</p>
+<p>​    先看下WebContentGenerator的构造器</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture62.png" alt=""></p>
+<p>​    checkRequest的源码，一目了然，现在一看就明白了</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture44.png" alt=""></p>
+<h4 id="3-5-2-invokeHandlerMethod-request-response-handlerMethod"><a href="#3-5-2-invokeHandlerMethod-request-response-handlerMethod" class="headerlink" title="3.5.2 invokeHandlerMethod(request, response, handlerMethod)"></a>3.5.2 invokeHandlerMethod(request, response, handlerMethod)</h4><p>​    该方法是最核心的方法，它直接处理请求。先摘录下源码，然后再分析比较关键的流程。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture45.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture46.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture47.png" alt=""></p>
+<ol>
+<li><p><code>WebDataBinderFactory binderFactory = getDataBinderFactory(handlerMethod);</code></p>
+<p><code>WebDataBinderFactory</code>是用来创建 <code>WebDataBinder</code>对象的，<code>WebDataBinder</code>用于参数绑定，主要功能是参数跟String之间的类型转换。</p>
+<blockquote>
+<p>看一下getDataBinderFactory(handlerMethod)</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture48.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture49.png" alt=""></p>
+</li>
+</ol>
+<blockquote>
+<p>WebDataBinderFactory主要和相应的InitBinder注解的方法相关。</p>
+</blockquote>
+<ol start="2">
+<li><p><code>ModelFactory modelFactory = getModelFactory(handlerMethod, binderFactory);</code></p>
+<p>ModelFactory主要是用来处理Model的，它主要做两件事：</p>
+</li>
+</ol>
+<ul>
+<li><p>在处理器具体处理之前对Model进行初始化</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture50.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture51.png" alt=""></p>
+</li>
+<li><p>在处理器处理之后对Model进行更新</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture52.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture53.png" alt=""></p>
+</li>
+</ul>
+<blockquote>
+<p>​    getModelFacotry方法</p>
+</blockquote>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture54.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture55.png" alt=""></p>
+<ol start="3">
+<li><code>ServletInvocableHandlerMethod invocableMethod = createInvocableHandlerMethod(handlerMethod);</code></li>
+</ol>
+<p>   <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture63.png" alt=""></p>
+<p>  上面的构造器实质上是调用的HandlerMethod的构造器</p>
+<p>​    HandlerMethod的构造器<img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture64.png" alt=""></p>
+<p>实际处理请求是通过<code>ServletInvocableHandlerMethod</code> 来实现的。进一步地分析等后续的博客更新。</p>
+<h2 id="4-总结"><a href="#4-总结" class="headerlink" title="4. 总结"></a>4. 总结</h2><p>​    <code>HandlerAdapter</code>主要就是使用处理器（<code>HandlerMethod</code>）来执行请求，主要步骤为：①绑定参数 ②执行</p>
+<p>请求 ③处理器返回值。其实主要逻辑并不复杂，难在有一些不熟悉的组件和注解，后续会慢慢熟悉它们，并输出到博客。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring-MVC/" rel="tag"># Spring MVC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/23/Spring-AOP基本概念总结/" rel="next" title="Spring AOP基本概念总结">
+                <i class="fa fa-chevron-left"></i> Spring AOP基本概念总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/16/Spring-MVC源码初探（八）HandlerAdapter-二）组件/" rel="prev" title="Spring MVC源码初探（八）HandlerAdapter(二）组件">
+                Spring MVC源码初探（八）HandlerAdapter(二）组件 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">刘天霸</p>
+              <p class="site-description motion-element" itemprop="description">Java学习记录博客</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/inde.html">
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-前言"><span class="nav-number">1.</span> <span class="nav-text">1. 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-HandlerAdapter简介"><span class="nav-number">2.</span> <span class="nav-text">2. HandlerAdapter简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-概述"><span class="nav-number">2.1.</span> <span class="nav-text">2.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-子类简介"><span class="nav-number">2.2.</span> <span class="nav-text">2.2 子类简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-RequestMappingHandlerAdapter"><span class="nav-number">3.</span> <span class="nav-text">3. RequestMappingHandlerAdapter</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-AbstractHandlerMethodAdapter"><span class="nav-number">3.1.</span> <span class="nav-text">3.1 AbstractHandlerMethodAdapter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2模板方法"><span class="nav-number">3.2.</span> <span class="nav-text">3.2模板方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-参数相关"><span class="nav-number">3.3.</span> <span class="nav-text">3.3 参数相关</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-1-参数准备工作"><span class="nav-number">3.3.1.</span> <span class="nav-text">3.3.1 参数准备工作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-3-2-InitBinder-ModelAttribute-ControllerAdvice"><span class="nav-number">3.3.2.</span> <span class="nav-text">3.3.2 @InitBinder,@ModelAttribute,@ControllerAdvice</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-4-创建RequestMappingHandlerAdapter"><span class="nav-number">3.4.</span> <span class="nav-text">3.4 创建RequestMappingHandlerAdapter</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-5-handleInternal"><span class="nav-number">3.5.</span> <span class="nav-text">3.5 handleInternal()</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-1-checkRequest"><span class="nav-number">3.5.1.</span> <span class="nav-text">3.5.1 checkRequest()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-5-2-invokeHandlerMethod-request-response-handlerMethod"><span class="nav-number">3.5.2.</span> <span class="nav-text">3.5.2 invokeHandlerMethod(request, response, handlerMethod)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-总结"><span class="nav-number">4.</span> <span class="nav-text">4. 总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">刘天霸</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
