@@ -244,6 +244,255 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/" itemprop="url">Spring MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T09:22:19+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-​简介"><a href="#1-​简介" class="headerlink" title="1. ​简介"></a>1. ​简介</h1><p>​    今天这篇博客，我们来看一下<code>AbstractHandlerMapping</code>的一个分支：<code>AbstarctUrlHandlerMapping</code>。我们发现其实<code>HandlerMapping</code>的接口，就是定义了一个获取<code>HandlerExecutionChain</code>对象的方法，该对象可以获取Handler处理器和一系列的拦截器<code>Inteceptors</code>。而这个方法就是交给抽象类<code>AbstractHandlerMapping</code>来具体实现的，但是该方中使用的<code>getHandlerInternal</code>方法是交给子类去实现的。</p>
+<p>​    如图是<code>AbstractHandlerMapping</code>的<code>getHandlerInternal</code>方法，是留给子类实现的。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture155.png" alt=""></p>
+<p>​    <code>AbstractUrlHandlerMapping</code>有两个子类：<code>SimpleUrlHandlerMapping</code>、<code>AbstractDetectingUrlHandlerMapping</code>；<code>AbstractDetectingUrlHandlerMapping</code>有一个子类：<code>BeanNameUrlHandlerMapping</code>。</p>
+<p>​    接下来，我们先看一下<code>AbstractUrlHandlerMapping</code>本身，再去看几个子类。</p>
+<h1 id="2-AbstractUrlHandlerMapping"><a href="#2-AbstractUrlHandlerMapping" class="headerlink" title="2. AbstractUrlHandlerMapping"></a>2. AbstractUrlHandlerMapping</h1><h2 id="2-1-getHandlerInternal"><a href="#2-1-getHandlerInternal" class="headerlink" title="2.1 getHandlerInternal"></a>2.1 getHandlerInternal</h2><p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture9.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture10.png" alt=""></p>
+<p>​    该方法是对<code>AbstractUrlHandlerMapping</code>的重写，是通过<code>request</code>请求获取<code>Handler</code>对象。</p>
+<ul>
+<li><p>首先从<code>Map</code>中查找<code>Handler</code></p>
+</li>
+<li><p>如果<code>Map</code>中没有<code>Handler</code>，说明<code>Map</code>中没存<code>Handler</code>，则分为如下三种情况去获取<code>Handler</code></p>
+</li>
+</ul>
+<ol>
+<li><p>如果lookupPath为/，就去获取原始的处理器</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="string">"/"</span>.equals(lookupPath)) &#123;</span><br><span class="line">   rawHandler = getRootHandler();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getRootHandler</span><span class="params">()</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">this</span>.rootHandler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//处理"/"请求的处理器</span></span><br><span class="line">	<span class="meta">@Nullable</span></span><br><span class="line">	<span class="keyword">private</span> Object rootHandler;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这样就很清楚了</p>
+</blockquote>
+</li>
+</ol>
+<p>​        2. 如果不是第1种情况，就去获得默认的处理器</p>
+<p>​        <code>rawHandler = getDefaultHandler();</code>    </p>
+<p>​            </p>
+<p>​            </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">@Nullable</span><br><span class="line">public Object getDefaultHandler() &#123;</span><br><span class="line">	return this.defaultHandler;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    下面的<code>defalutHandler</code>是在父类<code>AbstractHandlerMapping</code>中定义的</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="keyword">private</span> Object defaultHandler;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>经过上面的步骤，应该获取到处理器<code>Handler</code>了，如果处理器是String类型，就根据字符串获取真正的处理器</p>
+</li>
+<li><p>接着就是校验请求和处理器是否匹配，这里调用了一个模板方法来完成校验，但是这个模板方法子类也没有给它实现，所以这是个空操作</p>
+</li>
+<li><p>然后就是给<code>rawHandler</code>注册两个拦截器，返回一个<code>HandlerExecution</code>对象</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//给查询到Handler注册两个拦截器(<span class="doctag">TODO:</span>拦截器的作用暂时不明白）</span></span><br><span class="line">handler = buildPathExposingHandler(rawHandler, lookupPath, lookupPath,</span><br><span class="line">      <span class="keyword">null</span>);</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>​    详细看一下<code>buildPathExposingHandler</code>方法：</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture11.png" alt=""></p>
+<blockquote>
+<p>​    这是添加两个内部拦截器的具体过程：</p>
+<p>​    这俩内部拦截器的主要作用是将与当前url实际匹配的Pattern、匹配条件（后面介绍）和url模板参数等设置到request的属性里，这样在后面的处理过程中就可以直接从request属性中获取，而不需要再重新查找一遍了</p>
+</blockquote>
+<h3 id="2-1-1-lookupHandler"><a href="#2-1-1-lookupHandler" class="headerlink" title="2.1.1 lookupHandler"></a>2.1.1 lookupHandler</h3><p>​    我们重点看下<code>getHandlerInternal</code>方法中的<code>lookupHandler</code>方法，该方法是从map中获取处理器的过程</p>
+<p>​    首先map的定义如下：</p>
+<p>​        </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//保存url与handler</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> Map&lt;String, Object&gt; handlerMap = <span class="keyword">new</span> LinkedHashMap&lt;&gt;();</span><br></pre></td></tr></table></figure>
+<p>​    <code>lookupHandler</code>：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture13.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture14.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture15.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture16.png" alt=""></p>
+<blockquote>
+<p>如果是精确的url，就直接从map中获取处理器，并且给其添加拦截器；</p>
+<p>如果是book/*/u这类url，比较模糊的，也要进行处理</p>
+</blockquote>
+<h2 id="2-2-registerHandler-1"><a href="#2-2-registerHandler-1" class="headerlink" title="2.2   registerHandler 1"></a>2.2   registerHandler 1</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture17.png" alt=""></p>
+<h2 id="2-3-registerHandler-2"><a href="#2-3-registerHandler-2" class="headerlink" title="2.3  registerHandler 2"></a>2.3  registerHandler 2</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture18.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture19.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture20.png" alt=""></p>
+<blockquote>
+<p>注册处理器的目的，就是将urlPath交给处理器处理，一个url交给一个处理器去处理，就是这么一个过程。</p>
+</blockquote>
+<ul>
+<li><p>先获取处理器</p>
+</li>
+<li><p>判断处理器是否为空</p>
+<ol>
+<li><p>处理器不为空的时候：</p>
+<p>​    如果处理器和根据url查找到的处理器不一致，说明异常，因为一个url只能给一个处理器处理，出现多个就是不正常，出异常了</p>
+</li>
+<li><p>处理为空，需要分情况处理，看<code>else</code>部分的代码就理解了</p>
+</li>
+</ol>
+</li>
+</ul>
+<h1 id="3-SimpleUrlHandlerMapping"><a href="#3-SimpleUrlHandlerMapping" class="headerlink" title="3. SimpleUrlHandlerMapping"></a>3. SimpleUrlHandlerMapping</h1><p>接着我们来看下<code>AbstractUrlHandlerMapping</code>的子类<code>SimpleUrlHandlerMapping</code> </p>
+<h2 id="3-1-initApplicationContext"><a href="#3-1-initApplicationContext" class="headerlink" title="3.1  initApplicationContext"></a>3.1  initApplicationContext</h2><p>​    <code>SimpleUrlHandlerMapping</code> 在<code>AbstractHandlerMapping</code>的基础上进行了重写，原有方法只是初始化了一些拦截器，但是没有初始化处理器，重写后的<code>initApplicationContext</code>开始注册了一系列的处理器。</p>
+<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture21.png" alt=""></p>
+<p>​    注册多个<code>Hanlder</code>方法我们在3.2看下</p>
+<h2 id="3-2-registerHandlers"><a href="#3-2-registerHandlers" class="headerlink" title="3.2  registerHandlers"></a>3.2  registerHandlers</h2><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture22.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture23.png" alt=""></p>
+<blockquote>
+<p>注册<code>Handler</code>方法，核心是调用的<code>AbstractUrlHandlerMapping</code>的<code>registerHandler2</code>方法。</p>
+</blockquote>
+<h1 id="4-AbstractDetectingUrlHandlerMapping"><a href="#4-AbstractDetectingUrlHandlerMapping" class="headerlink" title="4.  AbstractDetectingUrlHandlerMapping"></a>4.  AbstractDetectingUrlHandlerMapping</h1><p>​        该类也是AbstractUrlHandlerMapping的子类，我们主要看一下它的<code>detectHandlers</code>方法</p>
+<p>​        <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture24.png" alt=""></p>
+<blockquote>
+<p>​    其中的2.3步，是调用的父类AbstractUrlHandlerMapping的registerHandler方法来注册处理器，</p>
+<p>​    我认为，注册处理器就是让一个处理器处理一个url</p>
+</blockquote>
+<ul>
+<li>获取整个容器中所有的<code>beanName</code></li>
+<li>遍历<code>beanName</code>，对每个<code>beanName</code>，解析出它的<code>url</code>，将<code>url</code>和<code>beanName</code>进行处理器的注册</li>
+</ul>
+<blockquote>
+<p>​    其中<code>determineUrlsForHandler</code>方法，是模板方法，交给子类去操作的。</p>
+</blockquote>
+<h3 id="4-1-BeanNameUrlHandlerMapping"><a href="#4-1-BeanNameUrlHandlerMapping" class="headerlink" title="4.1 BeanNameUrlHandlerMapping"></a>4.1 BeanNameUrlHandlerMapping</h3><p>​    <code>BeanNameUrlHandlerMapping</code>重写了<code>determineUrlsForHandler</code>方法，我们来看一下代码：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture26.png" alt=""></p>
+<blockquote>
+<p>  这边我不太明白，beanName为什么会以”/“开头，先留个疑问吧。</p>
+</blockquote>
+<h1 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. 总结</h1><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture25.png" alt=""></p>
+<p>类图一看，宏观体系一目了然，下一篇我们接着看<code>AbstractHandlerMapping</code>的第二个体系：<code>AbstractHandlerMethodMapping</code></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/07/《MyBatis从入门到精通》笔记/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1876,142 +2125,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/01/01/Spring学习资料汇总/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘天霸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="时间旅行者">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/01/Spring学习资料汇总/" itemprop="url">Spring学习资料汇总</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-01T17:13:06+08:00">
-                2019-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="1-书籍"><a href="#1-书籍" class="headerlink" title="1.书籍"></a>1.书籍</h1><ul>
-<li>《Spring揭秘》 王福强</li>
-<li>《Spring实战》(第四版)    最经典的</li>
-<li>《Spring源码深度解析》 学习源码的时候必看</li>
-</ul>
-<h1 id="2-系列教程"><a href="#2-系列教程" class="headerlink" title="2.系列教程"></a>2.系列教程</h1><p>张开涛的<a href="https://jinnianshilongnian.iteye.com/blog/1482071" target="_blank" rel="noopener">《跟我学Spring 3》</a></p>
-<p>教程截图奉上：</p>
-<p><img src="http://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/hah.png" alt=""></p>
-<p>后续有更好的教程，再补充</p>
-<h1 id="3-官方文档"><a href="#3-官方文档" class="headerlink" title="3.官方文档"></a>3.官方文档</h1><ul>
-<li><p><a href="https://waylau.gitbooks.io/spring-framework-4-reference/content/" target="_blank" rel="noopener">Spring 4 官方文档</a></p>
-</li>
-<li><p><a href="https://czeng.gitbooks.io/spring-data/content/" target="_blank" rel="noopener">Spring Data JPA官方文档</a></p>
-</li>
-<li><p><a href="https://book-spring-security-reference.vnzmi.com/" target="_blank" rel="noopener">Spring Security 参考手册</a></p>
-</li>
-</ul>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2062,7 +2175,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

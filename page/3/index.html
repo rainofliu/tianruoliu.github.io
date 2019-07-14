@@ -244,6 +244,169 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/14/MyBatis插件介绍/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/14/MyBatis插件介绍/" itemprop="url">MyBatis插件介绍</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T15:50:47+08:00">
+                2019-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>其实MyBatis插件开发，就是在SQL语句执行过程中的某一点进行拦截。</p>
+<p>MyBatis允许使用插件来拦截的接口和方法如下所示：（这些可以被拦截)</p>
+<ul>
+<li>Executor ( update 、 query 、 flushStatements 、 commit 、 rollback 、<br>getTransaction 、 close 、 isClosed)</li>
+<li>ParameterHandler ( getParameterObj ect 、 setParameters)</li>
+<li>Resul tSetHandler ( handleResul tSets 、 handleCursorResultSe ts 、<br>handleOutputParameters)</li>
+<li>StatementHandler (prepare 、 parameterize 、 batch 、 update 、 query) </li>
+</ul>
+<h1 id="拦截器接口介绍"><a href="#拦截器接口介绍" class="headerlink" title="拦截器接口介绍"></a>拦截器接口介绍</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">Interceptor</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="function">Object <span class="title">intercept</span><span class="params">(Invocation invocation)</span> <span class="keyword">throws</span> Throwable</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function">Object <span class="title">plugin</span><span class="params">(Object target)</span></span>;</span><br><span class="line">  </span><br><span class="line">    <span class="comment">// 用来传递插件的参数，可以通过参数来改变插件的行为</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">setProperties</span><span class="params">(Properties properties)</span></span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="setProperties"><a href="#setProperties" class="headerlink" title="setProperties()"></a>setProperties()</h2><p>我们在mybatis-config.xml文件中作如下的配置：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">plugins</span>&gt;</span></span><br><span class="line"><span class="comment">&lt;!--声明一个插件 --&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">plugin</span> <span class="attr">interceptor</span>=<span class="string">”</span> <span class="attr">tk.mybatis.simple.plugin</span> <span class="attr">.</span> <span class="attr">XXXInterceptor</span> " &gt;</span></span><br><span class="line"><span class="tag">&lt; <span class="attr">property</span> <span class="attr">name</span> ＝ ” <span class="attr">propl</span> ” <span class="attr">value</span> ＝” <span class="attr">value</span> <span class="attr">l</span> ”/&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span> ＝ ” <span class="attr">prop2</span> ” <span class="attr">value</span> ＝” <span class="attr">value2</span>“/&gt;</span> </span><br><span class="line"><span class="tag">&lt;/<span class="name">plugin</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">plugins</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里面的property标签定义了拦截器的参数，这两个参数可以通过<code>setProperties()</code>传递给我们的拦截器</p>
+</blockquote>
+<h2 id="plugin"><a href="#plugin" class="headerlink" title="plugin()"></a>plugin()</h2><p><code>Object plugin(Object target);</code></p>
+<p><code>target</code>:拦截器要拦截的对象</p>
+<blockquote>
+<p>该方法会在创建被拦截的接口实现类时调用</p>
+</blockquote>
+<p>该方法的实现很简单 ，只需要调用 MyBatis 提供的<br><code>Plugin (org . apache. ibatis. plugin. Plugin ）</code>类的 <code>wrap</code> 静态方法就可以通过 Java 的<br>动态代理拦截目标对象。这个接口方法通常的实现代码如下 。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">plugin</span><span class="params">(Object target)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> Plugin.wrap(target , <span class="keyword">this</span>) ; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>wrap</code>方法会自动判断<strong>拦截器的签名和被拦截对象的接口</strong>是否匹配，只有匹配的<br>情况下才会使用动态代理拦截目标对象，因此在上面的实现方法中不必做额外的逻辑判断 。 </p>
+<h2 id="intercept"><a href="#intercept" class="headerlink" title="intercept()"></a>intercept()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">intercept</span><span class="params">(Invocation invocation)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"> <span class="comment">// 获取当前被拦截的对象</span></span><br><span class="line">Object target ＝invocation.getTarget ();</span><br><span class="line"> <span class="comment">// 获取当前被拦截的方法</span></span><br><span class="line">Method method = invocation.getMethod() ;</span><br><span class="line"> <span class="comment">// 获取被拦截方法的参数</span></span><br><span class="line">Object[] args = invocation.getArgs() ;</span><br><span class="line"> <span class="comment">// 返回执行的结果</span></span><br><span class="line">Object result ＝invocation .proceed ();</span><br><span class="line"><span class="keyword">return</span> result </span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h1 id="拦截器签名介绍"><a href="#拦截器签名介绍" class="headerlink" title="拦截器签名介绍"></a>拦截器签名介绍</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Intercepts</span>(&#123;</span><br><span class="line">&#125;)</span><br><span class="line"><span class="meta">@Signature</span> (</span><br><span class="line">type = ResultSetHandler.class ,</span><br><span class="line">method = ” handleResultSets ”,</span><br><span class="line">args = &#123;Statement. <span class="class"><span class="keyword">class</span>&#125;)</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><code>type</code>    设置拦截的接口</p>
+</li>
+<li><p><code>method</code>  设置拦截接口的方法</p>
+</li>
+<li><p><code>args</code> 设置拦截方法的参数类型数组，通过方法名和参数类型可以确定唯一一个方法</p>
+</li>
+</ul>
+<p>在我的项目当中是这样定义的拦截器签名：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Intercepts</span>(&#123; <span class="meta">@Signature</span>(type = Executor.class, method = <span class="string">"update"</span>, args = &#123; MappedStatement.class, Object.class &#125;),</span><br><span class="line">		<span class="meta">@Signature</span>(type = Executor.class, method = <span class="string">"query"</span>, args = &#123; MappedStatement.class, Object.class,</span><br><span class="line">				RowBounds.class, ResultHandler.class &#125;) &#125;)</span><br></pre></td></tr></table></figure>
+<p>我需要对<code>Executor</code>接口进行拦截，先拦截其update方法，再拦截器query方法，被拦截方法中的参数根据update和query方法来决定。</p>
+<p>这是Executor接口中的两个方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">update</span><span class="params">(MappedStatement ms, Object parameter)</span> <span class="keyword">throws</span> SQLException</span>;</span><br><span class="line"></span><br><span class="line"> &lt;E&gt; <span class="function">List&lt;E&gt; <span class="title">query</span><span class="params">(MappedStatement ms, Object parameter, RowBounds rowBounds, ResultHandler resultHandler)</span> <span class="keyword">throws</span> SQLException</span>;</span><br></pre></td></tr></table></figure>
+<p>我的理解是<code>MapppedStatement</code>对象对应的是我们XXXmapper.xml文件中<code>&lt;select&gt;&lt;/select&gt;</code>标签对象，Executor是一个执行器，负责通过动态代理来执行<code>MappedStatement</code>。</p>
+<blockquote>
+<p>我们就是要拦截这个执行器，让SQL语句在执行之前动态地选择数据源，也就是查询语句走从库，增删改语句走主库。</p>
+</blockquote>
+<h1 id="实战"><a href="#实战" class="headerlink" title="实战"></a>实战</h1><p>我的项目需要对sql语句进行拦截，使得其动态地选择数据源；所以我就拦截了Executor接口，并编写了动态选择数据源的逻辑。这样就体现了主从同步的作用，从库用来读，主库负责写。</p>
+<p>核心的代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取BoundSql（Sql语句对象）</span></span><br><span class="line">BoundSql boundSql = ms.getSqlSource().getBoundSql(objects[<span class="number">1</span>]);</span><br><span class="line"><span class="comment">// 获取SQL语句</span></span><br><span class="line">String sql = boundSql.getSql().toLowerCase(Locale.CHINA).replaceAll(<span class="string">"[\\t\\n\\r]"</span>, <span class="string">" "</span>);</span><br><span class="line"><span class="keyword">if</span> (sql.matches(REGEX)) &#123;</span><br><span class="line">                   <span class="comment">// 设置访问主库</span></span><br><span class="line">	lookupKey = DynamicDataSourceHolder.DB_MASTER;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                   <span class="comment">// 设置访问从库</span></span><br><span class="line">	lookupKey = DynamicDataSourceHolder.DB_SLAVE;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/14/揭秘-SpringBootApplication/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2351,226 +2514,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/10/Spring-MVC源码初探（十）-HandlerExceptionResolver/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘天霸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="时间旅行者">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/10/Spring-MVC源码初探（十）-HandlerExceptionResolver/" itemprop="url">Spring MVC源码初探（十） HandlerExceptionResolver</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T20:05:26+08:00">
-                2019-04-10
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring-MVC/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring MVC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p>​    </p>
-<p>​    之前一直拖延了很久，终于下决心把Spring MVC的这个系列更新完，这是倒数第二篇，主要看下 <code>HandlerExceptionResolver</code>这部分的主要原理。</p>
-<p>​     <code>HandlerExceptionResolver</code>用于解析请求处理过程中产生的异常，简而言之，就是去解析异常</p>
-<p>​    </p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture297.png" alt=""></p>
-<p># </p>
-<p>我们看到整个HandlerExceptionResolver体系依然是从HandlerExceptionResolver接口开始不断拓展的，该接口提供了</p>
-<p>一个<code>#resolverException</code>()方法，去解析异常信息，并返回<code>ModelAndView</code>对象。</p>
-<p>实现HandlerExceptionResolver接口的抽象类是<code>AbstractHandlerExceptionResolver</code>，这是对接口的第一步扩</p>
-<p>展，有了AbstractHandlerExceptionResolver抽象类后，我们可以进一步去扩展。</p>
-<p><code>AbstractHandlerExceptionResolver</code>有四个子类，分别如下：</p>
-<ul>
-<li><p><code>AbstractHandlerMethodExceptionResolver</code>      </p>
-<blockquote>
-<p> 和它的子类<code>ExceptionHandlerExceptionResolver</code>一起完成使用<code>@ExceptionHandler</code>注解的方法进行异常解析的功能</p>
-</blockquote>
-</li>
-<li><p><code>DefaultHandlerExceptionResolver</code>        </p>
-<blockquote>
-<p>按照不同类型对异常进行解析</p>
-</blockquote>
-</li>
-<li><p><code>ResponseStatusExceptionResolver</code></p>
-<blockquote>
-<p>解析有<code>@ResponseStatus</code>注解类型的异常</p>
-</blockquote>
-</li>
-<li><p><code>SimpleMappingExceptionResolver</code></p>
-<blockquote>
-<p>通过配置的异常类和<code>view</code>的关系来解析异常</p>
-</blockquote>
-</li>
-</ul>
-<p>其实异常解析的过程，主要是两件事：</p>
-<ol>
-<li>给<code>ModelAndView</code>设置相应的内容</li>
-<li>设置<code>response</code>的相关属性</li>
-</ol>
-<p>当然，也会有一些记录日志的辅助功能等等。</p>
-<h1 id="AbstractHandlerExceptionResolver"><a href="#AbstractHandlerExceptionResolver" class="headerlink" title="AbstractHandlerExceptionResolver"></a>AbstractHandlerExceptionResolver</h1><p><code>AbstractHandlerExceptionResolver</code>是该体系中最核心的一个类，它重写了父接口的</p>
-<p><code>resolverException</code>()方法，定义了其中的通用代码和一些空的模块方法，子类只要去重写这些模板方法就OK了。</p>
-<p> 我们需要留意下<code>resolverException</code>()方法</p>
-<p>​    <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture298.png" alt=""></p>
-<p>基本流程很容易就看懂，主要是有一个<code>doResolveException(…)</code>方法交给子类去实现，它是模板方法。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line">	<span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> ModelAndView <span class="title">doResolveException</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">			HttpServletRequest request, HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">        @Nullable Object handler, Exception ex)</span></span>;</span><br></pre></td></tr></table></figure>
-<h1 id="AbstractHandlerMethodExceptionResolver"><a href="#AbstractHandlerMethodExceptionResolver" class="headerlink" title="AbstractHandlerMethodExceptionResolver"></a>AbstractHandlerMethodExceptionResolver</h1><p><code>AbstractHandlerMethodExceptionResolver</code>是继承自<code>AbstractHandlerExceptionResolver</code>的抽象类，</p>
-<p>它主要重写了父类的<code>shouldApply(）</code>方法，并且象征性的重写了<code>doResolveException()</code>，其中就是又保证</p>
-<p>了一个模板方法，交给<code>AbstractHandlerMethodExceptionResolver</code>的子类来完成。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture299.png" alt=""></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Nullable</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">abstract</span> ModelAndView <span class="title">doResolveHandlerMethodException</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">		HttpServletRequest request, </span></span></span><br><span class="line"><span class="function"><span class="params">		HttpServletResponse response,</span></span></span><br><span class="line"><span class="function"><span class="params">           @Nullable HandlerMethod handlerMethod, Exception ex)</span></span>;</span><br></pre></td></tr></table></figure>
-<h2 id="ExceptionHandlerExceptionResolver"><a href="#ExceptionHandlerExceptionResolver" class="headerlink" title="ExceptionHandlerExceptionResolver"></a>ExceptionHandlerExceptionResolver</h2><p>接下来就看一下<code>ExceptionHandlerExceptionResolver</code>这个子类是如何重写</p>
-<p><code>doResolveHandlerMethodException</code>方法的。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture300.png" alt=""></p>
-<p>……</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 执行ExceptionHandler方法解析异常</span></span><br><span class="line">exceptionHandlerMethod.invokeAndHandle(webRequest, mavContainer, exception, cause, handlerMethod);</span><br></pre></td></tr></table></figure>
-<p>…</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture301.png" alt=""></p>
-<h1 id="DefaultHandlerExceptionResolver"><a href="#DefaultHandlerExceptionResolver" class="headerlink" title="DefaultHandlerExceptionResolver"></a>DefaultHandlerExceptionResolver</h1><p><code>DefaultHandlerExceptionResolver</code>是根据异常类型的不同，使用不同的方法进行处理，有这句话，就不用看</p>
-<p><code>doResolveException</code>方法的具体逻辑了，其中也包含对<code>response</code>的属性进行了设置，这里也就补贴代码了。</p>
-<h1 id="ResponseStatusExceptionResolver"><a href="#ResponseStatusExceptionResolver" class="headerlink" title="ResponseStatusExceptionResolver"></a>ResponseStatusExceptionResolver</h1><p><code>ResponseStatusExceptionResolver</code>解析注解了<code>@ResponseStatus</code>的异常，例如自定义的注解了</p>
-<p><code>@ReponseStatus</code>的异常。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture302.png" alt=""></p>
-<blockquote>
-<p>该方法主要就是获取<code>@ResponseStatus</code>注解，然后再调用<code>resolveResponseStatus()</code>来解析异常。</p>
-</blockquote>
-<h1 id="SimpleMappingExceptionResolver"><a href="#SimpleMappingExceptionResolver" class="headerlink" title="SimpleMappingExceptionResolver"></a>SimpleMappingExceptionResolver</h1><p><code>SimpleMappingExceptionResolver</code>是最后一个异常解析类了，我们继续看一下。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture303.png" alt=""></p>
-<p>这个里面看一下<code>determineStatusCode()</code>方法：</p>
-<p><code>private Map&lt;String, Integer&gt; statusCodes = new HashMap&lt;&gt;();</code></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture304.png" alt=""></p>
-<blockquote>
-<p>这个就是拿HashMap来判断viewName和statusCode之间有没有映射关系</p>
-</blockquote>
-<p>如果<code>statusCode</code>不为空，则设置response的属性</p>
-<p>接着便调用<code>getModelAndView()</code>方法，返回ModelAndView对象</p>
-<p>至此，<code>doResolveException</code>的使命已经完成</p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture305.png" alt=""></p>
-<p>根据上图，我们的全局异常处理，一般采用的应该是<code>ExceptionHandlerExceptionResolver</code>中的异常解析机</p>
-<p>制，因为全局异常处理，一般都采用<code>@ControllerAdvice</code>注解</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2621,7 +2564,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">53</span>
+                  <span class="site-state-item-count">54</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
