@@ -1314,12 +1314,12 @@
 <blockquote>
 <p>因_id对应的文档不存在，所以是新增了一篇文档。</p>
 </blockquote>
-<h3 id="文档删除"><a href="#文档删除" class="headerlink" title="文档删除"></a>文档删除</h3><ul>
+<h2 id="文档删除"><a href="#文档删除" class="headerlink" title="文档删除"></a>文档删除</h2><ul>
 <li>删除集合</li>
 <li>删除特定文档</li>
 <li><code>db.collection.remove()</code></li>
 </ul>
-<h4 id="删除集合的文档"><a href="#删除集合的文档" class="headerlink" title="删除集合的文档"></a>删除集合的文档</h4><p>语法:</p>
+<h3 id="删除集合的文档"><a href="#删除集合的文档" class="headerlink" title="删除集合的文档"></a>删除集合的文档</h3><p>语法:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.&lt;collection&gt;.remove(&lt;query&gt;,&lt;options&gt;)</span><br></pre></td></tr></table></figure>
 <ul>
 <li><query>  删除操作时筛选文档的条件</query></li>
@@ -1352,7 +1352,7 @@
 <p>WriteResult({ “nRemoved” : 8 })</p>
 </blockquote>
 <p>accounts文档成了空文档。</p>
-<h4 id="删除集合"><a href="#删除集合" class="headerlink" title="删除集合"></a>删除集合</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.collection.drop()</span><br><span class="line">db.&lt;collection&gt;.drop( &#123; writeConcern : &lt;document&gt; &#125; )</span><br></pre></td></tr></table></figure>
+<h3 id="删除集合"><a href="#删除集合" class="headerlink" title="删除集合"></a>删除集合</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">db.collection.drop()</span><br><span class="line">db.&lt;collection&gt;.drop( &#123; writeConcern : &lt;document&gt; &#125; )</span><br></pre></td></tr></table></figure>
 <p><strong>writeConcern文档定义了集合本次删除操作的安全写级别</strong></p>
 <p>学习中暂时使用MongDB默认的安全写级别。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show collections</span><br></pre></td></tr></table></figure>
