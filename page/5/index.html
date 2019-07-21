@@ -244,6 +244,164 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" itemprop="url">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T13:14:24+08:00">
+                2019-02-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="1-​概述"><a href="#1-​概述" class="headerlink" title="1.​概述"></a>1.​概述</h1><p>​    我们今天来看<code>AbstractHandlerMethodMapping</code>体系，这是<code>AbstractHandlerMapping</code>的第二个体系，又是用的最多的一个体系。该体系包括：<code>AbstractHandlerMethodMapping</code>、<code>RequestMap pingInfoHandlerMapping</code>和<code>RequestMappingHandlerMapping</code>。</p>
+<p>​    虽然该体系结构简单，一目了然，但是丝毫没有简单的感觉，这个体系理解下来还是比较吃力的。本系列目前遇到的最难啃的，就是这个体系。但是最难啃，不代表就回避这一体系的源码，这个体系啃下来就代表我们的<code>HandlerMapping</code>大的体系就完整地啃下来了。看完这一部分，就要开始进军<code>HandlerAdapter</code>了。</p>
+<p>​    <code>AbstractHandlerMethodMapping</code> 系列是将<code>Method</code>作为<code>Handler</code>来使用的，这其实是我们最熟悉的关于<code>Spring MVC</code>的内容，例如<code>@RequestMapping</code>所注释的方法就是这种<code>Handler</code>，它专门有一个类型<code>HandlerMethod</code>，也就是<code>Method</code>类型的<code>Handler</code>    。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/phones"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">   </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<p>如图，这是<code>AbstractHandlerMethodMapping</code>体系的类图：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture27.png" alt=""></p>
+<h1 id="2-AbstractHandlerMethodMapping"><a href="#2-AbstractHandlerMethodMapping" class="headerlink" title="2. AbstractHandlerMethodMapping"></a>2. AbstractHandlerMethodMapping</h1><p>​        鉴于这个体系实在是有难度，当时看了一天，现在写也比较吃力，所以就会有所省略，也算是能力所限吧。</p>
+<h2 id="2-1-getHandlerInternal"><a href="#2-1-getHandlerInternal" class="headerlink" title="2.1  getHandlerInternal"></a>2.1  getHandlerInternal</h2><p>​        我们先从<code>getHandlerInternal</code>方法来开始看，前面<code>AbstractHandlerMapping</code> 中的<code>getHandlerInternal</code>方法是一个模板方法，交给两个子类分支实现，<code>AbstractUrlHandlerMapping</code>体系中实现了该方法，那么我们现在看一下<code>AbstractHandlerMethodMapping</code>体系中的<code>getHandlerInternal</code>方法。</p>
+<p>​        </p>
+<p>​        <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture28.png" alt=""></p>
+<h3 id="2-1-1-lookupHandlerMethod"><a href="#2-1-1-lookupHandlerMethod" class="headerlink" title="2.1.1 lookupHandlerMethod"></a>2.1.1 lookupHandlerMethod</h3><p>​    我们再看一下第三步的<code>lookupHandlerMethod</code>的详细代码。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture29.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture30.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture31.png" alt=""></p>
+<p>看一下<code>addMatchingMappings</code>方法。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture32.png" alt=""></p>
+<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h1><p>​        这篇实在写不下去了，就一个<code>AbstractHandlerMethodMapping</code>类中的各种内部类和Map已经很复杂了，留着坑，目前先凑一篇吧，或者有可能以后再补充吧。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/09/Spring-MVC源码初探（五）HandlerMapping之AbstractUrlHandlerMapping/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -1998,133 +2156,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/01/01/面试题/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘天霸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="时间旅行者">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/01/01/面试题/" itemprop="url">芋道源码面试题</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-01-01T17:36:33+08:00">
-                2019-01-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li>Spring面试题 <a href="http://svip.iocoder.cn/Spring/Interview/" target="_blank" rel="noopener">http://svip.iocoder.cn/Spring/Interview/</a> </li>
-<li>Spring MVC面试题 <a href="http://svip.iocoder.cn/Spring-MVC/Interview/" target="_blank" rel="noopener">http://svip.iocoder.cn/Spring-MVC/Interview/</a>  </li>
-<li>Spring Boot面试题 <a href="http://svip.iocoder.cn/Spring-Boot/Interview/" target="_blank" rel="noopener">http://svip.iocoder.cn/Spring-Boot/Interview/</a> </li>
-<li>Mybatis面试题 <a href="http://svip.iocoder.cn/MyBatis/Interview/" target="_blank" rel="noopener">http://svip.iocoder.cn/MyBatis/Interview/</a>  </li>
-</ol>
-<p>PS:其他面试题聚集在： <a href="http://svip.iocoder.cn/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" target="_blank" rel="noopener">http://svip.iocoder.cn/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/</a> </p>
-<p>另外：面试题汇总在面试简历收藏夹 </p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2175,7 +2206,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2186,7 +2217,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2197,7 +2228,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

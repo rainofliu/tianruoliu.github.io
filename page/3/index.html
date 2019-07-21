@@ -244,6 +244,163 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/14/单例模式/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/14/单例模式/" itemprop="url">单例模式</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-14T20:11:15+08:00">
+                2019-04-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近感觉设计模式这一块好久都没有看了，觉得有必要补补，正好碰见H大知识星球里面有专门的学习资料，就打算跟着学习一下，并用博客的方式来记录学习过程。</p>
+<p>这篇博客主要看下单例模式。</p>
+<h1 id="单例模式"><a href="#单例模式" class="headerlink" title="单例模式"></a>单例模式</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><ol>
+<li><p>什么是单例模式？</p>
+<p>通俗来说，就是单个实例。单例模式是最简单的设计模式之一，属于创建型模式。</p>
+<p>GOF书中说：保证每个类仅有一个实例，并提供一个访问它的全局访问点。</p>
+<blockquote>
+<p>也就是说，一个实例，并且还要提供访问该实例的方式</p>
+</blockquote>
+<p>单例模式体现在类声明中，单例的类负责创建自己的对象，同时确保只有单个对象被创建；</p>
+<p>并且这个类提供了一种访问其唯一对象的方式，可以直接访问，不需要实例化该类的对象</p>
+</li>
+<li><p>单例的优点？</p>
+<ul>
+<li><p>节省维护对象的开销：创建、内存占用、回收</p>
+</li>
+<li><p>实例状态易于维护，一般单例不维护状态，当多个线程就行更改状态时，会产生并发问题</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><p>在学习单例模式的实现之前，我们需要有一个认识，对象可以通过构造器创建出来，如果谁都能使用这个构造器，那就无法实现单例。因此我们需要将构造器方法设置为<code>private</code>,不给别人new的机会。</p>
+<h2 id="饿汉式"><a href="#饿汉式" class="headerlink" title="饿汉式"></a>饿汉式</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zxsq.designpattern;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 单例模式</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@Author</span>: ajin</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Singleton</span> </span>&#123;</span><br><span class="line"><span class="comment">//   饿汉式</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> Singleton instance=<span class="keyword">new</span> Singleton();</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span>  instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>测试是否是单例模式：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Singleton singleton1=Singleton.getInstance();</span><br><span class="line">        Singleton singleton2=Singleton.getInstance();</span><br><span class="line">        System.out.println(singleton1==singleton2);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>控制台输出：<code>true</code></p>
+<blockquote>
+<p>对于饿汉式来说，就是想要拿到这个实例的时候就能立即拿到，而不需要等待时间。</p>
+<p>所以，通过static的静态初始化方式，在该类第一次被加载的时候，就有一个Singleton1<br>的实例被创建出来了。这样就保证在第一次想要使用该对象时，它已经被初始化好了 </p>
+</blockquote>
+<p>饿汉式单例，在类被加载的时候对象就会实例化。这也许会造成不必要的消耗，因为<br>有可能这个实例根本就不会被用到。而且，如果这个类被多次加载的话也会造成多次实例<br>化 </p>
+<h2 id="静态内部类"><a href="#静态内部类" class="headerlink" title="静态内部类"></a>静态内部类</h2><p>静态内部类就是把创建单例对象放在了静态内部类中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zxsq.designpattern;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 静态内部类实现单例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">InnerClassSingeton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span>  <span class="class"><span class="keyword">class</span> <span class="title">SingletonInner</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> InnerClassSingeton instance=<span class="keyword">new</span> InnerClassSingeton();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">InnerClassSingeton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span>  InnerClassSingeton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> SingletonInner.instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="懒汉式"><a href="#懒汉式" class="headerlink" title="懒汉式"></a>懒汉式</h2><h3 id="线程不安全"><a href="#线程不安全" class="headerlink" title="线程不安全"></a>线程不安全</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zxsq.designpattern;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 线程不安全的懒汉式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadUnSafeSingleton</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadUnSafeSingleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ThreadUnSafeSingleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span>  <span class="keyword">static</span> ThreadUnSafeSingleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance==<span class="keyword">null</span>)&#123;</span><br><span class="line">            instance=<span class="keyword">new</span> ThreadUnSafeSingleton();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这种懒汉式线程不安全，如果多个线程同时访问<code>getInstance()</code>会导致创建多个不同的对象。</p>
+<p>而饿汉式就不会有这种情况，因为单例对象早就创建好了，所以多线程情况下，不会创建多个对象。</p>
+<h3 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h3><p>为了能够线程安全，我们只需要<code>synchronized</code>加锁即可，实现原子性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.zxsq.designpattern;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 线程安全的懒汉式</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadSafeSigleton</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">volatile</span> ThreadSafeSigleton instance;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ThreadSafeSigleton</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> ThreadUnSafeSingleton <span class="title">getInstance</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (instance==<span class="keyword">null</span>)&#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (ThreadSafeSigleton.class)&#123;</span><br><span class="line">                <span class="keyword">if</span> (instance==<span class="keyword">null</span>)&#123;</span><br><span class="line">                    instance=<span class="keyword">new</span> ThreadSafeSigleton();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/14/MyBatis插件介绍/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2326,194 +2483,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘天霸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="时间旅行者">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/" itemprop="url">Spring MVC源码初探（十一） MultipartResolver</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-11T16:13:49+08:00">
-                2019-04-11
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring-MVC/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring MVC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><code>MultipartResolver</code>是用来处理上传请求的一个接口，我们看下接口中的方法：</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture306.png" alt=""></p>
-<p>它有两个子类：<code>StandardServletMultipartResolver</code>和<code>CommonsMultipartResolver</code>，前者采用Servlet的</p>
-<p>标准上传方式，后者采用的是Apache的commons-fileupload，我们接着就看一下这两个子类</p>
-<h1 id="StandardServletMultipartResolver"><a href="#StandardServletMultipartResolver" class="headerlink" title="StandardServletMultipartResolver"></a>StandardServletMultipartResolver</h1><h2 id="isMultipart"><a href="#isMultipart" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> StringUtils.startsWithIgnoreCase(request.getContentType(), <span class="string">"multipart/"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<blockquote>
-<p>这里判断是否是上传请求的方式，很简单，判断<code>contentType</code>是不是以<code>multipart/</code>开头</p>
-</blockquote>
-<h2 id="resolveMultipart"><a href="#resolveMultipart" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>该方法是将<code>HttpServletRequest</code>转化成<code>MultipartHttpServletRequest</code>这样的一个上传请求，这个类</p>
-<p>就是直接new了一个<code>StandardMultipartHttpServletRequest</code>对象，实现的比较简单。</p>
-<h2 id="cleanupMultipart"><a href="#cleanupMultipart" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>该方法是在处理完上传请求后将<strong>缓存</strong>进行清除，相对来说逻辑也比较简单容易理解。</p>
-<blockquote>
-<p>我们需要留意一下StandardMultipartHttpServletRequest#parseRequest方法，它主要是根据请求获取不同的<code>Part</code>（也就是上传部分的集合），然后使用它们来创建File并设置属性。</p>
-</blockquote>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture307.png" alt=""></p>
-<p>​    根据我对上述三个方法的理解，真正去处理上传请求，是在解析出的上传请求对象中的方法中来完成的，比如<code>parseRequest()</code>方法进行了文件的创建。</p>
-<h1 id="CommonsMultipartResolver"><a href="#CommonsMultipartResolver" class="headerlink" title="CommonsMultipartResolver"></a>CommonsMultipartResolver</h1><p><code>CommonsMultipartResolver</code>是采用的Apache的<code>commons-fileupload</code>来进行文件上传的，这个类主要是依赖</p>
-<p>于<code>commons-fileupload</code>来完成一些具体的操作。</p>
-<h2 id="isMultipart-1"><a href="#isMultipart-1" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><p>它是通过<code>commons-fileupload</code>中的<code>ServletFileUpload#isMultipartContent()</code>来判断是否是上传请求</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> ServletFileUpload.isMultipartContent(request);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture308.png" alt=""></p>
-<p>首先它会判断是不是POST请求，不是直接返回false；如果是POST请求，则去调用下一个方法来判断是否是上传请求。</p>
-<h2 id="resolveMultipart-1"><a href="#resolveMultipart-1" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>它是根据<code>resolveLazily</code>来分类来返回一个上传请求对象， 默认<code>resolveLazily</code>是false</p>
-<p>两种逻辑不变的是都采用 <code>parseRequest(request)</code>方法来返回<code>MultipartParsingResult</code>对象，</p>
-<blockquote>
-<p>不同的是resolveLazily==true，是不将MultipartParsingResult中的属性封装给MultipartHttpServletRequest返回</p>
-<p>的；而另一种情况是需要将MultipartParsingResult的属性封装给MultipartHttpServletRequest并且返回。</p>
-</blockquote>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture309.png" alt=""></p>
-<h2 id="cleanupMultipart-1"><a href="#cleanupMultipart-1" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>这个是清理处理请求过程中产生的<code>MultiValueMap&lt;String, MultipartFile&gt;</code>对象</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
-<blockquote>
-<p><code>#cleanupFileIterms()</code></p>
-</blockquote>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
-<blockquote>
-<p>这个就很容易理解，类似于ffmpeg处理音视频的时候，处理完了，就会将一些内存碎片给清除了，一样的道理。</p>
-</blockquote>
-<h2 id="parseRequest"><a href="#parseRequest" class="headerlink" title="parseRequest()"></a>parseRequest()</h2><p>这个是具体进行文件上传逻辑的代码，主要是通过<code>commons-uploadfile</code>中的<code>FileUpload</code>组件解析出</p>
-<p><code>fileItems</code>，然后再调用<code>parseFileItems</code>方法将<code>fileItems</code>分为文件和参数两类，并设置到对应的三个</p>
-<p>Map中。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture312.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture313.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture314.png" alt=""></p>
-<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    其实MultipartResolver的话，本身的设计就是为了将上传请求封装成可以直接获取File的request，然后再进行文件的上传处理。</p>
-<p>​    我们到这里对于Spring MVC的大部分源码进行了基本的分析和总结，所以有了Spring MVC源码初探系列的11篇博客，这个过程有收获，也有不足的地方，没有进行更深入的探讨；但是到这里，我觉得整个系列的目的已经达到了，那就是先入门一个优秀框架的源码，适当做一些理解，并根据参考书去领悟源码设计的精妙。希望以后可以更深入得对其他更多优秀框架的源码做一些更深入的理解。</p>
-<p>​    总之，Time Walker始终在路上前进，继续看美丽的代码风景。很喜欢比较酷的一个结尾，是吴承恩《西游记》的第100回，“至此，西游记完”。此时，我也想说，至此，该系列完结，继续加油！</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2564,7 +2533,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2575,7 +2544,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2586,7 +2555,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

@@ -244,6 +244,194 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="刘天霸">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="时间旅行者">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/04/11/Spring-MVC源码初探（十一）-MultipartResolver/" itemprop="url">Spring MVC源码初探（十一） MultipartResolver</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-11T16:13:49+08:00">
+                2019-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/Spring-MVC/" itemprop="url" rel="index">
+                    <span itemprop="name">Spring MVC</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h1><p><code>MultipartResolver</code>是用来处理上传请求的一个接口，我们看下接口中的方法：</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture306.png" alt=""></p>
+<p>它有两个子类：<code>StandardServletMultipartResolver</code>和<code>CommonsMultipartResolver</code>，前者采用Servlet的</p>
+<p>标准上传方式，后者采用的是Apache的commons-fileupload，我们接着就看一下这两个子类</p>
+<h1 id="StandardServletMultipartResolver"><a href="#StandardServletMultipartResolver" class="headerlink" title="StandardServletMultipartResolver"></a>StandardServletMultipartResolver</h1><h2 id="isMultipart"><a href="#isMultipart" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> StringUtils.startsWithIgnoreCase(request.getContentType(), <span class="string">"multipart/"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这里判断是否是上传请求的方式，很简单，判断<code>contentType</code>是不是以<code>multipart/</code>开头</p>
+</blockquote>
+<h2 id="resolveMultipart"><a href="#resolveMultipart" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>该方法是将<code>HttpServletRequest</code>转化成<code>MultipartHttpServletRequest</code>这样的一个上传请求，这个类</p>
+<p>就是直接new了一个<code>StandardMultipartHttpServletRequest</code>对象，实现的比较简单。</p>
+<h2 id="cleanupMultipart"><a href="#cleanupMultipart" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>该方法是在处理完上传请求后将<strong>缓存</strong>进行清除，相对来说逻辑也比较简单容易理解。</p>
+<blockquote>
+<p>我们需要留意一下StandardMultipartHttpServletRequest#parseRequest方法，它主要是根据请求获取不同的<code>Part</code>（也就是上传部分的集合），然后使用它们来创建File并设置属性。</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture307.png" alt=""></p>
+<p>​    根据我对上述三个方法的理解，真正去处理上传请求，是在解析出的上传请求对象中的方法中来完成的，比如<code>parseRequest()</code>方法进行了文件的创建。</p>
+<h1 id="CommonsMultipartResolver"><a href="#CommonsMultipartResolver" class="headerlink" title="CommonsMultipartResolver"></a>CommonsMultipartResolver</h1><p><code>CommonsMultipartResolver</code>是采用的Apache的<code>commons-fileupload</code>来进行文件上传的，这个类主要是依赖</p>
+<p>于<code>commons-fileupload</code>来完成一些具体的操作。</p>
+<h2 id="isMultipart-1"><a href="#isMultipart-1" class="headerlink" title="isMultipart()"></a>isMultipart()</h2><p>它是通过<code>commons-fileupload</code>中的<code>ServletFileUpload#isMultipartContent()</code>来判断是否是上传请求</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isMultipart</span><span class="params">(HttpServletRequest request)</span> </span>&#123;</span><br><span class="line">   <span class="keyword">return</span> ServletFileUpload.isMultipartContent(request);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture308.png" alt=""></p>
+<p>首先它会判断是不是POST请求，不是直接返回false；如果是POST请求，则去调用下一个方法来判断是否是上传请求。</p>
+<h2 id="resolveMultipart-1"><a href="#resolveMultipart-1" class="headerlink" title="resolveMultipart()"></a>resolveMultipart()</h2><p>它是根据<code>resolveLazily</code>来分类来返回一个上传请求对象， 默认<code>resolveLazily</code>是false</p>
+<p>两种逻辑不变的是都采用 <code>parseRequest(request)</code>方法来返回<code>MultipartParsingResult</code>对象，</p>
+<blockquote>
+<p>不同的是resolveLazily==true，是不将MultipartParsingResult中的属性封装给MultipartHttpServletRequest返回</p>
+<p>的；而另一种情况是需要将MultipartParsingResult的属性封装给MultipartHttpServletRequest并且返回。</p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture309.png" alt=""></p>
+<h2 id="cleanupMultipart-1"><a href="#cleanupMultipart-1" class="headerlink" title="cleanupMultipart()"></a>cleanupMultipart()</h2><p>这个是清理处理请求过程中产生的<code>MultiValueMap&lt;String, MultipartFile&gt;</code>对象</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
+<blockquote>
+<p><code>#cleanupFileIterms()</code></p>
+</blockquote>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture310.png" alt=""></p>
+<blockquote>
+<p>这个就很容易理解，类似于ffmpeg处理音视频的时候，处理完了，就会将一些内存碎片给清除了，一样的道理。</p>
+</blockquote>
+<h2 id="parseRequest"><a href="#parseRequest" class="headerlink" title="parseRequest()"></a>parseRequest()</h2><p>这个是具体进行文件上传逻辑的代码，主要是通过<code>commons-uploadfile</code>中的<code>FileUpload</code>组件解析出</p>
+<p><code>fileItems</code>，然后再调用<code>parseFileItems</code>方法将<code>fileItems</code>分为文件和参数两类，并设置到对应的三个</p>
+<p>Map中。</p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture312.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture313.png" alt=""></p>
+<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture314.png" alt=""></p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>​    其实MultipartResolver的话，本身的设计就是为了将上传请求封装成可以直接获取File的request，然后再进行文件的上传处理。</p>
+<p>​    我们到这里对于Spring MVC的大部分源码进行了基本的分析和总结，所以有了Spring MVC源码初探系列的11篇博客，这个过程有收获，也有不足的地方，没有进行更深入的探讨；但是到这里，我觉得整个系列的目的已经达到了，那就是先入门一个优秀框架的源码，适当做一些理解，并根据参考书去领悟源码设计的精妙。希望以后可以更深入得对其他更多优秀框架的源码做一些更深入的理解。</p>
+<p>​    总之，Time Walker始终在路上前进，继续看美丽的代码风景。很喜欢比较酷的一个结尾，是吴承恩《西游记》的第100回，“至此，西游记完”。此时，我也想说，至此，该系列完结，继续加油！</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/04/10/Spring-MVC源码初探（十）-HandlerExceptionResolver/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
@@ -2278,164 +2466,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://www.liutianruo.com/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/">
-
-    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="刘天霸">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="时间旅行者">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2019/02/09/Spring-MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping/" itemprop="url">Spring MVC源码初探（六）HandlerMapping之AbstractHandlerMethodMapping</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-09T13:14:24+08:00">
-                2019-02-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category">
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
-                  <a href="/categories/Spring-MVC/" itemprop="url" rel="index">
-                    <span itemprop="name">Spring MVC</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="1-​概述"><a href="#1-​概述" class="headerlink" title="1.​概述"></a>1.​概述</h1><p>​    我们今天来看<code>AbstractHandlerMethodMapping</code>体系，这是<code>AbstractHandlerMapping</code>的第二个体系，又是用的最多的一个体系。该体系包括：<code>AbstractHandlerMethodMapping</code>、<code>RequestMap pingInfoHandlerMapping</code>和<code>RequestMappingHandlerMapping</code>。</p>
-<p>​    虽然该体系结构简单，一目了然，但是丝毫没有简单的感觉，这个体系理解下来还是比较吃力的。本系列目前遇到的最难啃的，就是这个体系。但是最难啃，不代表就回避这一体系的源码，这个体系啃下来就代表我们的<code>HandlerMapping</code>大的体系就完整地啃下来了。看完这一部分，就要开始进军<code>HandlerAdapter</code>了。</p>
-<p>​    <code>AbstractHandlerMethodMapping</code> 系列是将<code>Method</code>作为<code>Handler</code>来使用的，这其实是我们最熟悉的关于<code>Spring MVC</code>的内容，例如<code>@RequestMapping</code>所注释的方法就是这种<code>Handler</code>，它专门有一个类型<code>HandlerMethod</code>，也就是<code>Method</code>类型的<code>Handler</code>    。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/phones"</span>)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test</span><span class="params">()</span></span>&#123;</span><br><span class="line">   </span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
-<p>如图，这是<code>AbstractHandlerMethodMapping</code>体系的类图：</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture27.png" alt=""></p>
-<h1 id="2-AbstractHandlerMethodMapping"><a href="#2-AbstractHandlerMethodMapping" class="headerlink" title="2. AbstractHandlerMethodMapping"></a>2. AbstractHandlerMethodMapping</h1><p>​        鉴于这个体系实在是有难度，当时看了一天，现在写也比较吃力，所以就会有所省略，也算是能力所限吧。</p>
-<h2 id="2-1-getHandlerInternal"><a href="#2-1-getHandlerInternal" class="headerlink" title="2.1  getHandlerInternal"></a>2.1  getHandlerInternal</h2><p>​        我们先从<code>getHandlerInternal</code>方法来开始看，前面<code>AbstractHandlerMapping</code> 中的<code>getHandlerInternal</code>方法是一个模板方法，交给两个子类分支实现，<code>AbstractUrlHandlerMapping</code>体系中实现了该方法，那么我们现在看一下<code>AbstractHandlerMethodMapping</code>体系中的<code>getHandlerInternal</code>方法。</p>
-<p>​        </p>
-<p>​        <img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture28.png" alt=""></p>
-<h3 id="2-1-1-lookupHandlerMethod"><a href="#2-1-1-lookupHandlerMethod" class="headerlink" title="2.1.1 lookupHandlerMethod"></a>2.1.1 lookupHandlerMethod</h3><p>​    我们再看一下第三步的<code>lookupHandlerMethod</code>的详细代码。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture29.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture30.png" alt=""></p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture31.png" alt=""></p>
-<p>看一下<code>addMatchingMappings</code>方法。</p>
-<p><img src="https://liutianruo-2019-go-go-go.oss-cn-shanghai.aliyuncs.com/images/picture32.png" alt=""></p>
-<h1 id="3-总结"><a href="#3-总结" class="headerlink" title="3. 总结"></a>3. 总结</h1><p>​        这篇实在写不下去了，就一个<code>AbstractHandlerMethodMapping</code>类中的各种内部类和Map已经很复杂了，留着坑，目前先凑一篇吧，或者有可能以后再补充吧。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2486,7 +2516,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">54</span>
+                  <span class="site-state-item-count">55</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2497,7 +2527,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2508,7 +2538,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
